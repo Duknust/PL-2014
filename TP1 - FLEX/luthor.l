@@ -1,5 +1,8 @@
 %{
 
+#include <unistd.h>
+#include <fcntl.h>
+
 /*
 Tabela tabela;
 Linha linha;
@@ -108,16 +111,40 @@ estado=NORMAL;
 
 int main(int argc, char* argv[]){
 	if(argc<2 || argc >4 || argc==3){
-		printf("Padrão desconhecido:\n\n");
-		printf("lexLuthor -l -o nome\n");
-		printf("lexLuthor -h -o nome\n");
-		printf("lexLuthor -l\n");
-		printf("lexLuthor -h\n");
-		printf("lexLuthor -lh -o nome\n");
-		printf("lexLuthor -hl -o nome\n");
-		printf("lexLuthor -lh\n");
-		printf("lexLuthor -hl\n");
+		printf("Padrão desconhecido:\n\nArgumentos válidos:\n");
+		printf(" lexLuthor -l -o nome\n");
+		printf(" lexLuthor -h -o nome\n");
+		printf(" lexLuthor -l\n");
+		printf(" lexLuthor -h\n");
+		printf(" lexLuthor -lh -o nome\n");
+		printf(" lexLuthor -hl -o nome\n");
+		printf(" lexLuthor -lh\n");
+		printf(" lexLuthor -hl\n");
 	} else {
+		if(argc==4){//tem 4 args ou seja tem output
+		
+			if(strcmp(argv[2],"-o"))
+				{
+					printf("Terceiro parâmetro não é -o\n");
+					return -1;
+				}
+			char * fileout=strdup(argv[3]);
+			
+			int file = open(fileout, O_WRONLY | O_CREAT);
+			if(file < 0)    return 1;
+		 
+			if(dup2(file,1) < 0)    return 1;
+		}
+		
+		if(strcmp(argv[1],"-h"))
+		{
+			printf("____-HTML-____\n");
+		}
+		else if(strcmp(argv[1],"-l")){
+			printf("____-LaTeX-____\n");
+		}
+		else return -1;//nao é válido -l ou -h
+
 		printf("AQUI ESTA A MAIN \n\n\n\n");
 		yylex();
 	}
@@ -126,8 +153,7 @@ int main(int argc, char* argv[]){
 	return 0;
 }
 
-/*int yywrap()
+int yywrap()
 {
-  mainTeste();
   return 1;
-}*/
+}
