@@ -1,6 +1,6 @@
-\titulo\			titulo do documento
-\autores\			autores
-\sec[1-6]\			secção em que o INT é o nivel de 1 a 6
+x\titulo\			titulo do documento
+x\autores\			autores
+x\sec[1-6]\			secção em que o INT é o nivel de 1 a 6
 \lo\				lista ordenada
 \li\				lista de items
 \item\				item da lista
@@ -10,11 +10,10 @@
 \legenda\			legenda da imagem
 \size\				tamanho da imagem (em escala)
 \tabela>[lcr]\		criar tabela em que o L alinha à esquerda, o C ao centro e o R à direita
-\nl\				quebra linha
-\LaTeX\				simbolo do latex em LaTeX (so funciona em latex)
-\\					backslash
-\%\					comentario
-\nis{}\				combinação de n(negrito), i(italico) e s(sublinhado) que pode ter todas ou apenas uma
+x\nl\				quebra linha
+x\LaTeX\				simbolo do latex em LaTeX (so funciona em latex)
+x\%\					comentario
+x\nis{}\				combinação de n(negrito), i(italico) e s(sublinhado) que pode ter todas ou apenas uma
 \nf\				texto normal
 \tab\				põe um tab nessa frase;
 
