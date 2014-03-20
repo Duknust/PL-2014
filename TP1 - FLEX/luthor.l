@@ -2,29 +2,58 @@
 
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdlib.h>
 
-int estado;
+
+void initLaTeX ();
+
+void tituloL(char * titulo);
+
+void autoresL(char * autores);
+
+void fimdecapaL();
+
+void newpageL();
+
+void paragrafoL();
+
+void listafigL();
+
+void tableconL();
+
+void italicoL(char * texto);
+
+void negritoL(char * texto);
+
+void sublinhadoL(char * texto);
+
+void nisL(char * texto);
+
+void sectionL(char * texto,char nivel);
+
+void fimL();
+
+
+
+
+int estado=1;
 int ultimoEstado;
 int estados[100];
 int apontaEstados=0;
 
+
 int _modoHTML=0;
 int _modoLatex=0;
 
-int mainTeste(){
-	printf("MAIN TESTE\n");
-	return 0;
-}
+
 
 %}
+
 /*   1      2        3         4          5        6       7     8      9    10     11    */
 %x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA TABELA IMAGEM NIS FOOTNOTE
 
-%%
-printf("antes init\n");
-estados[apontaEstados]=NORMAL;
-printf("depois init\n");
 
+%%
 BEGIN NORMAL;
 estado=NORMAL;
 
@@ -34,22 +63,23 @@ estado=NORMAL;
 
 <*>\\fim\\							{ultimoEstado = estados[apontaEstados];
 								     if(apontaEstados>0) apontaEstados--;
+								     
 									 switch(ultimoEstado)
 									 {
 									 	case 2: 
-									 	printf("</n>");
+									 	printf("}");
 									 	break;
 									 	case 3:
-									 	printf("</i>");
+									 	printf("}");
 									 	break;
 									 	case 4:
-									 	printf("</s>");
+									 	printf("}");
 									 	break;
 									 	case 5:
 									 	printf("</coment>");
 									 	break;
 									 	case 10:
-									 	printf("</nis>");
+									 	printf("}}}");
 									 	break;
 									 	case 11:
 									 	printf("</footnote>");
@@ -57,44 +87,46 @@ estado=NORMAL;
 									 	default:
 									 	break;
 									 }
- 									 BEGIN ultimoEstado;
-									 estado = ultimoEstado;
+									 
+ 									 ultimoEstado= estados[apontaEstados];
+									 BEGIN ultimoEstado;
 									}
 
-<NORMAL>\\titulo\\.*\n				printf("%s",yytext+8);
-<NORMAL>\\autores\\.*\n				printf("%s",yytext+9);
-<NORMAL>\\sec[1-3]\\.*\n			printf("%s\n",yytext+6);
+<NORMAL>\\titulo\\.*\n				tituloL(yytext+8);
+<NORMAL>\\autores\\.*\n				autoresL(yytext+9);
+<NORMAL>\\sec[1-3]\\.*\n			sectionL(yytext+6,yytext[4]);
 <NORMAL>\\lo\\[^\\]*				printf("%s\n",yytext+4);
 <NORMAL>\\li\\[^\\]*				printf("%s\n",yytext+4);
 <NORMAL>\\item\\[^\\]*				printf("%s\n",yytext+4);
-<NORMAL>\\nl\\						printf("\n");
+<NORMAL>\\nl\\						paragrafoL();
 
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\n\\[^\\]*					{BEGIN NEGRITO;
 																			 estado=NEGRITO;
+																			 
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("<n>%s",yytext+3);
+																	 		 negritoL(yytext+3);
 																	 		}
 
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\i\\[^\\]*					{BEGIN ITALICO;
 																			 estado=ITALICO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("<i>%s",yytext+3);
+																	 		 italicoL(yytext+3);
 																	 		}
 
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\s\\[^\\]*					{BEGIN SUBLINHADO;
 																			 estado=SUBLINHADO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("<s>%s",yytext+3);
+																	 		 sublinhadoL(yytext+3);
 																	 		}
 
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\nis\\[^\\]*				{BEGIN NIS;
 																			 estado=NIS;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("<nis>%s",yytext+5);
+																	 		 nisL(yytext+5);
 																	 		}
 
 <*>\\%\\[^\\]*																{BEGIN COMENTARIO;
@@ -112,7 +144,7 @@ estado=NORMAL;
 
 <NORMAL>\\data\\															printf("|data de hoje|\n");
 
-<NORMAL>\\fimdecapa\\														printf("maketitle\n");
+<NORMAL>\\fimdecapa\\														{fimdecapaL();newpageL();}
 
 <NORMAL>\\indice\\															printf("tableofcontents\n");
 
@@ -126,13 +158,130 @@ estado=NORMAL;
 																	 		}
 %%
 
+
+
+
 void initLaTeX (){
 	
-	printf("INITLATEX\n");
+printf("\\documentclass[11pt, a4paper, oneside]{article}\n");
+
+printf("\\usepackage[portuguese]{babel}\n");
+
+printf("\\usepackage{hyperref}\n");
+printf("\\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=black}\n");
+
+printf("\\usepackage[utf8]{inputenc}\n");
+
+printf("\\usepackage{graphicx}\n");
+printf("\\graphicspath{{./imagens/}}\n");
+
+printf("\\usepackage[labelformat=simple]{caption}\n");
+printf("\\usepackage[labelformat=empty]{subcaption}\n");
+
+printf("\\usepackage{lastpage}\n");
+
+printf("\\usepackage{fancyhdr}\n");
+printf("\\pagestyle{fancy}\n");
+
+
+
+printf("\\usepackage{enumitem}\n");
+
+printf("\\usepackage[algoruled]{algorithm2e}\n");
+
+printf("\\usepackage[usenames,dvipsnames]{color}\n");
+
+printf("\\begin{document}\n\n");
 	
 }
 
+void tituloL(char * titulo){
+	printf("\\title{%s}\n",titulo);
+}
+
+void autoresL(char * autores){
+	printf("\\author{%s}\n",autores);
+}
+
+void fimdecapaL(){
+	printf("\\maketitle\n");
+}
+
+void newpageL(){
+	printf("\\newpage\n");
+}
+
+void paragrafoL(){
+	printf("\\\\\n");
+}
+
+void tableconL(){
+	printf("\\tableofcontents\n");
+}
+
+void listafigL(){
+	printf("\\listoffigures\n");
+}
+
+void italicoL(char * texto){
+	printf("\\textit{%s",texto);
+}
+
+void negritoL(char * texto){
+	printf("\\textbf{%s",texto);
+}
+
+void sublinhadoL(char * texto){
+	printf("\\underline{%s",texto);
+}
+
+void nisL(char * texto){
+	printf("\\underline{\\textbf{\\textit{%s",texto);
+}
+
+void sectionL(char * texto,char nivel){
+	
+	if(nivel=='1')
+		printf("\\section{%s}",texto);
+	else if(nivel=='2')
+		printf("\\subsection{%s}",texto);
+	else if(nivel=='3')
+		printf("\\subsubsection{%s}",texto);
+	else printf("---ERRO NA DEFINIÇÃO DE UMA SECÇÂO---\n");
+}
+
+
+void fimL(){
+	printf("\\end{document}\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 int main(int argc, char* argv[]){
+	
+	
+estados[0]=1;
+	
 	if(argc<2 || argc >4 || argc==3){
 		printf("Padrão desconhecido:\n\nArgumentos válidos:\n");
 		printf(" lexLuthor -l -o nome\n");
@@ -167,7 +316,7 @@ int main(int argc, char* argv[]){
 
 		else if(strcmp(argv[1],"-l")==0){
 			_modoLatex=1;
-			printf("____-LaTeX-____\n");
+			initLaTeX();
 		}
 		else if(strcmp(argv[1],"-lh")==0 || strcmp(argv[1],"-hl")==0){
 			_modoHTML=1;
@@ -177,8 +326,11 @@ int main(int argc, char* argv[]){
 
 		else return -1;//nao é válido -l ou -h
 
-		printf("AQUI ESTA A MAIN \n\n\n\n");
+		
 		yylex();
+		
+		if(_modoLatex)
+			fimL();
 	}
 	
 
