@@ -3,15 +3,13 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-/*
-Tabela tabela;
-Linha linha;
-Imagem imagem;
-*/
 int estado;
 int ultimoEstado;
 int estados[100];
 int apontaEstados=0;
+
+int _modoHTML=0;
+int _modoLatex=0;
 
 int mainTeste(){
 	printf("MAIN TESTE\n");
@@ -19,8 +17,8 @@ int mainTeste(){
 }
 
 %}
-/*   1      2        3         4          5        6       7     8      9    10  */
-%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA TABELA IMAGEM NIS
+/*   1      2        3         4          5        6       7     8      9    10     11    */
+%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA TABELA IMAGEM NIS FOOTNOTE
 
 %%
 printf("antes init\n");
@@ -53,6 +51,9 @@ estado=NORMAL;
 									 	case 10:
 									 	printf("</nis>");
 									 	break;
+									 	case 11:
+									 	printf("</footnote>");
+									 	break;
 									 	default:
 									 	break;
 									 }
@@ -62,7 +63,7 @@ estado=NORMAL;
 
 <NORMAL>\\titulo\\.*\n				printf("%s",yytext+8);
 <NORMAL>\\autores\\.*\n				printf("%s",yytext+9);
-<NORMAL>\\sec[1-6]\\.*\n			printf("%s\n",yytext+6);
+<NORMAL>\\sec[1-3]\\.*\n			printf("%s\n",yytext+6);
 <NORMAL>\\lo\\[^\\]*				printf("%s\n",yytext+4);
 <NORMAL>\\li\\[^\\]*				printf("%s\n",yytext+4);
 <NORMAL>\\item\\[^\\]*				printf("%s\n",yytext+4);
@@ -103,10 +104,26 @@ estado=NORMAL;
 																	 		 printf("<coment>%s",yytext+3);
 																	 		}
 
-\LaTeX\																		printf("\\Latex");
+<*>\LaTeX\																	printf("\\Latex");
 
-\tab\																		printf("\\vspace{10 mm}");
+<*>\tab\																	printf("\\vspace{10 mm}");
 
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\hlink\\				printf("\\link");
+
+<NORMAL>\\data\\															printf("|data de hoje|\n");
+
+<NORMAL>\\fimdecapa\\														printf("maketitle\n");
+
+<NORMAL>\\indice\\															printf("tableofcontents\n");
+
+<NORMAL>\\indiceimg\\														printf("listoffigures\n");
+
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
+																			 estado=FOOTNOTE;
+																			 apontaEstados++;
+																			 estados[apontaEstados]=estado;
+																	 		 printf("<footnote>%s",yytext+10);
+																	 		}
 %%
 
 void initLaTeX (){
@@ -136,19 +153,28 @@ int main(int argc, char* argv[]){
 				}
 			char * fileout=strdup(argv[3]);
 			
-			int file = open(fileout, O_WRONLY | O_CREAT);
+			int file = open(fileout, O_WRONLY | O_CREAT, 0777);
 			if(file < 0)    return 1;
 		 
 			if(dup2(file,1) < 0)    return 1;
 		}
 		
-		if(!strcmp(argv[1],"-h"))
+		if(strcmp(argv[1],"-h")==0)
 		{
+			_modoHTML=1;
 			printf("____-HTML-____\n");
 		}
-		else if(!strcmp(argv[1],"-l")){
-			initLaTeX();
+
+		else if(strcmp(argv[1],"-l")==0){
+			_modoLatex=1;
+			printf("____-LaTeX-____\n");
 		}
+		else if(strcmp(argv[1],"-lh")==0 || strcmp(argv[1],"-hl")==0){
+			_modoHTML=1;
+			_modoLatex=1;
+			printf("____-LaTeX e HTML-____\n");
+		}
+
 		else return -1;//nao é válido -l ou -h
 
 		printf("AQUI ESTA A MAIN \n\n\n\n");

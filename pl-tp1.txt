@@ -1,9 +1,11 @@
+x\fimdecapa\			fim de capa
 x\titulo\			titulo do documento
-x\autores\			autores
+x\autores\			autores separados por virgulas
+x\data\				data de hoje
 x\sec[1-6]\			secção em que o INT é o nivel de 1 a 6
-\lo\				lista ordenada
-\li\				lista de items
-\item\				item da lista
+—-\lo\				lista ordenada
+--\li\				lista de items
+--\item\				item da lista
 \hlink\				hiperligação
 \figura\			modo de imagem
 \imagem>NOME\		inserir uma imagem
@@ -13,11 +15,15 @@ x\sec[1-6]\			secção em que o INT é o nivel de 1 a 6
 x\nl\				quebra linha
 x\LaTeX\				simbolo do latex em LaTeX (so funciona em latex)
 x\%\					comentario
-x\nis{}\				combinação de n(negrito), i(italico) e s(sublinhado) que pode ter todas ou apenas uma
+x\nis\				combinação de n(negrito), i(italico) e s(sublinhado) que pode ter todas ou apenas uma
 \nf\				texto normal
 \tab\				põe um tab nessa frase;
+\indice\			criar indice
+\indiceimg\			criar indice de imagens
 
+\footnote\			notas de rodape
 
 de forma a terminar alguns comandos existe o \fim\
+
 
 
