@@ -1,0 +1,20 @@
+____-LaTeX e HTML-____
+AQUI ESTA A MAIN 
+
+
+
+Este e o teste
+Todos menos o 14
+Capitulo 1
+
+1.1 O principio
+
+O bo tem mel para me dominar assim no amor o bo tem mel!
+ NOVO PARAGROFO
+OOOO!
+<coment>o grande comentario da actualidade</coment>
+
+\n\Preto \i\em italia fixe
+
+ACABOU O FICHEIRO!!
+
