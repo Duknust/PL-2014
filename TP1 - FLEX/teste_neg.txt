@@ -1,0 +1,14 @@
+\init\
+
+\titulo\Este e o teste
+\autores\Todos menos o 14
+
+\sec1\Capitulo 1
+\sec2\1.1 O principio
+O bo tem mel para me dominar assim no amor o bo tem mel!\nl\ NOVO PARAGROFO\nl\OOOO!\nl\
+
+\%\o grande comentario da actualidade\fim\
+
+\n\Preto \i\em italia\fim\\fim\ fixe
+
+\eof\

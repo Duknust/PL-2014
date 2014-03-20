@@ -109,6 +109,12 @@ estado=NORMAL;
 
 %%
 
+void initLaTeX (){
+	
+	printf("INITLATEX\n");
+	
+}
+
 int main(int argc, char* argv[]){
 	if(argc<2 || argc >4 || argc==3){
 		printf("Padrão desconhecido:\n\nArgumentos válidos:\n");
@@ -136,12 +142,12 @@ int main(int argc, char* argv[]){
 			if(dup2(file,1) < 0)    return 1;
 		}
 		
-		if(strcmp(argv[1],"-h"))
+		if(!strcmp(argv[1],"-h"))
 		{
 			printf("____-HTML-____\n");
 		}
-		else if(strcmp(argv[1],"-l")){
-			printf("____-LaTeX-____\n");
+		else if(!strcmp(argv[1],"-l")){
+			initLaTeX();
 		}
 		else return -1;//nao é válido -l ou -h
 
