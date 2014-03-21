@@ -1,4 +1,3 @@
-\init\
 
 \titulo\Este e o teste
 \autores\Todos menos o 14
@@ -11,4 +10,3 @@ O bo tem mel par\footnote\o bo tem mel\fim\a me dominar assim no amor o bo tem m
 
 \n\Preto \i\em italia\fim\\fim\ fixe
 
-\eof\
