@@ -266,6 +266,7 @@ void initLaTeX (){
 	printf("\\usepackage[algoruled]{algorithm2e}\n");
 	printf("\\usepackage[usenames,dvipsnames]{color}\n");
 	printf("\\begin{document}\n\n");
+	
 }
 
 void tituloL(char * titulo){
