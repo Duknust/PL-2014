@@ -32,11 +32,15 @@ int _modoHTML=0;
 int _modoLatex=0;
 int _modoEcran=0;
 
+/*files a serem criados*/
+FILE *html_file=NULL;
+FILE *latex_file=NULL;
+
 %}
 
 /*definicao de todos os estados possiveis*/
-/*   1      2        3         4          5        6       7     8      9    10     11     12   13    14   15*/
-%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA TABELA IMAGEM NIS FOOTNOTE COR LINHA LATEX HTML
+/*   1      2        3         4          5        6       7     8      9    10     11     12   13    14   15     16   */
+%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA TABELA IMAGEM NIS FOOTNOTE COR LINHA LATEX HTML LEGENDA
 
 
 %%
@@ -59,8 +63,7 @@ int _modoEcran=0;
 																			 	printf("\\end{comment}\n");
 																			 	break;
 																			 	case 6://verbatim
-																			 	printf("}");
-																			 	break;
+																			 	printf("}");																			 	break;
 																			 	case 7:
 																			 	printf("</lista>");
 																			 	break;
@@ -76,8 +79,10 @@ int _modoEcran=0;
 																			 	case 11:
 																			 	printf("}");//footnote>
 																			 	break;
-																			 	case 12://core
+																			 	case 12://cor
 																			 	printf("}");
+																				case 16:
+																			 	printf("</legenda>");
 																			 	break;
 																			 	default:
 																			 	break;
@@ -106,12 +111,10 @@ int _modoEcran=0;
 <NORMAL>\\item\\[^\\]*														printf("%s\n",yytext+4);
 
 	/*apenas no LaTeX*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jl\\						printf("<justL>%s",yytext+4);
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jl\\[^\\]*				printf("<justL>%s",yytext+4);
 
 	/*apenas no HTML*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jh\\						printf("<justH>%s",yytext+4);
-
-	/*apenas no HTML*/
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jh\\[^\\]*	 			printf("<justH>%s",yytext+4);
 
 	/*quebra de linha*/
 <*>\\nl\\																	paragrafoL();
@@ -146,7 +149,7 @@ int _modoEcran=0;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
 																	 		 if(_modoLatex) nisL(yytext+5);
-																	 		 //if(_modoHTML) nisH(yytext+5);
+																	 		 if(_modoHTML) nisH(yytext+5);
 																	 		 if(_modoEcran) printf("nis{%s}\n", yytext+5);
 																	 		}
 
@@ -180,6 +183,7 @@ int _modoEcran=0;
 	/*indice de imagens*/
 <NORMAL>\\indiceimg\\														printf("\\listoffigures\n");
 
+
 	/*nota de rodape*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
 																			 estado=FOOTNOTE;
@@ -204,7 +208,7 @@ int _modoEcran=0;
 																 			}
 
 	/*começar tabela tabela*/
-<NORMAL,TABELA>\tabela\[[0-9]+\,[0-9]+\](e|c|d)\\							{BEGIN TABELA;
+<NORMAL,TABELA>\tabela\[[0-9]+\](e|c|d)\\									{BEGIN TABELA;
 																			 estado=TABELA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -228,24 +232,31 @@ int _modoEcran=0;
     \end{tabular}
 	\end{table}*/
 
-	/*omissao da quebra*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,VERBATIM,LISTA,TABELA,IMAGEM,NIS,FOOTNOTE,COR,LINHA,LATEX,HTML>\n 			;
 <COMENTARIO>\nf													printf("%s",yytext);
+<*>\legenda\[^\\]*															{BEGIN LEGENDA;
+																			 estado=LEGENDA;
+																			 apontaEstados++;
+																			 estados[apontaEstados]=estado;
+																			 printf("<legenda>%s",yytext+9);
+																			}
+
+	/*omissao da quebra*/
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,VERBATIM,LISTA,TABELA,IMAGEM,NIS,FOOTNOTE,COR,LINHA,LATEX,HTML,LEGENDA>\n 			;
 	
+	/*aparece apenas no HTML*/
 <*>\sh\[^\\]*															{BEGIN HTML;
 																		 estado=HTML;
 																		 apontaEstados++;
 																		 estados[apontaEstados]=estado;
 																		 printf("<linha>%s",yytext+7);
 																		}	
-
+	/*aparece apenas no LaTeX*/
 <*>\sl\[^\\]*															{BEGIN LATEX;
 																		 estado=LATEX;
 																		 apontaEstados++;
 																		 estados[apontaEstados]=estado;
 																		 printf("<linha>%s",yytext+7);
 																		}	
-
 
 %%
 
@@ -314,7 +325,6 @@ void nisL(char * texto){
 }
 
 void sectionL(char * texto,char nivel){
-	
 	if(nivel=='1')
 		printf("\\section{%s}",texto);
 	else if(nivel=='2')
@@ -413,12 +423,20 @@ BEGIN NORMAL;
 		if(_modoLatex && !_modoEcran)
 			fimL();
 		if(_modoHTML && !_modoEcran)
+<<<<<<< HEAD
 			;//fimH();
+=======
+			fimH();
+>>>>>>> origin/12
 		if(_modoEcran){
 			if(_modoLatex)
 				fimL();
 			else if(_modoHTML)
+<<<<<<< HEAD
 				;//fimH();
+=======
+				fimH();
+>>>>>>> origin/12
 		}
 	}
 
