@@ -60,11 +60,10 @@ FILE *latex_file=NULL;
 																			 	printf("}");
 																			 	break;
 																			 	case 5:
-																			 	printf("</coment>");
+																			 	printf("\\end{comment}\n");
 																			 	break;
-																			 	case 6:
-																			 	printf("</verbatim>");
-																			 	break;
+																			 	case 6://verbatim
+																			 	printf("}");																			 	break;
 																			 	case 7:
 																			 	printf("</lista>");
 																			 	break;
@@ -78,11 +77,11 @@ FILE *latex_file=NULL;
 																			 	printf("}}}");
 																			 	break;
 																			 	case 11:
-																			 	printf("</footnote>");
+																			 	printf("}");//footnote>
 																			 	break;
-																			 	case 12:
-																			 	printf("</cor>");
-																			 	case 16:
+																			 	case 12://cor
+																			 	printf("}");
+																				case 16:
 																			 	printf("</legenda>");
 																			 	break;
 																			 	default:
@@ -159,11 +158,11 @@ FILE *latex_file=NULL;
 																			 estado=COMENTARIO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("<coment>%s",yytext+3);
+																	 		 printf("\\begin{comment}%s",yytext+3);
 																	 		}
 
 	/*simbolo do latex*/
-<*>\LaTeX\																	printf("\\Latex");
+<*>\LaTeX\																	printf("\\LaTeX");
 
 	/*tab*/
 <*>\tab\																	printf("\\vspace{10 mm}");
@@ -172,31 +171,32 @@ FILE *latex_file=NULL;
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\hlink\\				printf("\\link");
 
 	/*data do dia*/
-<NORMAL>\\data\\															printf("|data de hoje|\n");
+<NORMAL>\\data\\															printf("\\today");
 
 	/*fim de capa*/
 <NORMAL>\\fimdecapa\\														{fimdecapaL();
 																			 newpageL();
 																			}
 	/*indice*/
-<NORMAL>\\indice\\															printf("tableofcontents\n");
+<NORMAL>\\indice\\															printf("\\tableofcontents\n");
 
 	/*indice de imagens*/
-<NORMAL>\\indiceimg\\														printf("listoffigures\n");
+<NORMAL>\\indiceimg\\														printf("\\listoffigures\n");
+
 
 	/*nota de rodape*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
 																			 estado=FOOTNOTE;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("<footnote>%s",yytext+10);
+																	 		 printf("\\footnote{%s",yytext+10);
 																	 		}
 	/*cores do texto*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\(vermelho|verde|azul|amarelo|rosa)\\[^\\]*		{BEGIN COR;
 																									 	 estado=COR;
 																									 	 apontaEstados++;
 																									 	 estados[apontaEstados]=estado;
-																							 		 	 printf("<cor=%s>",yytext+6);
+																							 		 	 printf("\\textcolor{red}{%s",yytext+10);
 																							 			}
 
 	/*texto nao formatado*/
@@ -204,11 +204,11 @@ FILE *latex_file=NULL;
 																		 	 estado=VERBATIM;
 																		 	 apontaEstados++;
 																		 	 estados[apontaEstados]=estado;
-																 		 	 printf("<verbatim>%s",yytext+4);
+																 		 	 printf("\\begin{verbatim}%s",yytext+4);
 																 			}
 
 	/*começar tabela tabela*/
-<NORMAL,TABELA>\tabela\[[0-9]+\](e|c|d)\\							{BEGIN TABELA;
+<NORMAL,TABELA>\tabela\[[0-9]+\](e|c|d)\\									{BEGIN TABELA;
 																			 estado=TABELA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -232,6 +232,7 @@ FILE *latex_file=NULL;
     \end{tabular}
 	\end{table}*/
 
+<COMENTARIO>\nf													printf("%s",yytext);
 <*>\legenda\[^\\]*															{BEGIN LEGENDA;
 																			 estado=LEGENDA;
 																			 apontaEstados++;
@@ -273,9 +274,15 @@ void initLaTeX (){
 	printf("\\usepackage{fancyhdr}\n");
 	printf("\\pagestyle{fancy}\n");
 	printf("\\usepackage{enumitem}\n");
+	printf("\\usepackage{verbatim}\n");
 	printf("\\usepackage[algoruled]{algorithm2e}\n");
+<<<<<<< HEAD
 	printf("\\usepackage[usenames,dvipsnames]{color}\n");
 	printf("\\begin{document}\n\n");
+=======
+	printf("\\usepackage[usenames,dvipsnames]{color}\n\n\n\n\n\n\n\n\n");
+	printf("\\begin{document}\n");
+>>>>>>> origin/112
 }
 
 void tituloL(char * titulo){
@@ -338,15 +345,11 @@ void fimL(){
 }
 
 char* tira_ns(char * texto){
-	/*texto[strlen(texto)-1]='\0';*/
-	char* ze = (char*)malloc(sizeof(char)*strlen(texto));
-	strcpy(ze,texto);
-	int i=0;
-	for(i=0;i<strlen(ze);i++)
-		if(ze[i]=='\n')
-			ze[i]='\0';
-	return ze;
+	
+	texto[strlen(texto)-2]='\0';
+	return texto;
 }
+
 
 
 
@@ -426,12 +429,20 @@ BEGIN NORMAL;
 		if(_modoLatex && !_modoEcran)
 			fimL();
 		if(_modoHTML && !_modoEcran)
+<<<<<<< HEAD
+			;//fimH();
+=======
 			fimH();
+>>>>>>> origin/12
 		if(_modoEcran){
 			if(_modoLatex)
 				fimL();
 			else if(_modoHTML)
+<<<<<<< HEAD
+				;//fimH();
+=======
 				fimH();
+>>>>>>> origin/12
 		}
 	}
 
