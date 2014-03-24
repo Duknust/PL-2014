@@ -365,6 +365,7 @@ char* tira_ns(char * texto){
 
 
 
+
 int main(int argc, char* argv[]){
 	
 /*iniciar o lex no estado 1, estado NORMAL*/	
