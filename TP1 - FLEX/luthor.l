@@ -3,23 +3,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
-
-/*funcoes de LATEX*/
-void initLaTeX ();
-void tituloL(char * titulo);
-void autoresL(char * autores);
-void fimdecapaL();
-void newpageL();
-void paragrafoL();
-void listafigL();
-void tableconL();
-void italicoL(char * texto);
-void negritoL(char * texto);
-void sublinhadoL(char * texto);
-void nisL(char * texto);
-void sectionL(char * texto,char nivel);
-void fimL();
-char *tira_ns(char * texto);
+#include <stdio.h>
+#include <string.h>
+#define KGRN  "\x1B[32m"
+#define KNRM  "\x1B[0m"
 
 /*stack que guarda os estados*/
 int estado=1;
@@ -31,6 +18,7 @@ int apontaEstados=0;
 int _modoHTML=0;
 int _modoLatex=0;
 int _modoEcran=0;
+int _versionORhelp=0;
 
 /*files a serem criados*/
 FILE *html_file=NULL;
@@ -149,7 +137,7 @@ FILE *latex_file=NULL;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
 																	 		 if(_modoLatex) nisL(yytext+5);
-																	 		 if(_modoHTML) nisH(yytext+5);
+																	 	//	 if(_modoHTML) nisH(yytext+5);
 																	 		 if(_modoEcran) printf("nis{%s}\n", yytext+5);
 																	 		}
 
@@ -177,12 +165,12 @@ FILE *latex_file=NULL;
 <NORMAL>\\fimdecapa\\														{fimdecapaL();
 																			 newpageL();
 																			}
+
 	/*indice*/
 <NORMAL>\\indice\\															printf("\\tableofcontents\n");
 
 	/*indice de imagens*/
 <NORMAL>\\indiceimg\\														printf("\\listoffigures\n");
-
 
 	/*nota de rodape*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
@@ -232,7 +220,10 @@ FILE *latex_file=NULL;
     \end{tabular}
 	\end{table}*/
 
-<COMENTARIO>\nf													printf("%s",yytext);
+
+
+<COMENTARIO>\\nf															printf("%s",yytext);
+
 <*>\legenda\[^\\]*															{BEGIN LEGENDA;
 																			 estado=LEGENDA;
 																			 apontaEstados++;
@@ -258,138 +249,31 @@ FILE *latex_file=NULL;
 																		 printf("<linha>%s",yytext+7);
 																		}	
 
+	/*inserir imagem (path)*/
+<*>\\imagem:[a-zA-Z0-9]*\\												{printf("IMAGEM!!!");}
+
+	/*
+	\begin{figure}[h] 
+	\center 
+	\includegraphics[width=10cm]{imagens/o... 
+	\label{omeubrowser} 
+	\caption{O meu browser} 
+	\end{figure}*/
+
 %%
-
-void initLaTeX (){
-	printf("\\documentclass[11pt, a4paper, oneside]{article}\n");
-	printf("\\usepackage[portuguese]{babel}\n");
-	printf("\\usepackage{hyperref}\n");
-	printf("\\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=black}\n");
-	printf("\\usepackage[utf8]{inputenc}\n");
-	printf("\\usepackage{graphicx}\n");
-	printf("\\graphicspath{{./imagens/}}\n");
-	printf("\\usepackage[labelformat=simple]{caption}\n");
-	printf("\\usepackage[labelformat=empty]{subcaption}\n");
-	printf("\\usepackage{lastpage}\n");
-	printf("\\usepackage{fancyhdr}\n");
-	printf("\\pagestyle{fancy}\n");
-	printf("\\usepackage{enumitem}\n");
-	printf("\\usepackage{verbatim}\n");
-	printf("\\usepackage[algoruled]{algorithm2e}\n");
-<<<<<<< HEAD
-	printf("\\usepackage[usenames,dvipsnames]{color}\n");
-	printf("\\begin{document}\n\n");
-=======
-	printf("\\usepackage[usenames,dvipsnames]{color}\n\n\n\n\n\n\n\n\n");
-	printf("\\begin{document}\n");
->>>>>>> origin/112
-}
-
-void tituloL(char * titulo){
-	printf("\\title{%s}\n",titulo);
-}
-
-void autoresL(char * autores){
-	printf("\\author{%s}\n",autores);
-}
-
-void fimdecapaL(){
-	printf("\\maketitle\n");
-}
-
-void newpageL(){
-	printf("\\newpage\n");
-}
-
-void paragrafoL(){
-	printf("\\\\\n");
-}
-
-void tableconL(){
-	printf("\\tableofcontents\n");
-}
-
-void listafigL(){
-	printf("\\listoffigures\n");
-}
-
-void italicoL(char * texto){
-	printf("\\textit{%s",texto);
-}
-
-void negritoL(char * texto){
-	printf("\\textbf{%s",texto);
-}
-
-void sublinhadoL(char * texto){
-	printf("\\underline{%s",texto);
-}
-
-void nisL(char * texto){
-	printf("\\underline{\\textbf{\\textit{%s",texto);
-}
-
-void sectionL(char * texto,char nivel){
-	if(nivel=='1')
-		printf("\\section{%s}",texto);
-	else if(nivel=='2')
-		printf("\\subsection{%s}",texto);
-	else if(nivel=='3')
-		printf("\\subsubsection{%s}",texto);
-/*nunca acontece isto*/
-	else printf("---ERRO NA DEFINIÇÃO DE UMA SECÇÂO---\n");
-}
-
-void fimL(){
-	printf("\\end{document}\n");
-}
-
-char* tira_ns(char * texto){
-	
-	texto[strlen(texto)-2]='\0';
-	return texto;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 int main(int argc, char* argv[]){
 	
-/*iniciar o lex no estado 1, estado NORMAL*/	
+	/*iniciar o lex no estado 1, estado NORMAL*/	
 estados[0]=1;
 BEGIN NORMAL;
 	
-/*Reconhecedor dos padroes suportados*/
-	if(argc<2 || argc >4 || argc==3){
-		printf("Padrão desconhecido:\n\nArgumentos válidos:\n");
-		printf(" lexLuthor -l -o nome\n");
-		printf(" lexLuthor -h -o nome\n");
-		printf(" lexLuthor -l\n");
-		printf(" lexLuthor -h\n");
-		printf(" lexLuthor -lh -o nome\n");
-		printf(" lexLuthor -hl -o nome\n");
-		printf(" lexLuthor -lh\n");
-		printf(" lexLuthor -hl\n");
-	} else {
-		if(argc==4){/*tem 4 args ou seja tem output*/
+	/*Reconhecedor dos padroes suportados*/
+
+	_versionORhelp=verificaArgs_callHelp(argc, argv);
+	_versionORhelp=verificaArgs_callVersion(argc, argv);
+	if (verificaArgs_ArgumentosOut(argc, argv)) {
+		if(argc==4){ /*tem 4 args ou seja tem output*/
 		
 			if(strcmp(argv[2],"-o"))
 				{
@@ -397,16 +281,15 @@ BEGIN NORMAL;
 					return -1;
 				}
 			char * fileout=strdup(argv[3]);
-			
 			int file = open(fileout, O_WRONLY | O_CREAT, 0777);
-			if(file < 0)    return 1;
+			if(file < 0)	return 1;
 		 
-			if(dup2(file,1) < 0)    return 1;
+			if(dup2(file,1) < 0)	return 1;
 		}
 
 		if(strcmp(argv[1],"-h")==0)
 		{
-			_modoHTML=1;
+			_modoHTML=1; printf("h:%d",_modoHTML);
 			printf("____-HTML-____\n");
 		}
 
@@ -420,31 +303,72 @@ BEGIN NORMAL;
 			printf("____-LaTeX e HTML-____\n");
 		}
 
-		else return -1;/*nao é válido -l ou -h*/
+	/*execucao do lex*/
+		if(_modoLatex || _modoHTML || _modoEcran)
+			yylex();
 
-/*execucao do lex*/
-		yylex();
-
-/*so coloca estiver em modo de latex*/
+	/*so coloca estiver em modo de latex*/
 		if(_modoLatex && !_modoEcran)
 			fimL();
-		if(_modoHTML && !_modoEcran)
-<<<<<<< HEAD
-			;//fimH();
-=======
-			fimH();
->>>>>>> origin/12
+		if(_modoHTML && !_modoEcran);
+			//fimH();
 		if(_modoEcran){
 			if(_modoLatex)
 				fimL();
 			else if(_modoHTML)
-<<<<<<< HEAD
-				;//fimH();
-=======
-				fimH();
->>>>>>> origin/12
+				printf("fimH");
+				//fimH();
 		}
-	}
+	} 
 
+	if (_modoHTML==0 && _modoLatex==0 && _modoEcran==0 && _versionORhelp==0){
+		printf("ERROR - maybe you need to use:\n");
+		printf("--h or --help [all options and description]\n");
+	} 
 	return 0;
+}
+
+
+
+	/*Verifica se a invocação ocorreu com argumentos de help*/
+int verificaArgs_callHelp(int argc, char* argv[]){
+	int res = 0;
+	if (argc==2 && (strcmp(argv[1],"--h")==0 || strcmp(argv[1],"--help")==0)){
+		printf("\t lexLuthor -l -o [nome]\n");
+		printf("\t lexLuthor -h -o [nome]\n");
+		printf("\t lexLuthor -l\n");
+		printf("\t lexLuthor -h\n");
+		printf("\t lexLuthor -lh -o [nome]\n");
+		printf("\t lexLuthor -hl -o [nome]\n");
+		printf("\t lexLuthor -lh\n");
+		printf("\t lexLuthor -hl\n");
+		printf("\n\n");
+		printf("\t\t --v or --version [version of LexLuthor]\n");
+		printf("\t\t -l [only creats LaTeX output]\n");
+		printf("\t\t -h [only creats HTML output]\n");
+		printf("\t\t -o [to chose the output name]\n");
+		res=1;
+	}
+	return res;
+}
+
+	/*Verifica se a invocação ocorreu com argumentos de versão*/
+int verificaArgs_callVersion(int argc, char* argv[]){
+	int res = 0;
+	if (argc==2 && (strcmp(argv[1],"--v")==0 || strcmp(argv[1],"--version")==0)){
+		printf("FlexLuthor version 3.2");
+		printf(KGRN " Kryptonite");
+		printf(KNRM "\nCreated by Duarte Duarte and Fábio Gomes\nProduct from BananaCorp®\n");
+		res=1;
+	}
+	return res;
+}
+
+	/*Verifica se a invocação ocorreu com argumentos de criação de ficheiro*/
+int verificaArgs_ArgumentosOut(int argc, char* argv[]){
+	int res = 0;
+	if (argc==2 || argc==4){
+		res=1;
+	}
+	return res;
 }
