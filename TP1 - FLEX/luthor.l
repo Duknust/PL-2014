@@ -196,7 +196,7 @@ FILE *latex_file=NULL;
 																 			}
 
 	/*começar tabela tabela*/
-<NORMAL,TABELA>\tabela\[[0-9]+\](e|c|d)\\									{BEGIN TABELA;
+<NORMAL,TABELA>\tabela[0-9]+(l|c|d)\\										{BEGIN TABELA;
 																			 estado=TABELA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
