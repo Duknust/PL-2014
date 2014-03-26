@@ -2,11 +2,18 @@
 \titulo\Este e o teste
 \autores\Todos menos o 14
 
+\fimdecapa\
+
 \sec1\Capitulo 1
-\sec2\1.1 O principio
-O bo tem mel par\footnote\o bo tem mel\fim\a me dominar assim no amor o bo tem mel!\nl\ NOVO PARAGROFO\nl\OOOO!\nl\
+\sec2\O principio 
+O bo tem mel para\footnote\o bo tem mel\fim\ me dominar assim no amor o bo tem mel!\nl\ NOVO PARAGROFO\nl\OOOO!\nl\
 
 \%\o grande comentario da actualidade\fim\
 
-\n\Preto \i\em italia\fim\\fim\ fixe
-
+\n\Preto \i\em italia\fim\\fim\ tipo \LaTeX\ em \vermelho\vermelhinho\fim\ no dia \data\.
+\nl\\nl\
+\tabela5c\
+\linha\1 & 2 & 3 & 4 & 5\
+\linha\6 & 7 & 8 & 9 &10\
+\linha\11&12 &13 &14 &15\
+\fim\
