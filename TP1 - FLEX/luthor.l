@@ -29,15 +29,17 @@ void printa(char * formato,char * texto);
 %}
 
 /*definicao de todos os estados possiveis*/
-/*   1      2        3         4          5        6       7     8      9    10     11     12   13    14   15     16   */
-%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA TABELA IMAGEM NIS FOOTNOTE COR LINHA LATEX HTML LEGENDA
+/*   1      2        3         4          5        6       7     8      9    10     11     12   13    14   15     16       17    */
+%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA_I TABELA IMAGEM NIS FOOTNOTE COR LINHA LATEX HTML LEGENDA LISTA_O
 
 
 %%
 	/* fim de tabs */
 <*>\\fim\\																	{ultimoEstado = estados[apontaEstados];
+																				printf("ultimo:%d",ultimoEstado);
 																		     if(apontaEstados>0) apontaEstados--;
-																				//printf("...%d..",estados[apontaEstados]);
+																				printf("...%d..\n",estados[apontaEstados]);
+																				
 																			 switch(ultimoEstado)
 																			 {
 																			 	case 2: 
@@ -55,7 +57,7 @@ void printa(char * formato,char * texto);
 																			 	case 6://verbatim
 																			 	printa("%s","}");																			 	break;
 																			 	case 7:
-																			 	printa("%s","</lista>");
+																			 	printa("%s","\\end{itemize}");
 																			 	break;
 																			 	case 8:
 																			 	printa("%s",(char*)fimtabelaL());
@@ -72,9 +74,16 @@ void printa(char * formato,char * texto);
 																			 	case 12://cor
 																			 	printa("%s","}");
 																			 	break;
+																			 	case 13://linha
+																			 	//printa("%s","\\hline");
+																			 	break;
 																				case 16:
 																			 	printa("%s","}");
 																			 	break;
+																			 	case 17:
+																			 	printa("%s","\\end{enumerate}");
+																			 	break;
+																			 	
 																			 	default:
 																			 	break;
 																			 }
@@ -92,26 +101,34 @@ void printa(char * formato,char * texto);
 	/*nivel de seccao (pode ser 1, 2 ou 3)*/
 <NORMAL>\\sec[1-3]\\.*\n													printa("%s",(char*)sectionL(tira_ns(yytext+6),yytext[4]));
 
-	/*lista ordenada*/
-<NORMAL>\\lo\\[^\\]*														printa("%s\n",(char*)yytext+4);
+	/*LISTA_I nao ordenada*/
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\\li\\[^\\]*		{BEGIN LISTA_I;
+																								 estado=LISTA_I;
+																								 apontaEstados++;
+																								 estados[apontaEstados]=estado;
+																								 printa("%s",(char*)liL());}
 
-	/*lista nao ordenada*/
-<NORMAL>\\li\\[^\\]*														printa("%s\n",(char*)yytext+4);
+	/*LISTA_O ordenada*/
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\\lo\\[^\\]*		{BEGIN LISTA_O;
+																								 estado=LISTA_O;
+																								 apontaEstados++;
+																								 estados[apontaEstados]=estado;
+																								 printa("%s",(char*)loL());}
 
 	/*novo item*/
-<NORMAL>\\item\\[^\\]*														printa("%s\n",(char*)yytext+4);
+<LISTA_I,LISTA_O>\\item\\.*\n															printa("%s",(char*)itemL(yytext+6));
 
 	/*apenas no LaTeX*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jl\\[^\\]*				printa("<justL>%s",(char*)yytext+4);
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\jl\\[^\\]*				printa("<justL>%s",(char*)yytext+4);
 
 	/*apenas no HTML*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jh\\[^\\]*	 			printa("<justH>%s",(char*)yytext+4);
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\jh\\[^\\]*	 			printa("<justH>%s",(char*)yytext+4);
 
 	/*quebra de linha*/
 <*>\\nl\\																	printa("%s",(char*)paragrafoL());
 	
 	/*negrito*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\n\\[^\\]*					{BEGIN NEGRITO;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\n\\[^\\]*					{BEGIN NEGRITO;
 																			 estado=NEGRITO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -119,7 +136,7 @@ void printa(char * formato,char * texto);
 																	 		}
 
 	/*italico*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\i\\[^\\]*					{BEGIN ITALICO;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\i\\[^\\]*					{BEGIN ITALICO;
 																			 estado=ITALICO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -127,7 +144,7 @@ void printa(char * formato,char * texto);
 																	 		}
 
 	/*sublinhado*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\s\\[^\\]*					{BEGIN SUBLINHADO;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\s\\[^\\]*					{BEGIN SUBLINHADO;
 																			 estado=SUBLINHADO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -135,7 +152,7 @@ void printa(char * formato,char * texto);
 																	 		}
 
 	/*combinação de negrito, italico e sublinhado*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\nis\\[^\\]*				{BEGIN NIS;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\nis\\[^\\]*				{BEGIN NIS;
 																			 estado=NIS;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -159,7 +176,7 @@ void printa(char * formato,char * texto);
 <*>\tab\																	printa("%s","\\vspace{10 mm}");
 
 	/*link*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\hlink\\				printa("%s","\\link");
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS>\\hlink\\				printa("%s","\\link");
 
 	/*data do dia*/
 <NORMAL>\\data\\															printa("%s","\\today");
@@ -176,18 +193,18 @@ void printa(char * formato,char * texto);
 
 
 	/*nota de rodape*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
 																			 estado=FOOTNOTE;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
 																	 		 printa("\\footnote{%s",(char*)yytext+10);
 																	 		}
 	/*cores do texto*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\(vermelho|verde|azul|amarelo|rosa)\\[^\\]*		{BEGIN COR;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS>\\(vermelho|verde|azul|amarelo|rosa)\\[^\\]*		{BEGIN COR;
 																									 	 estado=COR;
 																									 	 apontaEstados++;
 																									 	 estados[apontaEstados]=estado;
-																							 		 	 printa("\\textcolor{red}{%s",(char*)yytext+10);
+																							 		 	 printa("%s",(char*)corL(yytext+1));
 																							 			}
 
 	/*texto nao formatado*/
@@ -199,7 +216,7 @@ void printa(char * formato,char * texto);
 																 			}
 
 	/*começar tabela tabela*/
-<NORMAL,TABELA>\\tabela[0-9]+(l|c|r)\\									{BEGIN TABELA;
+<NORMAL,TABELA>\\tabela[0-9]+(l|c|r)(\,t\:[0-9.]+)?(\,l\:[^\\]+)\\			{BEGIN TABELA;
 																			 estado=TABELA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -207,7 +224,7 @@ void printa(char * formato,char * texto);
 																			}
 
 	/*inserir linha da tabela*/
-<TABELA,LINHA>\\linha\\[^\\]*\\														{BEGIN LINHA;
+<TABELA,LINHA>\\linha\\[^\\]*													{BEGIN LINHA;
 																			 estado=LINHA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -224,7 +241,7 @@ void printa(char * formato,char * texto);
 																			}
 
 	/*omissao da quebra*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,VERBATIM,LISTA,TABELA,IMAGEM,NIS,FOOTNOTE,COR,LINHA,LATEX,HTML,LEGENDA>\n 			;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,VERBATIM,LISTA_I,LISTA_O,TABELA,IMAGEM,NIS,FOOTNOTE,COR,LINHA,LATEX,HTML,LEGENDA>\n 			;
 	
 	/*aparece apenas no HTML*/
 <*>\\sh\\[^\\]*															{BEGIN HTML;

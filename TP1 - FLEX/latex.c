@@ -112,19 +112,84 @@ char * legendaL(char * texto){
 
 
 char * tabelaL(char * texto){
-	char *temp = (char *) malloc ((50) * sizeof (char));
-	strcat(temp,"\\begin{table}\n\\begin{tabular}{");
+
+//	printf("_%s_\n",texto);
+	
+	// 5c,t:50,l:bo tem mel na tabelaz\
+
+	int i,textolen = strlen(texto),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
+	
+	
+	texto[strlen(texto)-1]='\0';
+	int ncol = atoi(texto);
+
+	
+	
+	char align;
+	encontrado=0;
+	for(i=1;i<textolen,encontrado==0;i++)
+		if(texto[i]==',')
+			{align=(texto[i-1]);encontrado=1;}
+	
+	
+	char *temp = (char *) malloc ((200+strlen(texto)) * sizeof (char));
+	strcat(temp,"\\begin{table}[!h]\n");
+	
+	
+	char ratio[10];
+	tlen = strlen(&texto[i]);
+	char * len = &texto[i+2];
+	
+	encontrado=0;
+	for(i=0;i<tlen,encontrado==0;i++)
+		if(len[i]!=',')
+			ratio[i]=len[i];
+		else
+			encontrado=1;
+	ratio[i-1]='\0';
+	
+	
+	//printf("temp:%s...\n",temp);
+	
+	
+	
+	encontrado=0;
+	for(i=1;i<textolen,encontrado==0;i++)
+		if(texto[i]=='l')
+			if(texto[i+1]==':')
+				{offsetlegenda=i+1;encontrado=1;}
+	
+	
+	char * legenda = &texto[offsetlegenda+1];
+	
+	strcat(temp,"\\caption{");
+	strcat(temp,legenda);
+	strcat(temp,"}\n");
+	
+	
+			
+	strcat(temp,"\\scalebox{");
+	strcat(temp,ratio);
+	strcat(temp,"}\n");
+	
+	
+	
+	
+	
+	
+	strcat(temp,"\n\\begin{tabular}{");
+	
+	
+	
+	//\\begin{tabular}{");
 	char * numero = strdup(texto);
-	numero[strlen(texto)-2]='\0';
-	int tamanho=strlen("\\begin{table}\n\\begin{tabular}{");
-	int ncol = atoi(numero);
-
-	//printf("temp=%s...",texto);
-
-	int i;
-	for(i = 0;i<2*ncol;i+=2)
-		{temp[i+tamanho]=texto[strlen(texto)-2];
-		 if(i+2!=2*ncol)temp[i+tamanho+1]='|';}
+	int tamanho = strlen(temp);
+	temp[tamanho]='|';
+	for(i = 1;i<4*ncol;i+=4)
+		{temp[i+tamanho]=' ';
+		 temp[i+tamanho+1]=align;
+		 temp[i+tamanho+2]=' ';
+		 temp[i+tamanho+3]='|';}
 
 	strcat(temp,"}\n\\hline\n");
 
@@ -146,24 +211,59 @@ char * tabelalinhaL(char * texto){
 }
 
 char * fimtabelaL(){
-	return "\\end{table}\n";
+	return "\\end{tabular}\n\\end{table}\n";
 }
 
-/*\begin{table}
- 	\begin{tabular}{lll}   
-    \hline
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    \end{tabular}
-	\end{table}*/
+
+
+char * itemL(char * texto){
+	//printf("_%s_%d_\n",texto,strlen(texto));
+	texto[strlen(texto)-2]='\0';
+	char *temp = (char *) malloc ((8+strlen(texto)) * sizeof (char));
+	
+	sprintf(temp,"\\item %s\n",texto);
+	
+	return temp;
+}
+
+
+char * liL(){	
+	return "\\begin{itemize}\n";
+}
+
+char * loL(){	
+	return "\\begin{enumerate}\n";
+}
 
 
 
-
-
-
+char * corL(char * texto){
+	//printf("_%s_%d_\n",texto,strlen(texto));
+//	texto[strlen(texto)-2]='\0';
+	
+	int encontrado=0,i;
+	for(i=0;i<strlen(texto),encontrado==0;i++)
+		if(texto[i]=='\\')
+			encontrado=1;
+	
+	char *cor = strdup(texto);
+	strcat(cor,texto);
+	cor[i-1]='\0';
+	//printf("cor:%s_\n",cor);
+	
+	texto+=i;
+	
+	char *temp = (char *) malloc ((15+i) * sizeof (char));
+	
+	
+	if(strcmp(cor,"vermelho")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","red",texto);
+	
+	
+	//printf("temp:%s_\n",temp);
+	
+	return temp;
+}
 
 
 

@@ -12,8 +12,32 @@ O bo tem mel para\footnote\o bo tem mel\fim\ me dominar assim no amor o bo tem m
 
 \n\Preto \i\em italia\fim\\fim\ tipo \LaTeX\ em \vermelho\vermelhinho\fim\ no dia \data\.
 \nl\\nl\
-\tabela5c\
-\linha\1 & 2 & 3 & 4 & 5\
-\linha\6 & 7 & 8 & 9 &10\
-\linha\11&12 &13 &14 &15\
+\tabela5c,t:3.5,l:bo tem mel na tabelaz\
+\linha\1 & 2 & 3 & 4 & 5\fim\
+\linha\6 & 7 & 8 & 9 &10\fim\
+\linha\11&12 &13 &14 &15\fim\
 \fim\
+
+
+normal
+\li\
+\item\iiiii
+\item\ooooo
+\item\mmmmm
+\li\
+
+\item\\n\iiiii\fim\
+\item\\i\ooooo\fim\
+\item\ \n\mmmmm\fim\
+\fim\
+\fim\
+
+ordenada
+
+\lo\
+\item\iiiii
+\item\ooooo
+\item\mmmmm
+\fim\
+
+

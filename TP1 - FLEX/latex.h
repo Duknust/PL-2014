@@ -19,5 +19,8 @@ char * legendaL(char * texto);
 char * tabelaL(char * texto);
 char * tabelalinhaL(char * texto);
 char * fimtabelaL();
-
+char * itemL(char * texto);
+char * loL();
+char * liL();
+char * corL(char * texto);
 
