@@ -1,5 +1,4 @@
 %{
-
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -7,6 +6,7 @@
 #include <string.h>
 #define KGRN  "\x1B[32m"
 #define KNRM  "\x1B[0m"
+
 
 /*stack que guarda os estados*/
 int estado=1;
@@ -24,10 +24,12 @@ int _versionORhelp=0;
 FILE *html_file=NULL;
 FILE *latex_file=NULL;
 
+void printa(char * formato,char * texto);
+
 %}
 
 /*definicao de todos os estados possiveis*/
-/*   1      2        3         4          5        6       7     8      9    10     11     12   13    14   15     16   */
+/*   1      2       3         4          5        6       7     8       9     10     11    12  13    14   15     16   */
 %x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA TABELA IMAGEM NIS FOOTNOTE COR LINHA LATEX HTML LEGENDA
 
 
@@ -35,42 +37,43 @@ FILE *latex_file=NULL;
 	/* fim de tabs */
 <*>\\fim\\																	{ultimoEstado = estados[apontaEstados];
 																		     if(apontaEstados>0) apontaEstados--;
-																		     
+																				//printf("...%d..",estados[apontaEstados]);
 																			 switch(ultimoEstado)
 																			 {
 																			 	case 2: 
-																			 	printf("}");
-																			 	break;
+																			 	printa("%s","}");
+																				break;
 																			 	case 3:
-																			 	printf("}");
+																			 	printa("%s","}");
 																			 	break;
 																			 	case 4:
-																			 	printf("}");
+																			 	printa("%s","}");
 																			 	break;
 																			 	case 5:
-																			 	printf("\\end{comment}\n");
+																			 	printa("%s","\\end{comment}\n");
 																			 	break;
 																			 	case 6://verbatim
-																			 	printf("}");																			 	break;
+																			 	printa("%s","}");																			 	break;
 																			 	case 7:
-																			 	printf("</lista>");
+																			 	printa("%s","</lista>");
 																			 	break;
 																			 	case 8:
-																			 	printf("</table>");
+																			 	printa("%s",(char*)fimtabelaL());
 																			 	break;
 																			 	case 9:
-																			 	printf("</img>");
+																			 	printa("%s","</img>");
 																			 	break;
 																			 	case 10:
-																			 	printf("}}}");
+																			 	printa("%s","}}}");
 																			 	break;
 																			 	case 11:
-																			 	printf("}");//footnote>
+																			 	printa("%s","}");//footnote>
 																			 	break;
 																			 	case 12://cor
-																			 	printf("}");
+																			 	printa("%s","}");
+																			 	break;
 																				case 16:
-																			 	printf("</legenda>");
+																			 	printa("%s","}");
 																			 	break;
 																			 	default:
 																			 	break;
@@ -81,38 +84,38 @@ FILE *latex_file=NULL;
 																			}
 
 	/*titulo*/
-<NORMAL>\\titulo\\.*\n														tituloL(tira_ns(yytext+8));
+<NORMAL>\\titulo\\.*\n														printa("%s",(char*)tituloL(tira_ns(yytext+8)));
 
 	/*autores*/
-<NORMAL>\\autores\\.*\n														autoresL(tira_ns(yytext+9));
+<NORMAL>\\autores\\.*\n														printa("%s",(char*)autoresL(tira_ns(yytext+9)));
 
 	/*nivel de seccao (pode ser 1, 2 ou 3)*/
-<NORMAL>\\sec[1-3]\\.*\n													sectionL(tira_ns(yytext+6),yytext[4]);
+<NORMAL>\\sec[1-3]\\.*\n													printa("%s",(char*)sectionL(tira_ns(yytext+6),yytext[4]));
 
 	/*lista ordenada*/
-<NORMAL>\\lo\\[^\\]*														printf("%s\n",yytext+4);
+<NORMAL>\\lo\\[^\\]*														printa("%s\n",(char*)yytext+4);
 
 	/*lista nao ordenada*/
-<NORMAL>\\li\\[^\\]*														printf("%s\n",yytext+4);
+<NORMAL>\\li\\[^\\]*														printa("%s\n",(char*)yytext+4);
 
 	/*novo item*/
-<NORMAL>\\item\\[^\\]*														printf("%s\n",yytext+4);
+<NORMAL>\\item\\[^\\]*														printa("%s\n",(char*)yytext+4);
 
 	/*apenas no LaTeX*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jl\\[^\\]*				printf("<justL>%s",yytext+4);
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jl\\[^\\]*				printa("<justL>%s",(char*)yytext+4);
 
 	/*apenas no HTML*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jh\\[^\\]*	 			printf("<justH>%s",yytext+4);
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\jh\\[^\\]*	 			printa("<justH>%s",(char*)yytext+4);
 
 	/*quebra de linha*/
-<*>\\nl\\																	paragrafoL();
+<*>\\nl\\																	printa("%s",(char*)paragrafoL());
 	
 	/*negrito*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\n\\[^\\]*					{BEGIN NEGRITO;
 																			 estado=NEGRITO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 negritoL(yytext+3);
+																	 		 printa("%s",(char*)negritoL(yytext+3));
 																	 		}
 
 	/*italico*/
@@ -120,7 +123,7 @@ FILE *latex_file=NULL;
 																			 estado=ITALICO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 italicoL(yytext+3);
+																	 		 printa("%s",(char*)italicoL(yytext+3));
 																	 		}
 
 	/*sublinhado*/
@@ -128,16 +131,16 @@ FILE *latex_file=NULL;
 																			 estado=SUBLINHADO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 sublinhadoL(yytext+3);
+																	 		 printa("%s",(char*)sublinhadoL(yytext+3));
 																	 		}
 
-	/*combinação de negrito, italico e sublinhado*/
+	/*combinaÃ§Ã£o de negrito, italico e sublinhado*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA>\\nis\\[^\\]*				{BEGIN NIS;
 																			 estado=NIS;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 if(_modoLatex) nisL(yytext+5);
-																	 	//	 if(_modoHTML) nisH(yytext+5);
+																	 		 if(_modoLatex) printa("%s",(char*)nisL(yytext+5));
+																	 		 //if(_modoHTML) nisH(yytext+5);
 																	 		 if(_modoEcran) printf("nis{%s}\n", yytext+5);
 																	 		}
 
@@ -146,45 +149,46 @@ FILE *latex_file=NULL;
 																			 estado=COMENTARIO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("\\begin{comment}%s",yytext+3);
+																	 		 printa("\\begin{comment}%s",(char*)yytext+3);
 																	 		}
 
 	/*simbolo do latex*/
-<*>\LaTeX\																	printf("\\LaTeX");
+<*>\LaTeX\																	printa("%s","\\LaTeX");
 
 	/*tab*/
-<*>\tab\																	printf("\\vspace{10 mm}");
+<*>\tab\																	printa("%s","\\vspace{10 mm}");
 
 	/*link*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\hlink\\				printf("\\link");
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\hlink\\				printa("%s","\\link");
 
 	/*data do dia*/
-<NORMAL>\\data\\															printf("\\today");
+<NORMAL>\\data\\															printa("%s","\\today");
 
 	/*fim de capa*/
-<NORMAL>\\fimdecapa\\														{fimdecapaL();
-																			 newpageL();
+<NORMAL>\\fimdecapa\\														{printa("%s",(char*)fimdecapaL());
+																			 printa("%s",(char*)newpageL());
 																			}
-
 	/*indice*/
-<NORMAL>\\indice\\															printf("\\tableofcontents\n");
+<NORMAL>\\indice\\															printa("%s","\\tableofcontents\n");
 
 	/*indice de imagens*/
-<NORMAL>\\indiceimg\\														printf("\\listoffigures\n");
+<NORMAL>\\indiceimg\\														printa("%s","\\listoffigures\n");
+
 
 	/*nota de rodape*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
 																			 estado=FOOTNOTE;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printf("\\footnote{%s",yytext+10);
+																	 		 printa("\\footnote{%s",(char*)yytext+10);
 																	 		}
 	/*cores do texto*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA,TABELA,NIS>\\(vermelho|verde|azul|amarelo|rosa)\\[^\\]*		{BEGIN COR;
 																									 	 estado=COR;
 																									 	 apontaEstados++;
 																									 	 estados[apontaEstados]=estado;
-																							 		 	 printf("\\textcolor{red}{%s",yytext+10);
+																									 	 if()
+																							 		 	 printa("\\textcolor{red}{%s",(char*)yytext+10);
 																							 			}
 
 	/*texto nao formatado*/
@@ -192,75 +196,166 @@ FILE *latex_file=NULL;
 																		 	 estado=VERBATIM;
 																		 	 apontaEstados++;
 																		 	 estados[apontaEstados]=estado;
-																 		 	 printf("\\begin{verbatim}%s",yytext+4);
+																 		 	 printa("\\begin{verbatim}%s",(char*)yytext+4);
 																 			}
 
-	/*começar tabela tabela*/
-<NORMAL,TABELA>\tabela[0-9]+(l|c|d)\\										{BEGIN TABELA;
+	/*comeÃ§ar tabela tabela*/
+<NORMAL,TABELA>\\tabela[0-9]+(l|c|r)\\									{BEGIN TABELA;
 																			 estado=TABELA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																			 printf("\\begin{table} \begin{tabular}{lll}%s\n",yytext+8);
+																			 printa("%s",(char*)tabelaL(yytext+7));
 																			}
 
 	/*inserir linha da tabela*/
-<TABELA>\linha\[^\\]*														{BEGIN LINHA;
+<TABELA,LINHA>\\linha\\[^\\]*\\														{BEGIN LINHA;
 																			 estado=LINHA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																			 printf("<linha>%s",yytext+7);
+																			 printa("%s",(char*)tabelalinhaL(yytext+7));
+																			 //printf("....");
 																			}																											
- 	/*\begin{table}
- 	\begin{tabular}{lll}   
-    \hline
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    ~ & ~ & ~ \\
-    \end{tabular}
-	\end{table}*/
-
-
-
-<COMENTARIO>\\nf															printf("%s",yytext);
-
-<*>\legenda\[^\\]*															{BEGIN LEGENDA;
+ 	
+<COMENTARIO>\nf													printa("%s",yytext);
+<*>\\legenda\\[^\\]*															{BEGIN LEGENDA;
 																			 estado=LEGENDA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																			 printf("<legenda>%s",yytext+9);
+																			 printa("%s",(char*)legendaL(yytext+9));
 																			}
 
 	/*omissao da quebra*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,VERBATIM,LISTA,TABELA,IMAGEM,NIS,FOOTNOTE,COR,LINHA,LATEX,HTML,LEGENDA>\n 			;
 	
 	/*aparece apenas no HTML*/
-<*>\sh\[^\\]*															{BEGIN HTML;
+<*>\\sh\\[^\\]*															{BEGIN HTML;
 																		 estado=HTML;
 																		 apontaEstados++;
 																		 estados[apontaEstados]=estado;
-																		 printf("<linha>%s",yytext+7);
+																		 printa("<linha>%s",yytext+7);
 																		}	
 	/*aparece apenas no LaTeX*/
-<*>\sl\[^\\]*															{BEGIN LATEX;
+<*>\\sl\\[^\\]*															{BEGIN LATEX;
 																		 estado=LATEX;
 																		 apontaEstados++;
 																		 estados[apontaEstados]=estado;
-																		 printf("<linha>%s",yytext+7);
+																		 printa("<linha>%s",yytext+7);
 																		}	
 
-	/*inserir imagem (path)*/
-<*>\\imagem:[a-zA-Z0-9]*\\												{printf("IMAGEM!!!");}
-
-	/*
-	\begin{figure}[h] 
-	\center 
-	\includegraphics[width=10cm]{imagens/o... 
-	\label{omeubrowser} 
-	\caption{O meu browser} 
-	\end{figure}*/
-
+<*>.																	printa("%s",yytext);
 %%
+
+
+
+
+/*
+
+
+int main(int argc, char* argv[]){
+	
+//iniciar o lex no estado 1, estado NORMAL
+estados[0]=1;
+BEGIN NORMAL;
+	
+//Reconhecedor dos padroes suportados
+	if(argc<2 || argc >4 || argc==3){
+		printf("PadrÃ£o desconhecido:\n\nArgumentos vÃ¡lidos:\n");
+		printf(" lexLuthor -l -o nome\n");
+		printf(" lexLuthor -h -o nome\n");
+		printf(" lexLuthor -l\n");
+		printf(" lexLuthor -h\n");
+		printf(" lexLuthor -lh -o nome\n");
+		printf(" lexLuthor -hl -o nome\n");
+		printf(" lexLuthor -lh\n");
+		printf(" lexLuthor -hl\n");
+	} else {
+		if(argc==4){//tem 4 args ou seja tem output
+		
+			if(strcmp(argv[2],"-o"))
+				{
+					printf("Terceiro parÃ¢metro nÃ£o Ã© -o\n");
+					return -1;
+				}
+			char * nome1 = strdup(argv[3]);
+			char * nome2 = strdup(argv[3]);
+			char * fileout1=strdup(strcat(nome1,".tex"));
+			char * fileout2=strdup(strcat(nome2,".html"));
+			
+			if(!strcmp(argv[1],"-l"))
+			{
+				_modoLatex=1;
+				latex_file = fopen(fileout1, "w+");
+				if(latex_file < 0)    return 1;
+				
+				initLaTeX();
+				
+				
+			} else if(!strcmp(argv[1],"-h"))
+			{
+				_modoHTML=1;
+				html_file = fopen(fileout2, "w+");
+				if(html_file < 0)    return 1;
+				
+				//initHTML();
+				
+			} else if(!strcmp(argv[1],"-lh"))
+			{
+				_modoHTML=1;
+				_modoLatex=1;
+				latex_file = fopen(fileout1, "w+");
+				html_file = fopen(fileout2, "w+");
+			
+			
+				if(latex_file < 0 || html_file < 0)    return 1;
+				
+				initLaTeX();
+				//initHTML();
+				
+			}
+			
+//			if(dup2(file,1) < 0)    return 1;
+		}
+
+
+		else return -1;//nao Ã© vÃ¡lido -l ou -h
+
+//execucao do lex
+		yylex();
+
+
+		if(_modoLatex && !_modoEcran)
+			fprintf(latex_file,"%s",fimL());
+		if(_modoHTML && !_modoEcran)
+			fprintf(html_file,"%s",fimL());
+		if(_modoEcran){
+			if(_modoLatex)
+				fprintf(latex_file,"%s",fimL());
+			else if(_modoHTML)
+				fprintf(html_file,"%s",fimL());
+
+		}
+	}
+
+	return 0;
+}
+
+
+
+*/
+
+
+
+void printa(char * formato,char * texto){
+	
+	if(_modoHTML==1)
+		fprintf(html_file,formato,texto);
+			
+	if(_modoLatex==1)
+		fprintf(latex_file,formato,texto);
+			
+}
+
+
 
 int main(int argc, char* argv[]){
 	
@@ -277,48 +372,58 @@ BEGIN NORMAL;
 		
 			if(strcmp(argv[2],"-o"))
 				{
-					printf("Terceiro parâmetro não é -o\n");
+					printf("Terceiro parÃƒÂ¢metro nao ÃƒÂ© -o\n");
 					return -1;
 				}
-			char * fileout=strdup(argv[3]);
-			int file = open(fileout, O_WRONLY | O_CREAT, 0777);
-			if(file < 0)	return 1;
-		 
-			if(dup2(file,1) < 0)	return 1;
 		}
+		
+		char * nome1 = strdup(argv[3]);
+		char * nome2 = strdup(argv[3]);
+		char * fileout1=strdup(strcat(nome1,".tex"));
+		char * fileout2=strdup(strcat(nome2,".html"));
 
 		if(strcmp(argv[1],"-h")==0)
 		{
-			_modoHTML=1; printf("h:%d",_modoHTML);
-			printf("____-HTML-____\n");
+			_modoHTML=1;
+			html_file = fopen(fileout2, "w+");
+			if(html_file < 0)    return 1;
+			
+			//initHTML();
 		}
 
 		else if(strcmp(argv[1],"-l")==0){
 			_modoLatex=1;
-			initLaTeX();
+			latex_file = fopen(fileout1, "w+");
+			if(latex_file < 0)    return 1;
+			
+			initLaTeX(latex_file);
 		}
 		else if(strcmp(argv[1],"-lh")==0 || strcmp(argv[1],"-hl")==0){
 			_modoHTML=1;
 			_modoLatex=1;
-			printf("____-LaTeX e HTML-____\n");
+			latex_file = fopen(fileout1, "w+");
+			html_file = fopen(fileout2, "w+");
 		}
 
 	/*execucao do lex*/
 		if(_modoLatex || _modoHTML || _modoEcran)
 			yylex();
 
-	/*so coloca estiver em modo de latex*/
+
+/*so coloca estiver em modo de latex*/
 		if(_modoLatex && !_modoEcran)
-			fimL();
-		if(_modoHTML && !_modoEcran);
-			//fimH();
+			fprintf(latex_file,"%s",(char*)fimL());
+		if(_modoHTML && !_modoEcran)
+			;//fprintf(html_file,"%s",fimH());
 		if(_modoEcran){
 			if(_modoLatex)
-				fimL();
-			else if(_modoHTML)
-				printf("fimH");
-				//fimH();
+				printf("%s",(char *)fimL());
+				
+			else if(_modoHTML==1)
+				;//printf("%s",fimH());
+				
 		}
+	
 	} 
 
 	if (_modoHTML==0 && _modoLatex==0 && _modoEcran==0 && _versionORhelp==0){
@@ -330,7 +435,7 @@ BEGIN NORMAL;
 
 
 
-	/*Verifica se a invocação ocorreu com argumentos de help*/
+	/*Verifica se a invocacao ocorreu com argumentos de help*/
 int verificaArgs_callHelp(int argc, char* argv[]){
 	int res = 0;
 	if (argc==2 && (strcmp(argv[1],"--h")==0 || strcmp(argv[1],"--help")==0)){
@@ -352,19 +457,19 @@ int verificaArgs_callHelp(int argc, char* argv[]){
 	return res;
 }
 
-	/*Verifica se a invocação ocorreu com argumentos de versão*/
+	/*Verifica se a invocacao ocorreu com argumentos de versao*/
 int verificaArgs_callVersion(int argc, char* argv[]){
 	int res = 0;
 	if (argc==2 && (strcmp(argv[1],"--v")==0 || strcmp(argv[1],"--version")==0)){
 		printf("FlexLuthor version 3.2");
 		printf(KGRN " Kryptonite");
-		printf(KNRM "\nCreated by Duarte Duarte and Fábio Gomes\nProduct from BananaCorp®\n");
+		printf(KNRM "\nCreated by Duarte Duarte and Fabio Gomes\nProduct from BananaCorpÂ®\n");
 		res=1;
 	}
 	return res;
 }
 
-	/*Verifica se a invocação ocorreu com argumentos de criação de ficheiro*/
+	/*Verifica se a invocacao ocorreu com argumentos de criacao de ficheiro*/
 int verificaArgs_ArgumentosOut(int argc, char* argv[]){
 	int res = 0;
 	if (argc==2 || argc==4){

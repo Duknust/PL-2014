@@ -5,13 +5,13 @@ x\data\				data de hoje
 x\sec[1-6]\			secção em que o INT é o nivel de 1 a 6
 —-\lo\				lista ordenada
 --\li\				lista de items
---\item\				item da lista
+--\item\			item da lista
 \hlink\				hiperligação
 \figura\			modo de imagem
-\imagem>NOME\		inserir uma imagem
+\imagem>NOME\			inserir uma imagem
 \legenda\			legenda da imagem
 \size\				tamanho da imagem (em escala)
-\tabela>[lcr]\		criar tabela em que o L alinha à esquerda, o C ao centro e o R à direita
+\tabela>[lcr]\			criar tabela em que o L alinha à esquerda, o C ao centro e o R à direita
 x\nl\				quebra linha
 x\LaTeX\				simbolo do latex em LaTeX (so funciona em latex)
 x\%\					comentario
@@ -49,7 +49,7 @@ MATRIZ
 OBRIGATORIO A CENA DE POR SO EM LATEX E A CENA DE POR SO EM HTML
 
 
-entradas de um dicionário
+entradas de um dicionário ????????????????
 
 inclusão de imagens (permitir associar à imagem uma legenda e alguns atributos:centrada, largura máxima, ...);
 
@@ -59,4 +59,7 @@ todos os outros que achar necessário ou a sua imaginação vislumbrar (pode,
 
 
 
+<NORMAL,TABELA>\tabela[0-9]+(l|c|r)(t\:[0-9]+)?(l\:.*)?\\				
+
+caso de legenda e de tamanho
 
