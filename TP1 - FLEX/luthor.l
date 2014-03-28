@@ -128,7 +128,7 @@ void printa(char * formato,char * texto);
 <*>\\nl\\																	printa("%s",(char*)paragrafoL());
 	
 	/*negrito*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\n\\[^\\]*					{BEGIN NEGRITO;
+<*>\\n\\[^\\]*					{BEGIN NEGRITO;
 																			 estado=NEGRITO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
