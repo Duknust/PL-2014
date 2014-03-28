@@ -10,10 +10,26 @@ O bo tem mel para\footnote\o bo tem mel\fim\ me dominar assim no amor o bo tem m
 
 \%\o grande comentario da actualidade\fim\
 
-\n\Preto \i\em italia\fim\\fim\ tipo \LaTeX\ em \vermelho\vermelhinho\fim\ no dia \data\.
-\nl\\nl\
-\tabela5c\
-\linha\1 & 2 & 3 & 4 & 5\
-\linha\6 & 7 & 8 & 9 &10\
-\linha\11&12 &13 &14 &15\
+
+normal
+\li\
+\item\iiiii\fim\
+\item\ooooo\fim\
+\item\mmmmm\fim\
+\li\
+\item\\n\iiiii\fim\\fim\
+\item\\i\ooooo\fim\\fim\
+\item\\n\mmmmm\fim\\fim\
 \fim\
+\fim\
+
+ordenada
+
+\lo\
+\item\iiiii\fim\
+\item\ooooo\fim\
+\item\mmmmm\fim\
+\fim\
+
+
+

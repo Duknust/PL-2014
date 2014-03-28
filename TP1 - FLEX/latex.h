@@ -14,8 +14,13 @@ char * sublinhadoL(char * texto);
 char * nisL(char * texto);
 char * sectionL(char * texto,char nivel);
 char * fimL();
-char * tira_ns(char * texto);
+char *tira_ns(char * texto);
 char * legendaL(char * texto);
 char * tabelaL(char * texto);
 char * tabelalinhaL(char * texto);
 char * fimtabelaL();
+char * itemL(char * texto);
+char * loL();
+char * liL();
+char * corL(char * texto);
+
