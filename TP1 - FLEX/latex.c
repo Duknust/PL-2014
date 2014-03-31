@@ -98,11 +98,6 @@ char * fimL(){
 	return "\\end{document}\n";
 }
 
-char* tira_ns(char * texto){
-	
-	texto[strlen(texto)-2]='\0';
-	return texto;
-}
 
 char * legendaL(char * texto){
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
@@ -137,9 +132,16 @@ char * imagemL(char * texto){
 	strcat(temp,"\\centering\n");
 	
 	
+	texto++;
+	
 	char ratio[10];
-	tlen = strlen(&texto[i]);
-	char * len = &texto[i+2];
+	tlen = strlen(texto);
+	char * len = texto;
+	
+	
+	//printf("texto=%s_\n",texto);
+
+	//printf("len=%s_\n",len);
 	
 	encontrado=0;
 	for(i=0;i<tlen && encontrado==0;i++)
@@ -148,6 +150,12 @@ char * imagemL(char * texto){
 		else
 			encontrado=1;
 	ratio[i-1]='\0';
+	
+	
+	//printf("ratio=%s_\n",ratio);
+	
+	
+	
 	
 	char * pathimg;
 	
@@ -162,16 +170,16 @@ char * imagemL(char * texto){
 
 	char * legenda = &texto[offsetlegenda+1];
 
-	strcat(temp,"\\includegraphics[width=3.5in] {");
+	strcat(temp,"\\includegraphics[scale=");
+	strcat(temp,ratio);
+	strcat(temp,"]{");
 	strcat(temp,pathimg);
 	strcat(temp,"}\n");	
 	strcat(temp,"\\caption{");
 	strcat(temp,legenda);
 	strcat(temp,"}\n");
 	
-	//strcat(temp,"\\scalebox{");
-	//strcat(temp,ratio);
-	//strcat(temp,"}\n");
+	
 
 
 
@@ -213,8 +221,6 @@ char * tabelaL(char * texto){
 			encontrado=1;
 	ratio[i-1]='\0';
 	
-	
-	//printf("temp:%s...\n",temp);
 	
 	
 	

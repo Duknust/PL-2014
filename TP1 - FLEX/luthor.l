@@ -5,10 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "latex.h"
+#include "html.h"
 
 #define KGRN  "\x1B[32m"
 #define KNRM  "\x1B[0m"
-#define KNEG  "\033[1;30m"  
+#define KNEG  "\033[1;30m"  
 
 
 /*stack que guarda os estados*/
@@ -29,6 +30,9 @@ FILE *latex_file=NULL;
 
 void printa(char * formato,char * texto);
 
+char *tira_ns(char * texto);
+
+
 %}
 
 /*definicao de todos os estados possiveis*/
@@ -39,9 +43,9 @@ void printa(char * formato,char * texto);
 %%
 	/* fim de tabs */
 <*>\\fim\\																	{ultimoEstado = estados[apontaEstados];
-																				printf("ultimo:%d",ultimoEstado);
+																				//printf("ultimo:%d",ultimoEstado);
 																		     if(apontaEstados>0) apontaEstados--;
-																				printf("...%d..\n",estados[apontaEstados]);
+																				//printf("...%d..\n",estados[apontaEstados]);
 																				
 																			 switch(ultimoEstado)
 																			 {
@@ -98,13 +102,16 @@ void printa(char * formato,char * texto);
 																			}
 
 	/*titulo*/
-<NORMAL>\\titulo\\.*\n														printa("%s",(char*)tituloL(tira_ns(yytext+8)));
+<NORMAL>\\titulo\\.*\n														{if(_modoLatex)printa("%s",(char*)tituloL(tira_ns(yytext+8)));
+																			 if(_modoHTML)printa("%s",(char*)tituloH(tira_ns(yytext+8)));}
 
 	/*autores*/
-<NORMAL>\\autores\\.*\n														printa("%s",(char*)autoresL(tira_ns(yytext+9)));
+<NORMAL>\\autores\\.*\n														{if(_modoLatex)printa("%s",(char*)autoresL(tira_ns(yytext+9)));
+																			 if(_modoHTML)printa("%s",(char*)autoresH(tira_ns(yytext+9)));}
 
 	/*nivel de seccao (pode ser 1, 2 ou 3)*/
-<NORMAL>\\sec[1-3]\\.*\n													printa("%s",(char*)sectionL(tira_ns(yytext+6),yytext[4]));
+<NORMAL>\\sec[1-3]\\.*\n													{if(_modoLatex)printa("%s",(char*)sectionL(tira_ns(yytext+6),yytext[4]));
+																			 if(_modoHTML)printa("%s",(char*)sectionH(tira_ns(yytext+6),yytext[4]));}
 
 	/*LISTA_I nao ordenada*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\\li\\[^\\]*		{BEGIN LISTA_I;
@@ -140,7 +147,8 @@ void printa(char * formato,char * texto);
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA>\\jh\\[^\\]*	 			printa("<justH>%s",(char*)yytext+4);
 
 	/*quebra de linha*/
-<*>\\nl\\																	printa("%s",(char*)paragrafoL());
+<*>\\nl\\																	{if(_modoLatex)printa("%s",(char*)paragrafoL());
+																			 if(_modoHTML)printa("%s",(char*)paragrafoH());}
 	
 	/*negrito*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM>\\n\\[^\\]*					{BEGIN NEGRITO;
@@ -197,9 +205,10 @@ void printa(char * formato,char * texto);
 <NORMAL>\\data\\															printa("%s","\\today");
 
 	/*fim de capa*/
-<NORMAL>\\fimdecapa\\														{printa("%s",(char*)fimdecapaL());
-																			 printa("%s",(char*)newpageL());
-																			}
+<NORMAL>\\fimdecapa\\														{if(_modoLatex)
+																			 {printa("%s",(char*)fimdecapaL());
+																			  printa("%s",(char*)newpageL());}}
+																			
 	/*indice*/
 <NORMAL>\\indice\\															printa("%s","\\tableofcontents\n");
 
@@ -437,6 +446,19 @@ int verificaArgs_callVersion(int argc, char* argv[]){
 	return res;
 }
 
+
+
+
+
+
+char* tira_ns(char * texto){
+	
+	texto[strlen(texto)-2]='\0';
+	return texto;
+}
+
+
+
 int main(int argc, char* argv[]){
 	
 	/*iniciar o lex no estado 1, estado NORMAL*/	
@@ -459,8 +481,26 @@ BEGIN NORMAL;
 		
 		char * nome1 = strdup(argv[3]);
 		char * nome2 = strdup(argv[3]);
-		char * fileout1=strdup(strcat(nome1,".tex"));
-		char * fileout2=strdup(strcat(nome2,".html"));
+		
+		mkdir("HTML",S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		mkdir("LaTeX",S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		
+		
+		
+		char * fileout1=strdup("LaTeX/");
+		fileout1=strdup(strcat(fileout1,nome1));
+		fileout1 =strdup(strcat(fileout1,".tex"));
+		
+		fileout1[strlen(fileout1)-1]='\0';
+		
+		char * fileout2;
+		fileout2=strdup("HTML/");
+		fileout2=strdup(strcat(fileout2,nome2));
+		fileout2=strdup(strcat(fileout2,".html"));
+
+		fileout2[strlen(fileout2)-1]='\0';
+
+		
 
 		if(strcmp(argv[1],"-h")==0)
 		{
@@ -468,7 +508,7 @@ BEGIN NORMAL;
 			html_file = fopen(fileout2, "w+");
 			if(html_file < 0)    return 1;
 			
-			//initHTML();
+			initHTML(html_file);
 		}
 
 		else if(strcmp(argv[1],"-l")==0){
@@ -517,13 +557,13 @@ BEGIN NORMAL;
 		if(_modoLatex && !_modoEcran)
 			fprintf(latex_file,"%s",(char*)fimL());
 		if(_modoHTML && !_modoEcran)
-			;//fprintf(html_file,"%s",fimH());
+			fprintf(html_file,"%s",fimH());
 		if(_modoEcran){
 			if(_modoLatex)
 				printf("%s",(char *)fimL());
 				
 			else if(_modoHTML==1)
-				;//printf("%s",fimH());
+				printf("%s",fimH());
 				
 		}
 	

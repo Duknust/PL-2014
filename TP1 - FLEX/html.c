@@ -3,102 +3,94 @@
 #include <string.h>
 #include "html.h"
 
-void initHTML (FILE * latex_file){
-	fprintf(latex_file,"<html>");
-    fprintf(latex_file,"<head>");
-    fprintf(latex_file,"<title>O bo tem mel</title>");
-    fprintf(latex_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
-	fprintf(latex_file,"<body>");
+void initHTML (FILE * html_file){
+	fprintf(html_file,"<html>");
+    fprintf(html_file,"<head>");
+    fprintf(html_file,"<title>O bo tem mel</title>");
+    fprintf(html_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
+    fprintf(html_file,"<link type=\"text/css\" rel=\"stylesheet\" href=\"css/ink.css\">");
+	fprintf(html_file,"<body>");
 }
 
-char * tituloL(char * titulo){
+char * tituloH(char * titulo){
 	char *temp = (char *) malloc ((10+strlen(titulo)) * sizeof (char));
-	sprintf(temp,"\\title{%s}\n",titulo);
+	sprintf(temp,"<h1>%s</h1>\n",titulo);
 	return temp;
 }
 
-char * autoresL(char * autores){
+char * autoresH(char * autores){
 	char *temp = (char *) malloc ((10+strlen(autores)) * sizeof (char));
-	sprintf(temp,"\\author{%s}\n",autores);
+	sprintf(temp,"<h4>%s</h4>\n",autores);
 	return temp;
 }
 
-char * fimdecapaL(){
-	return "\\maketitle\n";
+char * newpageH(){
+	return "";
 }
 
-char * newpageL(){
-	return "\\newpage\n";
+char * paragrafoH(){
+	return "<br>";
 }
 
-char * paragrafoL(){
-	return "\\\\\n";
-}
-
-char * tableconL(){
+char * tableconH(){
 	return "\\tableofcontents\n";
 }
 
-char * listafigL(){
+char * listafigH(){
 	return "\\listoffigures\n";
 }
 
-char * italicoL(char * texto){
+char * italicoH(char * texto){
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\textit{%s",texto);
 	return temp;
 }
 
-char * negritoL(char * texto){
+char * negritoH(char * texto){
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\textbf{%s",texto);
 	return temp;
 }
 
-char * sublinhadoL(char * texto){
+char * sublinhadoH(char * texto){
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\underline{%s",texto);
 	return temp;
 }
 
-char * nisL(char * texto){
+char * nisH(char * texto){
 	char *temp = (char *) malloc ((35+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\underline{\\textbf{\\textit{%s",texto);
 	return temp;
 }
 
-char * sectionL(char * texto,char nivel){
+char * sectionH(char * texto,char nivel){
 	
 	char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
 	
 	if(nivel=='1')
-		sprintf(temp,"\\section{%s}\n",texto);
+		sprintf(temp,"<h2>%s<h2>\n",texto);
 	else if(nivel=='2')
-		sprintf(temp,"\\subsection{%s}\n",texto);
+		sprintf(temp,"<h3>%s</h3>\n",texto);
 	else if(nivel=='3')
-		sprintf(temp,"\\subsubsection{%s}\n",texto);
+		sprintf(temp,"<h4>%s</h4>\n",texto);
 	
 	return temp;
 }
 
-char * fimL(){
+char * fimH(){
 	return "</body></html>";
 }
 
-char* tira_ns(char * texto){
-	
-	texto[strlen(texto)-2]='\0';
-	return texto;
-}
 
-char * legendaL(char * texto){
+char * legendaH(char * texto){
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\caption{%s",texto);
 	return temp;
 }
 
 
-char * tabelaL(char * texto){
+char * tabelaH(char * texto){
 
 //	printf("_%s_\n",texto);
 	
@@ -184,7 +176,7 @@ char * tabelaL(char * texto){
 	return temp;
 }
 
-char * tabelalinhaL(char * texto){
+char * tabelalinhaH(char * texto){
 	texto[strlen(texto)-1]='\0';
 	char *temp = (char *) malloc ((15+strlen(texto)) * sizeof (char));
 	strcat(temp,texto);
@@ -197,13 +189,13 @@ char * tabelalinhaL(char * texto){
 	return temp;
 }
 
-char * fimtabelaL(){
+char * fimtabelaH(){
 	return "\\end{tabular}\n\\end{table}\n";
 }
 
 
 
-char * itemL(char * texto){
+char * itemH(char * texto){
 	//printf("_%s_%d_\n",texto,strlen(texto));
 	texto[strlen(texto)-2]='\0';
 	char *temp = (char *) malloc ((8+strlen(texto)) * sizeof (char));
@@ -214,17 +206,17 @@ char * itemL(char * texto){
 }
 
 
-char * liL(){	
+char * liH(){	
 	return "\\begin{itemize}\n";
 }
 
-char * loL(){	
+char * loH(){	
 	return "\\begin{enumerate}\n";
 }
 
 
 
-char * corL(char * texto){
+char * corH(char * texto){
 	//printf("_%s_%d_\n",texto,strlen(texto));
 //	texto[strlen(texto)-2]='\0';
 	
