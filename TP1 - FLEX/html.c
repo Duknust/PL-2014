@@ -42,25 +42,25 @@ char * listafigH(){
 
 char * italicoH(char * texto){
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
-	sprintf(temp,"\\textit{%s",texto);
+	sprintf(temp,"<i>%s",texto);
 	return temp;
 }
 
 char * negritoH(char * texto){
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
-	sprintf(temp,"\\textbf{%s",texto);
+	sprintf(temp,"<b>%s",texto);
 	return temp;
 }
 
 char * sublinhadoH(char * texto){
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
-	sprintf(temp,"\\underline{%s",texto);
+	sprintf(temp,"<u>%s",texto);
 	return temp;
 }
 
 char * nisH(char * texto){
 	char *temp = (char *) malloc ((35+strlen(texto)) * sizeof (char));
-	sprintf(temp,"\\underline{\\textbf{\\textit{%s",texto);
+	sprintf(temp,"<b><u><i>%s",texto);
 	return temp;
 }
 
@@ -236,8 +236,23 @@ char * corH(char * texto){
 	
 	
 	if(strcmp(cor,"vermelho")==0)
-		sprintf(temp,"\\textcolor{%s}{%s","red",texto);
-	
+		sprintf(temp,"<font color=\"red\">%s",texto);
+	else if(strcmp(cor,"azul")==0)
+		sprintf(temp,"<font color=\"aqua\">%s",texto);
+	else if(strcmp(cor,"rosa")==0)
+		sprintf(temp,"<font color=\"HotPink\">%s",texto);
+	else if(strcmp(cor,"verde")==0)
+		sprintf(temp,"<font color=\"Green\">%s",texto);
+	else if(strcmp(cor,"amarelo")==0)
+		sprintf(temp,"<font color=\"Gold\">%s",texto);
+	else if(strcmp(cor,"laranja")==0)
+		sprintf(temp,"<font color=\"Orange\">%s",texto);
+	else if(strcmp(cor,"violeta")==0)
+		sprintf(temp,"<font color=\"Violet\">%s",texto);
+	else if(strcmp(cor,"cinzento")==0)
+		sprintf(temp,"<font color=\"Silver\">%s",texto);
+	else if(strcmp(cor,"castanho")==0)
+		sprintf(temp,"<font color=\"Sienna\">%s",texto);
 	
 	//printf("temp:%s_\n",temp);
 	

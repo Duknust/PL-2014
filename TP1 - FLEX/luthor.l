@@ -50,13 +50,16 @@ char *tira_ns(char * texto);
 																			 switch(ultimoEstado)
 																			 {
 																			 	case 2: 
-																			 	printa("%s","}");
+																			 	if(_modoLatex)printa("%s","}");
+																			 	if(_modoHTML)printa("%s","</b>");
 																				break;
 																			 	case 3:
-																			 	printa("%s","}");
+																			 	if(_modoLatex)printa("%s","}");
+																			 	if(_modoHTML)printa("%s","</i>");
 																			 	break;
 																			 	case 4:
-																			 	printa("%s","}");
+																			 	if(_modoLatex)printa("%s","}");
+																			 	if(_modoHTML)printa("%s","</u>");
 																			 	break;
 																			 	case 5:
 																			 	printa("%s","\\end{comment}\n");
@@ -73,13 +76,15 @@ char *tira_ns(char * texto);
 																			 	printa("%s",(char*)fimimagemL());
 																			 	break;
 																			 	case 10:
-																			 	printa("%s","}}}");
+																			 	printa("%s","</b></u></i>");
 																			 	break;
 																			 	case 11:
-																			 	printa("%s","}");//footnote>
+																			 	if(_modoLatex)printa("%s","}");
+																			 	if(_modoHTML)printa("%s","</a>");//footnote>
 																			 	break;
 																			 	case 12://cor
-																			 	printa("%s","}");
+																			 	if(_modoLatex)printa("%s","}");
+																			 	if(_modoHTML)printa("%s","</font>");
 																			 	break;
 																			 	case 13://linha
 																			 	//printa("%s","\\hline");
@@ -155,7 +160,8 @@ char *tira_ns(char * texto);
 																			 estado=NEGRITO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printa("%s",(char*)negritoL(yytext+3));
+																	 		 if(_modoLatex)printa("%s",(char*)negritoL(yytext+3));
+																			 if(_modoHTML)printa("%s",(char*)negritoH(yytext+3));
 																	 		}
 
 	/*italico*/
@@ -163,7 +169,8 @@ char *tira_ns(char * texto);
 																			 estado=ITALICO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printa("%s",(char*)italicoL(yytext+3));
+																	 		 if(_modoLatex)printa("%s",(char*)italicoL(yytext+3));
+																			 if(_modoHTML)printa("%s",(char*)italicoH(yytext+3));
 																	 		}
 
 	/*sublinhado*/
@@ -171,7 +178,8 @@ char *tira_ns(char * texto);
 																			 estado=SUBLINHADO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printa("%s",(char*)sublinhadoL(yytext+3));
+																	 		 if(_modoLatex)printa("%s",(char*)sublinhadoL(yytext+3));
+																			 if(_modoHTML)printa("%s",(char*)sublinhadoH(yytext+3));
 																	 		}
 
 	/*combinação de negrito, italico e sublinhado*/
@@ -180,8 +188,8 @@ char *tira_ns(char * texto);
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
 																	 		 if(_modoLatex) printa("%s",(char*)nisL(yytext+5));
-																	 		 //if(_modoHTML) nisH(yytext+5);
-																	 		 if(_modoEcran) printf("nis{%s}\n", yytext+5);
+																	 		 
+																	 		 if(_modoHTML) printa("%s",(char*)nisH(yytext+5));
 																	 		}
 
 	/*comentario*/
@@ -193,7 +201,8 @@ char *tira_ns(char * texto);
 																	 		}
 
 	/*simbolo do latex*/
-<*>\LaTeX\																	printa("%s","\\LaTeX");
+<*>\LaTeX\																	{if(_modoLatex)printa("%s","\\LaTeX");
+																	 		 if(_modoHTML)printa("%s","LaTeX");}
 
 	/*tab*/
 <*>\tab\																	printa("%s","\\vspace{10 mm}");
@@ -202,7 +211,8 @@ char *tira_ns(char * texto);
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS>\\hlink\\				printa("%s","\\link");
 
 	/*data do dia*/
-<NORMAL>\\data\\															printa("%s","\\today");
+<NORMAL>\\data\\															{if(_modoLatex)printa("%s","\\today");
+																	 		 if(_modoHTML)printa("%s","<script language=\"JavaScript\">Date.prototype.toDDMMYYYYString = function () {return isNaN (this) ? 'NaN' : [this.getDate() > 9 ? this.getDate() : '0' + this.getDate(),  this.getMonth() > 8 ? this.getMonth() + 1 : '0' +  (this.getMonth() + 1), this.getFullYear()].join('/')}\ndocument.write(new Date().toDDMMYYYYString())</script>");}
 
 	/*fim de capa*/
 <NORMAL>\\fimdecapa\\														{if(_modoLatex)
@@ -221,14 +231,16 @@ char *tira_ns(char * texto);
 																			 estado=FOOTNOTE;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
-																	 		 printa("\\footnote{%s",(char*)yytext+10);
+																	 		 if(_modoLatex)printa("\\footnote{%s",(char*)yytext+10);
+																			 if(_modoHTML)printa("<a title=\"%s\"><sup>*</sup>",(char*)yytext+10);
 																	 		}
 	/*cores do texto*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\\(vermelho|verde|azul|amarelo|rosa|laranja|violeta|cinzento|castanho)\\[^\\]*		{BEGIN COR;
 																									 	 estado=COR;
 																									 	 apontaEstados++;
 																									 	 estados[apontaEstados]=estado;
-																							 		 	 printa("%s",(char*)corL(yytext+1));
+																							 		 	 {if(_modoLatex)printa("%s",(char*)corL(yytext+1));
+																											if(_modoHTML)printa("%s",(char*)corH(yytext+1));}
 																							 			}
 
 	/*texto nao formatado*/
@@ -294,102 +306,6 @@ char *tira_ns(char * texto);
 %%
 
 
-
-
-/*
-
-
-int main(int argc, char* argv[]){
-	
-//iniciar o lex no estado 1, estado NORMAL
-estados[0]=1;
-BEGIN NORMAL;
-	
-//Reconhecedor dos padroes suportados
-	if(argc<2 || argc >4 || argc==3){
-		printf("Padrão desconhecido:\n\nArgumentos válidos:\n");
-		printf(" lexLuthor -l -o nome\n");
-		printf(" lexLuthor -h -o nome\n");
-		printf(" lexLuthor -l\n");
-		printf(" lexLuthor -h\n");
-		printf(" lexLuthor -lh -o nome\n");
-		printf(" lexLuthor -hl -o nome\n");
-		printf(" lexLuthor -lh\n");
-		printf(" lexLuthor -hl\n");
-	} else {
-		if(argc==4){//tem 4 args ou seja tem output
-		
-			if(strcmp(argv[2],"-o"))
-				{
-					printf("Terceiro parâmetro não é -o\n");
-					return -1;
-				}
-			char * nome1 = strdup(argv[3]);
-			char * nome2 = strdup(argv[3]);
-			char * fileout1=strdup(strcat(nome1,".tex"));
-			char * fileout2=strdup(strcat(nome2,".html"));
-			
-			if(!strcmp(argv[1],"-l"))
-			{
-				_modoLatex=1;
-				latex_file = fopen(fileout1, "w+");
-				if(latex_file < 0)    return 1;
-				
-				initLaTeX();
-				
-				
-			} else if(!strcmp(argv[1],"-h"))
-			{
-				_modoHTML=1;
-				html_file = fopen(fileout2, "w+");
-				if(html_file < 0)    return 1;
-				
-				//initHTML();
-				
-			} else if(!strcmp(argv[1],"-lh"))
-			{
-				_modoHTML=1;
-				_modoLatex=1;
-				latex_file = fopen(fileout1, "w+");
-				html_file = fopen(fileout2, "w+");
-			
-			
-				if(latex_file < 0 || html_file < 0)    return 1;
-				
-				initLaTeX();
-				//initHTML();
-				
-			}
-			
-//			if(dup2(file,1) < 0)    return 1;
-		}
-
-
-		else return -1;//nao é válido -l ou -h
-
-//execucao do lex
-		yylex();
-
-
-		if(_modoLatex && !_modoEcran)
-			fprintf(latex_file,"%s",fimL());
-		if(_modoHTML && !_modoEcran)
-			fprintf(html_file,"%s",fimH());
-		if(_modoEcran){
-			if(_modoLatex)
-				fprintf(latex_file,"%s",fimL());
-			else if(_modoHTML)
-				fprintf(html_file,"%s",fimL());
-
-		}
-	}
-
-	return 0;
-}
-
-
-
-*/
 
 
 
