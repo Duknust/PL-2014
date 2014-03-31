@@ -111,11 +111,76 @@ char * legendaL(char * texto){
 }
 
 
-char * tabelaL(char * texto){
+char * imagemL(char * texto){
 
 //	printf("_%s_\n",texto);
 	
-	// 5c,t:50,l:bo tem mel na tabelaz\
+	// 5c,t:50,l:bo,c:dnfghm.jpg tem mel na tabelaz\
+
+	int i,textolen = strlen(texto),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
+	
+	
+	texto[strlen(texto)-1]='\0';
+	int ncol = atoi(texto);
+
+	
+	
+	char align;
+	encontrado=0;
+	for(i=1;i<textolen && encontrado==0;i++)
+		if(texto[i]==',')
+			{align=(texto[i-1]);encontrado=1;}
+	
+	
+	char *temp = (char *) malloc ((200+strlen(texto)) * sizeof (char));
+	strcat(temp,"\\begin{figure}[!h]\n");
+	strcat(temp,"\\centering\n");
+	
+	
+	char ratio[10];
+	tlen = strlen(&texto[i]);
+	char * len = &texto[i+2];
+	
+	encontrado=0;
+	for(i=0;i<tlen && encontrado==0;i++)
+		if(len[i]!=',')
+			ratio[i]=len[i];
+		else
+			encontrado=1;
+	ratio[i-1]='\0';
+	
+	char * pathimg;
+	
+	encontrado=0;
+	for(i=1;i<textolen && encontrado==0;i++)
+		if(texto[i]=='l')
+			if(texto[i+1]==':')
+				{offsetlegenda=i+1;encontrado=1;}
+	while(texto[i]!=',') i++;
+	pathimg = &texto[i+3];
+	texto[i]='\0';
+
+	char * legenda = &texto[offsetlegenda+1];
+
+	strcat(temp,"\\includegraphics[width=3.5in] {");
+	strcat(temp,pathimg);
+	strcat(temp,"}\n");	
+	strcat(temp,"\\caption{");
+	strcat(temp,legenda);
+	strcat(temp,"}\n");
+	
+	//strcat(temp,"\\scalebox{");
+	//strcat(temp,ratio);
+	//strcat(temp,"}\n");
+
+
+
+
+	return temp;
+}
+
+
+char * tabelaL(char * texto){
 
 	int i,textolen = strlen(texto),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
 	
@@ -214,7 +279,9 @@ char * fimtabelaL(){
 	return "\\end{tabular}\n\\end{table}\n";
 }
 
-
+char * fimimagemL(){
+	return "\\end{figure}\n";
+}
 
 char * itemL(char * texto){
 	//printf("_%s_%d_\n",texto,strlen(texto));
@@ -258,7 +325,22 @@ char * corL(char * texto){
 	
 	if(strcmp(cor,"vermelho")==0)
 		sprintf(temp,"\\textcolor{%s}{%s","red",texto);
-	
+	else if(strcmp(cor,"azul")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","MidnightBlue",texto);
+	else if(strcmp(cor,"rosa")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","WildStrawberry",texto);
+	else if(strcmp(cor,"verde")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","Green",texto);
+	else if(strcmp(cor,"amarelo")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","Goldenrod",texto);
+	else if(strcmp(cor,"laranja")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","Orange",texto);
+	else if(strcmp(cor,"violeta")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","Violet",texto);
+	else if(strcmp(cor,"cinzento")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","Gray",texto);
+	else if(strcmp(cor,"castanho")==0)
+		sprintf(temp,"\\textcolor{%s}{%s","RawSienna",texto);
 	
 	//printf("temp:%s_\n",temp);
 	

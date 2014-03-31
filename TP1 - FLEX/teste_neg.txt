@@ -8,6 +8,13 @@
 \sec2\O principio 
 O bo tem mel para\footnote\o bo tem mel\fim\ me dominar assim no amor o bo tem mel!\nl\ NOVO PARAGROFO\nl\OOOO!\nl\
 
+\nl\
+\vermelho\vermelhinho \fim\\azul\azul a belem \fim\\rosa\que usava a Juve \fim\\verde\das cobras \fim\\amarelo\ da cor do solinho \fim\\laranja\ o fruto dos citrinos \fim\\violeta\  are vio \fim\\cinzento\ as fifty \fim\\castanho\ aquilo que sai e nao entra mais\fim\
+\nl\
+
+
+
+
 \%\o grande comentario da actualidade\fim\
 
 
@@ -19,7 +26,7 @@ normal
 \li\
 \item\\n\iiiii\fim\\fim\
 \item\\i\ooooo\fim\\fim\
-\item\\n\mmmmm\fim\\fim\
+\item\\nis\\laranja\mmmmm\fim\\fim\\fim\
 \fim\
 \fim\
 
@@ -31,5 +38,7 @@ ordenada
 \item\mmmmm\fim\
 \fim\
 
+
+\imagem,t:1,l:xml,c:botem.jpg\\fim\
 
 

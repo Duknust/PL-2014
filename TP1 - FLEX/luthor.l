@@ -5,8 +5,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "latex.h"
+
 #define KGRN  "\x1B[32m"
 #define KNRM  "\x1B[0m"
+#define KNEG  "\033[1;30m"  
 
 
 /*stack que guarda os estados*/
@@ -64,7 +66,7 @@ void printa(char * formato,char * texto);
 																			 	printa("%s",(char*)fimtabelaL());
 																			 	break;
 																			 	case 9:
-																			 	printa("%s","</img>");
+																			 	printa("%s",(char*)fimimagemL());
 																			 	break;
 																			 	case 10:
 																			 	printa("%s","}}}");
@@ -109,21 +111,26 @@ void printa(char * formato,char * texto);
 																								 estado=LISTA_I;
 																								 apontaEstados++;
 																								 estados[apontaEstados]=estado;
-																								 printa("%s",(char*)liL());}
+																								 if(_modoLatex)printa("%s",(char*)liL());
+																								 //if(_modoHTML)printa("%s",(char*)liH());
+																								}
 
 	/*LISTA_O ordenada*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\\lo\\[^\\]*		{BEGIN LISTA_O;
 																								 estado=LISTA_O;
 																								 apontaEstados++;
 																								 estados[apontaEstados]=estado;
-																								 printa("%s",(char*)loL());}
+																								 if(_modoLatex)printa("%s",(char*)loL());
+																								 //if(_modoHTML)printa("%s",(char*)loH());
+																								}
 
 	/*novo item*/
 <LISTA_I,LISTA_O>\\item\\[^\\]*													{BEGIN ITEM;
 																				 estado=ITEM;
 																				 apontaEstados++;
 																				 estados[apontaEstados]=estado;
-																	 			 printa("%s",(char*)itemL(yytext+6));
+																	 			 if(_modoLatex)printa("%s",(char*)itemL(yytext+6));
+																	 			 //if(_modoHTML)printa("%s",(char*)itemH(yytext+6));
 																	 			}
 
 	/*apenas no LaTeX*/
@@ -208,7 +215,7 @@ void printa(char * formato,char * texto);
 																	 		 printa("\\footnote{%s",(char*)yytext+10);
 																	 		}
 	/*cores do texto*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\\(vermelho|verde|azul|amarelo|rosa)\\[^\\]*		{BEGIN COR;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\\(vermelho|verde|azul|amarelo|rosa|laranja|violeta|cinzento|castanho)\\[^\\]*		{BEGIN COR;
 																									 	 estado=COR;
 																									 	 apontaEstados++;
 																									 	 estados[apontaEstados]=estado;
@@ -266,7 +273,15 @@ void printa(char * formato,char * texto);
 																		 printa("<linha>%s",yytext+7);
 																		}	
 
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,TABELA,NIS,COR,LINHA,LATEX,HTML,LISTA_O,ITEM>\\imagem(\,t\:[0-9.]+)?(\,l\:[^\\]+)(\,c\:[^\\]+)\\	{BEGIN IMAGEM;
+																																				 estado=IMAGEM;
+																																				 apontaEstados++;
+																																				 estados[apontaEstados]=estado;
+																																				 printa("%s",(char*)imagemL(yytext+9));
+																																				}
+
 <*>.																	printa("%s",yytext);
+
 %%
 
 
@@ -350,7 +365,7 @@ BEGIN NORMAL;
 		if(_modoLatex && !_modoEcran)
 			fprintf(latex_file,"%s",fimL());
 		if(_modoHTML && !_modoEcran)
-			fprintf(html_file,"%s",fimL());
+			fprintf(html_file,"%s",fimH());
 		if(_modoEcran){
 			if(_modoLatex)
 				fprintf(latex_file,"%s",fimL());
@@ -469,10 +484,32 @@ BEGIN NORMAL;
 			latex_file = fopen(fileout1, "w+");
 			html_file = fopen(fileout2, "w+");
 		}
+		else if(strcmp(argv[1],"--man")==0){
+  			system("clear");
+
+			printf(KNRM "\nLUTHOR(1)                 BananaCorp® Commands Manual                LUTHOR(1)\n\n");
+			printf(KNEG "NAME\n");
+				printf(KNEG "\tFlexLuthor\n\n"); printf(KNRM "\t -- converte ficheiros para diferentes formatos\n\n");
+			printf(KNEG "flexLuthor -lh -o [output]\n");
+				printf(KNEG "\tFlexLuthor\n\n");
+			printf(KNEG "DESCRIPTION\n");
+				printf(KNRM "\tUtiliza-se para converter um ficheiro em formato .tbc para converter para LaTeX e/ou HTML\n\n");
+			printf(KNEG "EXIT STATUS\n");
+				printf(KNRM "\tO"); printf(KNEG " FlexLuthor "); printf(KNRM "devolve \"done\" no sucesso e \"error\" quando ocorre um erro\n\n");
+			printf(KNEG "EXAMPLE\n");
+				printf(KNRM "\tEsta pagina foi escrita por Duarte Duarte e Fabio Gomes\n\n");
+
+
+			printf(KNEG "HISTORY\n");
+				printf(KNRM "\tO"); printf(KNEG " FlexLuthor "); printf(KNRM "foi desenvolvido para a UC de Processamento de Linguagens inserida no 2º semestre do 3º ano da Licenciatura em Engenharia Informatica (LEI) no ano lectivo de 2013/2014\n\n");
+			printf(KNEG "AUTHORS\n");
+				printf(KNRM "\tEsta pagina foi escrita por Duarte Duarte e Fabio Gomes\n\n");
+			printf(KNRM "\nLUTHOR(1)                        Marco de 2014                       LUTHOR(1)\n\n");
+		}
 
 	/*execucao do lex*/
 		if(_modoLatex || _modoHTML || _modoEcran){
-		printf("AQUI JAZ YYLEX\n");
+		//printf("AQUI JAZ YYLEX\n");
 			yylex();
 		}
 
@@ -492,7 +529,7 @@ BEGIN NORMAL;
 	
 	} 
 
-	if (_modoHTML==0 && _modoLatex==0 && _modoEcran==0 && _versionORhelp==0){
+	if (_modoHTML==0 && _modoLatex==0 && _modoEcran==0 && _versionORhelp==0 && strcmp(argv[1],"--man")!=0){
 		printf("ERROR - maybe you need to use:\n");
 		printf("--h or --help [all options and description]\n");
 	} 

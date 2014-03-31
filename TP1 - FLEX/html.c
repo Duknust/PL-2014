@@ -1,27 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "latex.h"
+#include "html.h"
 
-
-void initLaTeX (FILE * latex_file){
-	fprintf(latex_file,"\\documentclass[11pt, a4paper, oneside]{article}\n");
-	fprintf(latex_file,"\\usepackage[portuguese]{babel}\n");
-	fprintf(latex_file,"\\usepackage{hyperref}\n");
-	fprintf(latex_file,"\\hypersetup{colorlinks=true, urlcolor=blue, linkcolor=black}\n");
-	fprintf(latex_file,"\\usepackage[utf8]{inputenc}\n");
-	fprintf(latex_file,"\\usepackage{graphicx}\n");
-	fprintf(latex_file,"\\graphicspath{{./imagens/}}\n");
-	fprintf(latex_file,"\\usepackage[labelformat=simple]{caption}\n");
-	fprintf(latex_file,"\\usepackage[labelformat=empty]{subcaption}\n");
-	fprintf(latex_file,"\\usepackage{lastpage}\n");
-	fprintf(latex_file,"\\usepackage{fancyhdr}\n");
-	fprintf(latex_file,"\\pagestyle{fancy}\n");
-	fprintf(latex_file,"\\usepackage{enumitem}\n");
-	fprintf(latex_file,"\\usepackage{verbatim}\n");
-	fprintf(latex_file,"\\usepackage[algoruled]{algorithm2e}\n");
-	fprintf(latex_file,"\\usepackage[usenames,dvipsnames]{color}\n\n\n\n\n\n\n\n\n");
-	fprintf(latex_file,"\\begin{document}\n");
+void initHTML (FILE * latex_file){
+	fprintf(latex_file,"<html>");
+    fprintf(latex_file,"<head>");
+    fprintf(latex_file,"<title>O bo tem mel</title>");
+    fprintf(latex_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
+	fprintf(latex_file,"<body>");
 }
 
 char * tituloL(char * titulo){
@@ -95,7 +82,7 @@ char * sectionL(char * texto,char nivel){
 }
 
 char * fimL(){
-	return "\\end{document}\n";
+	return "</body></html>";
 }
 
 char* tira_ns(char * texto){
