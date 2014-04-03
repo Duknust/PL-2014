@@ -24,4 +24,8 @@ char * itemL(char * texto);
 char * loL();
 char * liL();
 char * corL(char * texto);
-
+char * itemDL(char * texto);
+char * citacaoL(char * texto);
+char * dicL();
+char * tabL();
+char * hlinkL(char * texto);

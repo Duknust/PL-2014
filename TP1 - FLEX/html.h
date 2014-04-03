@@ -21,4 +21,11 @@ char * itemH(char * texto);
 char * loH();
 char * liH();
 char * corH(char * texto);
-
+char * fimimagemH();
+char * imagemH(char * texto);
+char * tabH();
+char * itemDH(char * texto);
+char * citacaoH(char * texto);
+char * dicH();
+char * tabH();
+char * hlinkH(char * texto);

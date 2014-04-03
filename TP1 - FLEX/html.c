@@ -9,7 +9,9 @@ void initHTML (FILE * html_file){
     fprintf(html_file,"<title>O bo tem mel</title>");
     fprintf(html_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
     fprintf(html_file,"<link type=\"text/css\" rel=\"stylesheet\" href=\"css/ink.css\">");
-	fprintf(html_file,"<body>");
+	fprintf(html_file,"</head><body>");
+	fprintf(html_file,"<div class=\"ink-grid\">");
+
 }
 
 char * tituloH(char * titulo){
@@ -69,7 +71,7 @@ char * sectionH(char * texto,char nivel){
 	char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
 	
 	if(nivel=='1')
-		sprintf(temp,"<h2>%s<h2>\n",texto);
+		sprintf(temp,"<h2>%s</h2>\n",texto);
 	else if(nivel=='2')
 		sprintf(temp,"<h3>%s</h3>\n",texto);
 	else if(nivel=='3')
@@ -79,7 +81,7 @@ char * sectionH(char * texto,char nivel){
 }
 
 char * fimH(){
-	return "</body></html>";
+	return "</div></body></html>";
 }
 
 
@@ -92,105 +94,34 @@ char * legendaH(char * texto){
 
 char * tabelaH(char * texto){
 
-//	printf("_%s_\n",texto);
-	
-	// 5c,t:50,l:bo tem mel na tabelaz\
-
-	int i,textolen = strlen(texto),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
-	
-	
-	texto[strlen(texto)-1]='\0';
-	int ncol = atoi(texto);
-
-	
-	
-	char align;
-	encontrado=0;
-	for(i=1;i<textolen && encontrado==0;i++)
-		if(texto[i]==',')
-			{align=(texto[i-1]);encontrado=1;}
-	
-	
-	char *temp = (char *) malloc ((200+strlen(texto)) * sizeof (char));
-	strcat(temp,"\\begin{table}[!h]\n");
-	
-	
-	char ratio[10];
-	tlen = strlen(&texto[i]);
-	char * len = &texto[i+2];
-	
-	encontrado=0;
-	for(i=0;i<tlen && encontrado==0;i++)
-		if(len[i]!=',')
-			ratio[i]=len[i];
-		else
-			encontrado=1;
-	ratio[i-1]='\0';
-	
-	
-	//printf("temp:%s...\n",temp);
-	
-	
-	
-	encontrado=0;
-	for(i=1;i<textolen && encontrado==0;i++)
-		if(texto[i]=='l')
-			if(texto[i+1]==':')
-				{offsetlegenda=i+1;encontrado=1;}
-	
-	
-	char * legenda = &texto[offsetlegenda+1];
-	
-	strcat(temp,"\\caption{");
-	strcat(temp,legenda);
-	strcat(temp,"}\n");
-	
-	
-			
-	strcat(temp,"\\scalebox{");
-	strcat(temp,ratio);
-	strcat(temp,"}\n");
-	
-	
-	
-	
-	
-	
-	strcat(temp,"\n\\begin{tabular}{");
-	
-	
-	
-	//\\begin{tabular}{");
-	char * numero = strdup(texto);
-	int tamanho = strlen(temp);
-	temp[tamanho]='|';
-	for(i = 1;i<4*ncol;i+=4)
-		{temp[i+tamanho]=' ';
-		 temp[i+tamanho+1]=align;
-		 temp[i+tamanho+2]=' ';
-		 temp[i+tamanho+3]='|';}
-
-	strcat(temp,"}\n\\hline\n");
-
-
-	return temp;
+	return "<table class=\"ink-table bordered alternating hover\" style=\"width:300px\">\n<tbody>\n";
 }
 
 char * tabelalinhaH(char * texto){
-	texto[strlen(texto)-1]='\0';
-	char *temp = (char *) malloc ((15+strlen(texto)) * sizeof (char));
-	strcat(temp,texto);
-	strcat(temp,"\\\\ \\hline\n");
+	//texto[strlen(texto)-1]='\0';
+	char *temp = (char *) malloc ((200+strlen(texto)) * sizeof (char));
+	strcat(temp,"<tr><td>");
 	
-	//printf("_%s_\n",temp);
-	temp[strlen(texto)+14]='\0';
+	int encontrado=0,i;
+	for(i=0;i<strlen(texto) && encontrado==0;i++)
+		{
+			if(texto[i]=='&')
+				strcat(temp,"</td><td>");
+			else if(texto[i]=='\\')
+				encontrado=1;
+			else
+				temp[strlen(temp)]=texto[i];
+		}
+		
+	strcat(temp,"</td></tr>\n");
+	//printf("temp=_%s_\n",temp);
 	
 	
 	return temp;
 }
 
 char * fimtabelaH(){
-	return "\\end{tabular}\n\\end{table}\n";
+	return "</tbody></table>\n";
 }
 
 
@@ -200,18 +131,18 @@ char * itemH(char * texto){
 	texto[strlen(texto)-2]='\0';
 	char *temp = (char *) malloc ((8+strlen(texto)) * sizeof (char));
 	
-	sprintf(temp,"\\item %s",texto);
+	sprintf(temp,"<li>%s",texto);
 	
 	return temp;
 }
 
 
 char * liH(){	
-	return "\\begin{itemize}\n";
+	return "<ul>\n";
 }
 
 char * loH(){	
-	return "\\begin{enumerate}\n";
+	return "<ol>\n";
 }
 
 
@@ -261,5 +192,158 @@ char * corH(char * texto){
 
 
 
+char * imagemH(char * texto){
+
+	//printf("_%s_\n",texto);
+	
+	// 5c,t:50,l:bo,c:dnfghm.jpg tem mel na tabelaz\
+	
+	char * texto2 = strdup(texto);
+
+	int i,textolen = strlen(texto2),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
+	
+	
+	texto2[strlen(texto2)]='\0';
+	int ncol = atoi(texto2);
+
+	
+	
+	char align;
+	encontrado=0;
+	for(i=1;i<textolen && encontrado==0;i++)
+		if(texto2[i]==',')
+			{align=(texto2[i-1]);encontrado=1;}
+	
+	
+	char *temp = (char *) malloc ((200+strlen(texto2)) * sizeof (char));
+	/*
+<figure>
+  <img src="botem.jpg" alt="The Pulpit Rock" width="304" height="228">
+  <figcaption>Fig1. - XML.</figcaption>
+*/
+	strcat(temp,"<figure><img src=\"");
+	
+	
+	texto2++;
+	
+	char ratio[10];
+	tlen = strlen(texto2);
+	char * len = texto2;
+	
+	
+	//printf("texto2=%s_\n",texto2);
+
+	//printf("len=%s_\n",len);
+	
+	encontrado=0;
+	for(i=0;i<tlen && encontrado==0;i++)
+		if(len[i]!=',')
+			ratio[i]=len[i];
+		else
+			encontrado=1;
+	ratio[i-1]='\0';
+	
+	
+	//printf("ratio=%s_\n",ratio);
+	
+	
+	
+	
+	char * pathimg;
+	
+	encontrado=0;
+	for(i=1;i<textolen && encontrado==0;i++)
+		if(texto2[i]=='l')
+			if(texto2[i+1]==':')
+				{offsetlegenda=i+1;encontrado=1;}
+	while(texto2[i]!=',') i++;
+	pathimg = &texto2[i+3];
+	pathimg[strlen(pathimg)-1]='\0';
+	texto2[i]='\0';
+
+	char * legenda = &texto2[offsetlegenda+1];
+
+	
+	strcat(temp,pathimg);
+	strcat(temp,"\"  alt=\"Imagem\" >\n<figcaption>");
+	strcat(temp,legenda);
+	strcat(temp,"</figcaption>\n");	
+	
+	
 
 
+
+
+	return temp;
+}
+
+char * fimimagemH(){
+	return "</figure>\n";
+}
+
+char * tabH(){
+	return "<span style=\"padding: 0 40px\">&nbsp;</span>";
+}
+
+char * itemDH(char * texto){
+// texto[strlen(texto)-2]='\0';
+ char *texto2 = strdup(texto);
+ 
+
+ char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
+ char *naoNeg = NULL;
+ int encontrado=0;
+ int i=0;
+ for(i=0;i<strlen(texto2) && !encontrado;i++){
+  if (texto2[i]=='|'){
+   naoNeg = &texto2[i+1];
+   texto2[i]='\0';
+   encontrado=1;
+  }
+ }
+
+ sprintf(temp,"<b>%s</b> <i>%s</i>\n <br>",texto2,naoNeg);
+ 
+ return temp;
+
+}
+
+
+char * dicH(){	
+	return "";
+}
+
+
+char * hlinkH(char * text){
+	char * texto = strdup(text);
+	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
+//	strcat(temp,"\\href{");
+	
+	char *nomelink = NULL;
+ int encontrado=0;
+ int i=0;
+ for(i=0;i<strlen(texto) && !encontrado;i++){
+  if (texto[i]=='|'){
+   nomelink = &texto[i+1];
+   texto[i]='\0';
+   encontrado=1;
+  }
+ }
+
+ sprintf(temp,"<a href=\"%s\">%s</a>",nomelink,texto);
+	
+	return temp;
+}
+
+
+char * citacaoH(char * text){
+ 
+ char * texto = strdup(text);
+ char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
+ 
+ strcat(temp,"<q>");
+ strcat(temp,texto);
+ 
+ 
+ return temp;
+}

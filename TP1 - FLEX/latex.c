@@ -107,16 +107,18 @@ char * legendaL(char * texto){
 
 
 char * imagemL(char * texto){
+	
+	char * texto2 = strdup(texto);
 
-//	printf("_%s_\n",texto);
+	//printf("_%s_\n",texto);
 	
 	// 5c,t:50,l:bo,c:dnfghm.jpg tem mel na tabelaz\
 
-	int i,textolen = strlen(texto),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
+	int i,textolen = strlen(texto2),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
 	
 	
-	texto[strlen(texto)-1]='\0';
-	int ncol = atoi(texto);
+	texto2[strlen(texto2)-1]='\0';
+	int ncol = atoi(texto2);
 
 	
 	
@@ -127,16 +129,16 @@ char * imagemL(char * texto){
 			{align=(texto[i-1]);encontrado=1;}
 	
 	
-	char *temp = (char *) malloc ((200+strlen(texto)) * sizeof (char));
+	char *temp = (char *) malloc ((200+strlen(texto2)) * sizeof (char));
 	strcat(temp,"\\begin{figure}[!h]\n");
 	strcat(temp,"\\centering\n");
 	
 	
-	texto++;
+	texto2++;
 	
 	char ratio[10];
-	tlen = strlen(texto);
-	char * len = texto;
+	tlen = strlen(texto2);
+	char * len = texto2;
 	
 	
 	//printf("texto=%s_\n",texto);
@@ -161,14 +163,14 @@ char * imagemL(char * texto){
 	
 	encontrado=0;
 	for(i=1;i<textolen && encontrado==0;i++)
-		if(texto[i]=='l')
-			if(texto[i+1]==':')
+		if(texto2[i]=='l')
+			if(texto2[i+1]==':')
 				{offsetlegenda=i+1;encontrado=1;}
-	while(texto[i]!=',') i++;
-	pathimg = &texto[i+3];
-	texto[i]='\0';
+	while(texto2[i]!=',') i++;
+	pathimg = &texto2[i+3];
+	texto2[i]='\0';
 
-	char * legenda = &texto[offsetlegenda+1];
+	char * legenda = &texto2[offsetlegenda+1];
 
 	strcat(temp,"\\includegraphics[scale=");
 	strcat(temp,ratio);
@@ -188,8 +190,9 @@ char * imagemL(char * texto){
 }
 
 
-char * tabelaL(char * texto){
+char * tabelaL(char * text){
 
+	char * texto = strdup(text);
 	int i,textolen = strlen(texto),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
 	
 	
@@ -268,14 +271,17 @@ char * tabelaL(char * texto){
 	return temp;
 }
 
-char * tabelalinhaL(char * texto){
+char * tabelalinhaL(char * text){
+
+	char * texto = strdup(text);
+	
 	texto[strlen(texto)-1]='\0';
 	char *temp = (char *) malloc ((15+strlen(texto)) * sizeof (char));
 	strcat(temp,texto);
 	strcat(temp,"\\\\ \\hline\n");
 	
 	//printf("_%s_\n",temp);
-	temp[strlen(texto)+14]='\0';
+	temp[strlen(texto)+15]='\0';
 	
 	
 	return temp;
@@ -353,7 +359,68 @@ char * corL(char * texto){
 	return temp;
 }
 
+char * citacaoL(char * text){
+ 
+ char * texto = strdup(text);
+ char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
+ 
+ strcat(temp,"\\begin{quote}");
+ strcat(temp,texto);
+ 
+ 
+ return temp;
+}
+
+char * itemDL(char * texto){
+	
+// texto[strlen(texto)-2]='\0';
+
+ char *texto2 = strdup(texto);
+ 
+
+ char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
+ char *naoNeg = NULL;
+ int encontrado=0;
+ int i=0;
+ for(i=0;i<strlen(texto2) && !encontrado;i++){
+  if (texto2[i]=='|'){
+   naoNeg = &texto2[i+1];
+   texto2[i]='\0';
+   encontrado=1;
+  }
+ }
+
+ sprintf(temp,"\\item[%s] %s",texto2,naoNeg);
+ 
+ return temp;
+}
 
 
+char * dicL(){	
+	return "\\begin{description}\n";
+}
 
+char * tabL(){
+	return "\\vspace{10 mm}";
+}
 
+char * hlinkL(char * text){
+	char * texto = strdup(text);
+	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
+	strcat(temp,"\\href{");
+	
+	char *nomelink = NULL;
+ int encontrado=0;
+ int i=0;
+ for(i=0;i<strlen(texto) && !encontrado;i++){
+  if (texto[i]=='|'){
+   nomelink = &texto[i+1];
+   texto[i]='\0';
+   encontrado=1;
+  }
+ }
+
+ sprintf(temp,"\\href{%s}{%s}",texto,nomelink);
+	
+	return temp;
+}
