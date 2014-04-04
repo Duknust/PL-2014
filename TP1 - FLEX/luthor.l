@@ -47,9 +47,9 @@ char *tira_ns(char * texto);
 %%
 	/* fim de tabs */
 <*>\\fim\\																	{ultimoEstado = estados[apontaEstados];
-																				printf("ultimo:%d",ultimoEstado);
+																				//printf("ultimo:%d",ultimoEstado);
 																		     if(apontaEstados>0) apontaEstados--;
-																				printf("...%d..\n",estados[apontaEstados]);
+																				//printf("...%d..\n",estados[apontaEstados]);
 																				
 																			 switch(ultimoEstado)
 																			 {
@@ -454,28 +454,31 @@ BEGIN NORMAL;
 				}
 		}
 		
-		char * nome1 = strdup(argv[3]);
-		char * nome2 = strdup(argv[3]);
+		char * fileout1 = (char*)malloc(sizeof(strlen(argv[3])+15));
+		strcat(fileout1,"LaTeX/");
+		strcat(fileout1,argv[3]);
+		strcat(fileout1,".tex");
+		
+		char * fileout2 = (char*)malloc(sizeof(strlen(argv[3])+15));
+		strcat(fileout2,"HTML/");
+		strcat(fileout2,argv[3]);
+		strcat(fileout2,".html");
 		
 		mkdir("HTML",S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		mkdir("LaTeX",S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		
 		
 		
-		char * fileout1=strdup("LaTeX/");
-		fileout1=strdup(strcat(fileout1,nome1));
-		fileout1 =strdup(strcat(fileout1,".tex"));
+		if(fileout1[strlen(fileout1)-1] != 'x')
+			fileout1[strlen(fileout1)-1]='\0';
 		
-		fileout1[strlen(fileout1)-1]='\0';
 		
-		char * fileout2;
-		fileout2=strdup("HTML/");
-		fileout2=strdup(strcat(fileout2,nome2));
-		fileout2=strdup(strcat(fileout2,".html"));
-
-		fileout2[strlen(fileout2)-1]='\0';
+		if(fileout2[strlen(fileout2)-1] != 'l')
+			fileout2[strlen(fileout2)-1]='\0';
 
 		
+		
+		//printf("n1:%s_\nn2:%s_\n",fileout1,fileout2);
 
 		if(strcmp(argv[1],"-h")==0)
 		{
