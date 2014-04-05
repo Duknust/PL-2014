@@ -352,3 +352,7 @@ char * citacaoH(char * text){
 char * dotsH(){
 	return "...";
 }
+
+char * initResumoH(){
+	return "<h2>Resumo</h2>\n";
+}

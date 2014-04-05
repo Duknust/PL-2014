@@ -30,3 +30,4 @@ char * dicL();
 char * tabL();
 char * hlinkL(char * texto);
 char * dotsL();
+char * initResumoL();

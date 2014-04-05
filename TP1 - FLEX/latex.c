@@ -428,3 +428,8 @@ char * hlinkL(char * text){
 char * dotsL(){
 	return "\\ldots";
 }
+
+char * initResumoL(){
+	return "\\begin{abstract}\n";
+}
+
