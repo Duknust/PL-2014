@@ -424,3 +424,7 @@ char * hlinkL(char * text){
 	
 	return temp;
 }
+
+char * dotsL(){
+	return "\\ldots";
+}
