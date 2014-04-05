@@ -427,8 +427,9 @@ int verificaArgs_callVersion(int argc, char* argv[]){
 
 
 char* tira_ns(char * texto){
-	
-	texto[strlen(texto)-2]='\0';
+	char c = texto[strlen(texto)-2];
+	if( !(((c>='a') && (c<='z')) || ((c>='A') && (c<='Z')) || ((c>='0') && (c<='9'))))
+		texto[strlen(texto)-2]='\0';
 	return texto;
 }
 
