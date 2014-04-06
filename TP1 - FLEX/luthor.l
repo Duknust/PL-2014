@@ -69,10 +69,6 @@ char *tira_ns(char * texto);
 																			 	if(_modoLatex)printaL("%s","\\end{comment}\n");
 																			 	if(_modoHTML)printaH("%s","-->\n");
 																			 	break;
-																			 	case 6://verbatim
-																			 	if(_modoLatex)printaL("%s","\\end{verbatim}");
-																			 	if(_modoHTML)printaH("%s","</pre>");
-																			 	break;
 																			 	case 7:
 																			 	if(_modoLatex)printaL("%s","\\end{itemize}");
 																			 	if(_modoHTML)printaH("%s","</ul>");
@@ -129,6 +125,29 @@ char *tira_ns(char * texto);
 										 									 ultimoEstado= estados[apontaEstados];
 																			 BEGIN ultimoEstado;
 																			}
+																			
+																			
+	/* fim de tabs */
+<VERBATIM>!fim!																	{ultimoEstado = estados[apontaEstados];
+																				//printf("ultimo:%d",ultimoEstado);
+																		     if(apontaEstados>0) apontaEstados--;
+																				//printf("...%d..\n",estados[apontaEstados]);
+																				
+																			 switch(ultimoEstado)
+																			 {
+																			 	case 6://verbatim
+																			 	if(_modoLatex)printaL("%s","\\end{verbatim}");
+																			 	if(_modoHTML)printaH("%s","</pre>");
+																			 	break;
+																			 	
+																			 	default:
+																			 	break;
+																			 }
+																			 
+										 									 ultimoEstado= estados[apontaEstados];
+																			 BEGIN ultimoEstado;
+																			}
+
 
 	/*titulo*/
 <NORMAL>\\titulo\\.*\n														{if(_modoLatex)printaL("%s",(char*)tituloL(tira_ns(yytext+8)));
@@ -267,7 +286,7 @@ char *tira_ns(char * texto);
 																							 			}
 
 	/*texto nao formatado*/
-<NORMAL,TABELA>\\nf\\[^\\]*											{BEGIN VERBATIM;
+<NORMAL,TABELA>\\nf\\[^!]*											{BEGIN VERBATIM;
 																		 	 estado=VERBATIM;
 																		 	 apontaEstados++;
 																		 	 estados[apontaEstados]=estado;
