@@ -347,12 +347,3 @@ char * citacaoH(char * text){
  
  return temp;
 }
-
-
-char * dotsH(){
-	return "...";
-}
-
-char * initResumoH(){
-	return "<h2>Resumo</h2>\n";
-}

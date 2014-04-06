@@ -18,6 +18,9 @@ void initLaTeX (FILE * latex_file){
 	fprintf(latex_file,"\\usepackage{fancyhdr}\n");
 	fprintf(latex_file,"\\pagestyle{fancy}\n");
 	fprintf(latex_file,"\\usepackage{enumitem}\n");
+	fprintf(latex_file,"\\usepackage{tabulary}\n");
+	fprintf(latex_file,"\\usepackage{float}\n");
+	fprintf(latex_file,"\\restylefloat{table}\n");
 	fprintf(latex_file,"\\usepackage{verbatim}\n");
 	fprintf(latex_file,"\\usepackage[algoruled]{algorithm2e}\n");
 	fprintf(latex_file,"\\usepackage[usenames,dvipsnames]{color}\n\n\n\n\n\n\n\n\n");
@@ -130,7 +133,7 @@ char * imagemL(char * texto){
 	
 	
 	char *temp = (char *) malloc ((200+strlen(texto2)) * sizeof (char));
-	strcat(temp,"\\begin{figure}[!h]\n");
+	strcat(temp,"\\begin{figure}[H]\n");
 	strcat(temp,"\\centering\n");
 	
 	
@@ -208,8 +211,8 @@ char * tabelaL(char * text){
 			{align=(texto[i-1]);encontrado=1;}
 	
 	
-	char *temp = (char *) malloc ((200+strlen(texto)) * sizeof (char));
-	strcat(temp,"\\begin{table}[!h]\n");
+	char *temp = (char *) malloc ((250+strlen(texto)) * sizeof (char));
+	strcat(temp,"\\begin{table}[H]\n");
 	
 	
 	char ratio[10];
@@ -251,7 +254,7 @@ char * tabelaL(char * text){
 	
 	
 	
-	strcat(temp,"\n\\begin{tabular}{");
+	strcat(temp,"\n\\begin{tabulary}{\\linewidth}{");
 	
 	
 	
@@ -275,7 +278,7 @@ char * tabelalinhaL(char * text){
 
 	char * texto = strdup(text);
 	
-	texto[strlen(texto)-1]='\0';
+	//texto[strlen(texto)-1]='\0';
 	char *temp = (char *) malloc ((15+strlen(texto)) * sizeof (char));
 	strcat(temp,texto);
 	strcat(temp,"\\\\ \\hline\n");
@@ -288,7 +291,7 @@ char * tabelalinhaL(char * text){
 }
 
 char * fimtabelaL(){
-	return "\\end{tabular}\n\\end{table}\n";
+	return "\\end{tabulary}\n\\end{table}\n";
 }
 
 char * fimimagemL(){
@@ -424,12 +427,3 @@ char * hlinkL(char * text){
 	
 	return temp;
 }
-
-char * dotsL(){
-	return "\\ldots";
-}
-
-char * initResumoL(){
-	return "\\begin{abstract}\n";
-}
-

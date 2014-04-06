@@ -46,7 +46,7 @@ char *tira_ns(char * texto);
 
 %%
 	/* fim de tabs */
-<*>\\fim\\																	{ultimoEstado = estados[apontaEstados];
+<*>\/fim\/																	{ultimoEstado = estados[apontaEstados];
 																				//printf("ultimo:%d",ultimoEstado);
 																		     if(apontaEstados>0) apontaEstados--;
 																				//printf("...%d..\n",estados[apontaEstados]);
@@ -90,8 +90,6 @@ char *tira_ns(char * texto);
 																			 	case 12://cor
 																			 	if(_modoLatex)printaL("%s","}");
 																			 	if(_modoHTML)printaH("%s","</font>");
-																			 	break;
-																			 	case 13://linha
 																			 	break;
 																			 	case 14://SO LATEX
 																			 	slActivo=0;
@@ -150,19 +148,19 @@ char *tira_ns(char * texto);
 
 
 	/*titulo*/
-<NORMAL>\\titulo\\.*\n														{if(_modoLatex)printaL("%s",(char*)tituloL(tira_ns(yytext+8)));
+<NORMAL>\/titulo\/.*\n														{if(_modoLatex)printaL("%s",(char*)tituloL(tira_ns(yytext+8)));
 																			 if(_modoHTML)printaH("%s",(char*)tituloH(tira_ns(yytext+8)));}
 
 	/*autores*/
-<NORMAL>\\autores\\.*\n														{if(_modoLatex)printaL("%s",(char*)autoresL(tira_ns(yytext+9)));
+<NORMAL>\/autores\/.*\n														{if(_modoLatex)printaL("%s",(char*)autoresL(tira_ns(yytext+9)));
 																			 if(_modoHTML)printaH("%s",(char*)autoresH(tira_ns(yytext+9)));}
 
 	/*nivel de seccao (pode ser 1, 2 ou 3)*/
-<NORMAL>\\sec[1-3]\\.*\n													{if(_modoLatex)printaL("%s",(char*)sectionL(tira_ns(yytext+6),yytext[4]));
+<NORMAL>\/sec[1-3]\/.*\n													{if(_modoLatex)printaL("%s",(char*)sectionL(tira_ns(yytext+6),yytext[4]));
 																			 if(_modoHTML)printaH("%s",(char*)sectionH(tira_ns(yytext+6),yytext[4]));}
 
 	/*LISTA_I nao ordenada*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\\li\\[^\\]*		{BEGIN LISTA_I;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\/li\/[^\/]*		{BEGIN LISTA_I;
 																								 estado=LISTA_I;
 																								 apontaEstados++;
 																								 estados[apontaEstados]=estado;
@@ -171,7 +169,7 @@ char *tira_ns(char * texto);
 																								}
 
 	/*LISTA_O ordenada*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\\lo\\[^\\]*		{BEGIN LISTA_O;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,NIS,COR,LINHA,LATEX,HTML>\/lo\/[^\/]*		{BEGIN LISTA_O;
 																								 estado=LISTA_O;
 																								 apontaEstados++;
 																								 estados[apontaEstados]=estado;
@@ -180,7 +178,7 @@ char *tira_ns(char * texto);
 																								}
 
 	/*novo item*/
-<LISTA_I,LISTA_O>\\item\\[^\\]*													{BEGIN ITEM;
+<LISTA_I,LISTA_O>\/item/[^\/]*													{BEGIN ITEM;
 																				 estado=ITEM;
 																				 apontaEstados++;
 																				 estados[apontaEstados]=estado;
@@ -191,11 +189,11 @@ char *tira_ns(char * texto);
 
 
 	/*quebra de linha*/
-<*>\\nl\\																	{if(_modoLatex)printaL("%s",(char*)paragrafoL());
+<*>\/nl\/																	{if(_modoLatex)printaL("%s",(char*)paragrafoL());
 																			 if(_modoHTML)printaH("%s",(char*)paragrafoH());}
 	
 	/*negrito*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\\n\\[^\\]*					{BEGIN NEGRITO;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\/n\/[^\/]*					{BEGIN NEGRITO;
 																			 estado=NEGRITO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -204,7 +202,7 @@ char *tira_ns(char * texto);
 																	 		}
 
 	/*italico*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\\i\\[^\\]*					{BEGIN ITALICO;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\/i\/[^\/]*					{BEGIN ITALICO;
 																			 estado=ITALICO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -213,7 +211,7 @@ char *tira_ns(char * texto);
 																	 		}
 
 	/*sublinhado*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\\s\\[^\\]*					{BEGIN SUBLINHADO;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\/s\/[^\/]*					{BEGIN SUBLINHADO;
 																			 estado=SUBLINHADO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -222,7 +220,7 @@ char *tira_ns(char * texto);
 																	 		}
 
 	/*combinação de negrito, italico e sublinhado*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\\nis\\[^\\]*				{BEGIN NIS;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,ITEM,LATEX,HTML>\/nis\/[^\/]*				{BEGIN NIS;
 																			 estado=NIS;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -232,7 +230,7 @@ char *tira_ns(char * texto);
 																	 		}
 
 	/*comentario*/
-<*>\\%\\[^\\]*																{BEGIN COMENTARIO;
+<*>\/%\/[^\/]*																{BEGIN COMENTARIO;
 																			 estado=COMENTARIO;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -241,35 +239,35 @@ char *tira_ns(char * texto);
 																	 		}
 
 	/*simbolo do latex*/
-<*>\\LaTeX\\																	{if(_modoLatex)printaL("%s","\\LaTeX");\
+<*>\/LaTeX\/																	{if(_modoLatex)printaL("%s","\\LaTeX");\
 																	 		 if(_modoHTML)printaH("%s","LaTeX");}
 
 	/*tab*/
-<*>\\tab\\																	{if(_modoLatex)printaL("%s",(char*)tabL());
+<*>\/tab\/																	{if(_modoLatex)printaL("%s",(char*)tabL());
 																	 		 if(_modoHTML)printaH("%s",(char*)tabH());}
 
 	/*link*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,LATEX,HTML>\\hlink\\[^\\]*				{if(_modoLatex)printaL("%s",(char *) hlinkL(yytext+7));
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,LATEX,HTML>\/hlink\/[^\/]*				{if(_modoLatex)printaL("%s",(char *) hlinkL(yytext+7));
 																										 if(_modoHTML)printaH("%s",(char *) hlinkH(yytext+7));}
 
 	/*data do dia*/
-<NORMAL,LATEX,HTML>\\data\\															{if(_modoLatex)printaL("%s","\\today");
+<NORMAL,LATEX,HTML>\/data\/															{if(_modoLatex)printaL("%s","\\today");
 																	 		 if(_modoHTML)printaH("%s","<script language=\"JavaScript\">Date.prototype.toDDMMYYYYString = function () {return isNaN (this) ? 'NaN' : [this.getDate() > 9 ? this.getDate() : '0' + this.getDate(),  this.getMonth() > 8 ? this.getMonth() + 1 : '0' +  (this.getMonth() + 1), this.getFullYear()].join('/')}\ndocument.write(new Date().toDDMMYYYYString())</script>");}
 
 	/*fim de capa*/
-<NORMAL>\\fimdecapa\\														{if(_modoLatex)
+<NORMAL>\/fimdecapa\/														{if(_modoLatex)
 																			 {printaL("%s",(char*)fimdecapaL());
 																			  printaL("%s",(char*)newpageL());}}
 																			
 	/*indice*/
-<NORMAL>\\indice\\															printaL("%s","\\tableofcontents\n");
+<NORMAL>\/indice\/															printaL("%s","\\tableofcontents\n");
 
 	/*indice de imagens*/
-<NORMAL>\\indiceimg\\														printaL("%s","\\listoffigures\n");
+<NORMAL>\/indiceimg\/														printaL("%s","\\listoffigures\n");
 
 
 	/*nota de rodape*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\\footnote\\[^\\]*		{BEGIN FOOTNOTE;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\/footnote\/[^\/]*		{BEGIN FOOTNOTE;
 																			 estado=FOOTNOTE;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -277,7 +275,7 @@ char *tira_ns(char * texto);
 																			 if(_modoHTML)printaH("<a title=\"%s\"><sup>*</sup>",(char*)yytext+10);
 																	 		}
 	/*cores do texto*/
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\\(vermelho|verde|azul|amarelo|rosa|laranja|violeta|cinzento|castanho)\\[^\\]*		{BEGIN COR;
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\/(vermelho|verde|azul|amarelo|rosa|laranja|violeta|cinzento|castanho)\/[^\/]*		{BEGIN COR;
 																									 	 estado=COR;
 																									 	 apontaEstados++;
 																									 	 estados[apontaEstados]=estado;
@@ -286,7 +284,7 @@ char *tira_ns(char * texto);
 																							 			}
 
 	/*texto nao formatado*/
-<NORMAL,TABELA>\\nf\\[^!]*											{BEGIN VERBATIM;
+<NORMAL,TABELA>!nf![^!]*											{BEGIN VERBATIM;//printf("VERB_%s_\n",yytext+4);
 																		 	 estado=VERBATIM;
 																		 	 apontaEstados++;
 																		 	 estados[apontaEstados]=estado;
@@ -295,7 +293,7 @@ char *tira_ns(char * texto);
 																 			}
 
 	/*começar tabela tabela*/
-<NORMAL,TABELA>\\tabela[0-9]+(l|c|r)(\,t\:[0-9.]+)?(\,l\:[^\\]+)\\			{BEGIN TABELA;
+<NORMAL,TABELA>\/tabela[0-9]+(l|c|r|L|C|R)(\,t\:[0-9.]+)?(\,l\:[^\/]+)\/			{BEGIN TABELA;
 																			 estado=TABELA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -304,10 +302,10 @@ char *tira_ns(char * texto);
 																			}
 
 	/*inserir linha da tabela*/
-<TABELA,LINHA>\\linha\\[^\\]*													{BEGIN LINHA;
+<TABELA,LINHA>\/linha\/[^\n]*											{BEGIN LINHA;
 																			 estado=LINHA;
-																			 apontaEstados++;
-																			 estados[apontaEstados]=estado;
+																			 //apontaEstados++;
+																			 //estados[apontaEstados]=estado;
 																			 if(_modoLatex)printaL("%s",(char*)tabelalinhaL(yytext+7));
 																			 if(_modoHTML)printaH("%s",(char*)tabelalinhaH(yytext+7));
 																			 
@@ -315,7 +313,7 @@ char *tira_ns(char * texto);
 
 
 
-<*>\\legenda\\[^\\]*														{BEGIN LEGENDA;
+<*>\/legenda\/[^\/]*														{BEGIN LEGENDA;
 																			 estado=LEGENDA;
 																			 apontaEstados++;
 																			 estados[apontaEstados]=estado;
@@ -326,7 +324,7 @@ char *tira_ns(char * texto);
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,VERBATIM,LISTA_I,LISTA_O,TABELA,IMAGEM,NIS,FOOTNOTE,COR,LINHA,LATEX,HTML,LEGENDA>\n 			;
 	
 	/*aparece apenas no HTML*/
-<*>\\sh\\[^\\]*															{BEGIN HTML;
+<*>\/sh\/[^\/]*															{BEGIN HTML;
 																		 estado=HTML;
 																		 apontaEstados++;
 																		 estados[apontaEstados]=estado;
@@ -334,7 +332,7 @@ char *tira_ns(char * texto);
 																		 printaH("%s",yytext+4);
 																		}	
 	/*aparece apenas no LaTeX*/
-<*>\\sl\\[^\\]*															{BEGIN LATEX;
+<*>\/sl\/[^\/]*															{BEGIN LATEX;
 																		 estado=LATEX;
 																		 apontaEstados++;
 																		 estados[apontaEstados]=estado;
@@ -342,14 +340,14 @@ char *tira_ns(char * texto);
 																		 printaL("%s",yytext+4);
 																		}	
 
-<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,TABELA,NIS,COR,LINHA,LATEX,HTML,LISTA_O,ITEM>\\imagem(\,t\:[0-9.]+)?(\,l\:[^\\]+)(\,c\:[^\\]+)\\	{
+<NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,TABELA,NIS,COR,LINHA,LATEX,HTML,LISTA_O,ITEM>\/imagem(\,t\:[0-9.]+)?(\,l\:[^\/]+)(\,c\:[^\/]+)\/	{
 																																				 if(_modoLatex){printaL("%s",(char*)imagemL(yytext+9));
 																																								printaL("%s",(char*)fimimagemL());}
 																																				 if(_modoHTML){printaH("%s",(char*)imagemH(yytext+9));
 																																							  printaH("%s",(char*)fimimagemH());}
 																																				  
 																																				}
-<NORMAL>\\citar\\[^\\]*             {BEGIN CITACAO;
+<NORMAL>\/citar\/[^\/]*             {BEGIN CITACAO;
 									   estado=CITACAO;
 									   apontaEstados++;
 									   estados[apontaEstados]=estado;
@@ -357,7 +355,7 @@ char *tira_ns(char * texto);
 									   if(_modoHTML)printaH("%s",(char*)citacaoH(yytext+7));
 									  }
 
-<NORMAL>\\dic\\[^\\]*             {BEGIN DICIONARIO;
+<NORMAL>\/dic\/[^\/]*             {BEGIN DICIONARIO;
 								   estado=DICIONARIO;
 								   apontaEstados++;
 								   estados[apontaEstados]=estado;
@@ -366,7 +364,7 @@ char *tira_ns(char * texto);
 								  }
 
  /*novo item dicionario*/
-<DICIONARIO>\\item\\[^\\]*            {BEGIN ITEM;
+<DICIONARIO>\/item\/[^\/]*            {BEGIN ITEM;
 									   estado=ITEM;
 									   apontaEstados++;
 									   estados[apontaEstados]=estado;
@@ -488,17 +486,20 @@ BEGIN NORMAL;
 		mkdir("LaTeX",S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		
 		
+		//printf("n1:%s_%d\nn2:%s_%d\n",fileout1,strlen(fileout1),fileout2,strlen(fileout2));
 		
-		if(fileout1[strlen(fileout1)-1] != 'x')
+		if(fileout1[strlen(fileout1)-2] == 'x')
 			fileout1[strlen(fileout1)-1]='\0';
+		fileout1[strlen(fileout1)]='\0';
 		
 		
-		if(fileout2[strlen(fileout2)-1] != 'l')
+		
+		if(fileout2[strlen(fileout2)-2] == 'l')
 			fileout2[strlen(fileout2)-1]='\0';
-
+		fileout2[strlen(fileout2)]='\0';
 		
 		
-		//printf("n1:%s_\nn2:%s_\n",fileout1,fileout2);
+		//printf("n1:%s_%d\nn2:%s_%d\n",fileout1,strlen(fileout1),fileout2,strlen(fileout2));
 
 		if(strcmp(argv[1],"-h")==0)
 		{
