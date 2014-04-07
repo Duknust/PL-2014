@@ -29,3 +29,5 @@ char * citacaoH(char * texto);
 char * dicH();
 char * tabH();
 char * hlinkH(char * texto);
+char * dotsH();
+char * initResumoH(char * text);

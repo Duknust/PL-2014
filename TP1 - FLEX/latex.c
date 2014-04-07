@@ -27,14 +27,24 @@ void initLaTeX (FILE * latex_file){
 	fprintf(latex_file,"\\begin{document}\n");
 }
 
-char * tituloL(char * titulo){
+char * tituloL(char * tit){
+	char * titulo = strdup(tit);
 	char *temp = (char *) malloc ((10+strlen(titulo)) * sizeof (char));
+	
+	if(titulo[strlen(titulo)-1]=='\n')
+		titulo[strlen(titulo)-1]='\0';
+		
 	sprintf(temp,"\\title{%s}\n",titulo);
 	return temp;
 }
 
-char * autoresL(char * autores){
+char * autoresL(char * aut){
+	char * autores = strdup(aut);
 	char *temp = (char *) malloc ((10+strlen(autores)) * sizeof (char));
+	
+	if(autores[strlen(autores)-1]=='\n')
+		autores[strlen(autores)-1]='\0';
+		
 	sprintf(temp,"\\author{%s}\n",autores);
 	return temp;
 }
@@ -59,33 +69,42 @@ char * listafigL(){
 	return "\\listoffigures\n";
 }
 
-char * italicoL(char * texto){
+char * italicoL(char * text){
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\textit{%s",texto);
 	return temp;
 }
 
-char * negritoL(char * texto){
+char * negritoL(char * text){
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\textbf{%s",texto);
 	return temp;
 }
 
-char * sublinhadoL(char * texto){
+char * sublinhadoL(char * text){
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\underline{%s",texto);
 	return temp;
 }
 
-char * nisL(char * texto){
+char * nisL(char * text){
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((35+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\underline{\\textbf{\\textit{%s",texto);
 	return temp;
 }
 
-char * sectionL(char * texto,char nivel){
+char * sectionL(char * text,char nivel){
 	
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
+	
+	if(texto[strlen(texto)-1]=='\n')
+		texto[strlen(texto)-1]='\0';
+	
 	
 	if(nivel=='1')
 		sprintf(temp,"\\section{%s}\n",texto);
@@ -93,6 +112,7 @@ char * sectionL(char * texto,char nivel){
 		sprintf(temp,"\\subsection{%s}\n",texto);
 	else if(nivel=='3')
 		sprintf(temp,"\\subsubsection{%s}\n",texto);
+	
 	
 	return temp;
 }
@@ -102,7 +122,8 @@ char * fimL(){
 }
 
 
-char * legendaL(char * texto){
+char * legendaL(char * text){
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\caption{%s",texto);
 	return temp;
@@ -113,9 +134,9 @@ char * imagemL(char * texto){
 	
 	char * texto2 = strdup(texto);
 
-	//printf("_%s_\n",texto);
+
 	
-	// 5c,t:50,l:bo,c:dnfghm.jpg tem mel na tabelaz\
+	
 
 	int i,textolen = strlen(texto2),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
 	
@@ -144,9 +165,9 @@ char * imagemL(char * texto){
 	char * len = texto2;
 	
 	
-	//printf("texto=%s_\n",texto);
+	
 
-	//printf("len=%s_\n",len);
+
 	
 	encontrado=0;
 	for(i=0;i<tlen && encontrado==0;i++)
@@ -157,7 +178,7 @@ char * imagemL(char * texto){
 	ratio[i-1]='\0';
 	
 	
-	//printf("ratio=%s_\n",ratio);
+	
 	
 	
 	
@@ -258,7 +279,7 @@ char * tabelaL(char * text){
 	
 	
 	
-	//\\begin{tabular}{");
+	
 	char * numero = strdup(texto);
 	int tamanho = strlen(temp);
 	temp[tamanho]='|';
@@ -278,12 +299,12 @@ char * tabelalinhaL(char * text){
 
 	char * texto = strdup(text);
 	
-	//texto[strlen(texto)-1]='\0';
+	
 	char *temp = (char *) malloc ((15+strlen(texto)) * sizeof (char));
 	strcat(temp,texto);
 	strcat(temp,"\\\\ \\hline\n");
 	
-	//printf("_%s_\n",temp);
+	
 	temp[strlen(texto)+15]='\0';
 	
 	
@@ -298,9 +319,8 @@ char * fimimagemL(){
 	return "\\end{figure}\n";
 }
 
-char * itemL(char * texto){
-	//printf("_%s_%d_\n",texto,strlen(texto));
-	texto[strlen(texto)-2]='\0';
+char * itemL(char * text){
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((8+strlen(texto)) * sizeof (char));
 	
 	sprintf(temp,"\\item %s",texto);
@@ -319,24 +339,21 @@ char * loL(){
 
 
 
-char * corL(char * texto){
-	//printf("_%s_%d_\n",texto,strlen(texto));
-//	texto[strlen(texto)-2]='\0';
+char * corL(char * text){
+	char * texto = strdup(text);
 	
 	int encontrado=0,i;
 	for(i=0;i<strlen(texto) && encontrado==0;i++)
-		if(texto[i]=='\\')
+		if(texto[i]=='/')
 			encontrado=1;
 	
 	char *cor = strdup(texto);
 	strcat(cor,texto);
 	cor[i-1]='\0';
-	//printf("cor:%s_\n",cor);
 	
 	texto+=i;
 	
 	char *temp = (char *) malloc ((15+i) * sizeof (char));
-	
 	
 	if(strcmp(cor,"vermelho")==0)
 		sprintf(temp,"\\textcolor{%s}{%s","red",texto);
@@ -357,7 +374,7 @@ char * corL(char * texto){
 	else if(strcmp(cor,"castanho")==0)
 		sprintf(temp,"\\textcolor{%s}{%s","RawSienna",texto);
 	
-	//printf("temp:%s_\n",temp);
+	
 	
 	return temp;
 }
@@ -376,7 +393,6 @@ char * citacaoL(char * text){
 
 char * itemDL(char * texto){
 	
-// texto[strlen(texto)-2]='\0';
 
  char *texto2 = strdup(texto);
  
@@ -425,5 +441,21 @@ char * hlinkL(char * text){
 
  sprintf(temp,"\\href{%s}{%s}",texto,nomelink);
 	
+	return temp;
+}
+
+
+
+char * dotsL(){
+	return "\\ldots";
+}
+
+char * initResumoL(char * text){
+
+ char * texto = strdup(text);
+ char *temp = (char *) malloc ((22+strlen(texto)) * sizeof (char));
+ 
+ strcat(temp,"\\begin{abstract}\n");
+ strcat(temp,texto);
 	return temp;
 }

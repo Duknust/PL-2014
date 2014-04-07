@@ -6,22 +6,32 @@
 void initHTML (FILE * html_file){
 	fprintf(html_file,"<html>");
     fprintf(html_file,"<head>");
-    fprintf(html_file,"<title>O bo tem mel</title>");
     fprintf(html_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
+    fprintf(html_file,"<title>Luthor</title>");
     fprintf(html_file,"<link type=\"text/css\" rel=\"stylesheet\" href=\"css/ink.css\">");
 	fprintf(html_file,"</head><body>");
 	fprintf(html_file,"<div class=\"ink-grid\">");
 
 }
 
-char * tituloH(char * titulo){
-	char *temp = (char *) malloc ((10+strlen(titulo)) * sizeof (char));
-	sprintf(temp,"<h1>%s</h1>\n",titulo);
+char * tituloH(char * tit){
+	
+	char * titulo = strdup(tit);
+	char *temp = (char *) malloc ((200+strlen(titulo)) * sizeof (char));
+
+	if(titulo[strlen(titulo)-1]=='\n')
+		titulo[strlen(titulo)-1]='\0';
+		
+	sprintf(temp,"<h1>%s</h1>\n<script type=\"text/javascript\">document.title = \"%s\"</script>\n",titulo,titulo);
 	return temp;
 }
 
-char * autoresH(char * autores){
+char * autoresH(char * aut){
+	char * autores = strdup(aut);
 	char *temp = (char *) malloc ((10+strlen(autores)) * sizeof (char));
+		if(autores[strlen(autores)-1]=='\n')
+		autores[strlen(autores)-1]='\0';
+		
 	sprintf(temp,"<h4>%s</h4>\n",autores);
 	return temp;
 }
@@ -42,33 +52,46 @@ char * listafigH(){
 	return "\\listoffigures\n";
 }
 
-char * italicoH(char * texto){
+char * italicoH(char * text){
+	
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
 	sprintf(temp,"<i>%s",texto);
 	return temp;
 }
 
-char * negritoH(char * texto){
+char * negritoH(char * text){
+	char * texto = strdup(text);
+	
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
 	sprintf(temp,"<b>%s",texto);
 	return temp;
 }
 
-char * sublinhadoH(char * texto){
+char * sublinhadoH(char * text){
+	
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
 	sprintf(temp,"<u>%s",texto);
 	return temp;
 }
 
-char * nisH(char * texto){
+char * nisH(char * text){
+	
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((35+strlen(texto)) * sizeof (char));
 	sprintf(temp,"<b><u><i>%s",texto);
 	return temp;
 }
 
-char * sectionH(char * texto,char nivel){
+char * sectionH(char * text,char nivel){
+	
+	char * texto = strdup(text);
 	
 	char *temp = (char *) malloc ((20+strlen(texto)) * sizeof (char));
+
+	if(texto[strlen(texto)-1]=='\n')
+		texto[strlen(texto)-1]='\0';
 	
 	if(nivel=='1')
 		sprintf(temp,"<h2>%s</h2>\n",texto);
@@ -85,7 +108,9 @@ char * fimH(){
 }
 
 
-char * legendaH(char * texto){
+char * legendaH(char * text){
+	
+	char * texto = strdup(text);
 	char *temp = (char *) malloc ((13+strlen(texto)) * sizeof (char));
 	sprintf(temp,"\\caption{%s",texto);
 	return temp;
@@ -93,12 +118,14 @@ char * legendaH(char * texto){
 
 
 char * tabelaH(char * texto){
-
-	return "<table class=\"ink-table bordered alternating hover\" style=\"width:300px\">\n<tbody>\n";
+	
+	return "<table class=\"ink-table bordered alternating hover\">\n<tbody>\n";
 }
 
-char * tabelalinhaH(char * texto){
-	//texto[strlen(texto)-1]='\0';
+char * tabelalinhaH(char * text){
+	
+	char * texto = strdup(text);
+	
 	char *temp = (char *) malloc ((200+strlen(texto)) * sizeof (char));
 	strcat(temp,"<tr><td>");
 	
@@ -126,9 +153,11 @@ char * fimtabelaH(){
 
 
 
-char * itemH(char * texto){
-	//printf("_%s_%d_\n",texto,strlen(texto));
-	texto[strlen(texto)-2]='\0';
+char * itemH(char * text){
+	
+	char * texto = strdup(text);
+	
+	
 	char *temp = (char *) malloc ((8+strlen(texto)) * sizeof (char));
 	
 	sprintf(temp,"<li>%s",texto);
@@ -147,9 +176,10 @@ char * loH(){
 
 
 
-char * corH(char * texto){
-	//printf("_%s_%d_\n",texto,strlen(texto));
-//	texto[strlen(texto)-2]='\0';
+char * corH(char * text){
+	
+	char * texto = strdup(text);
+	
 	
 	int encontrado=0,i;
 	for(i=0;i<strlen(texto) && encontrado==0;i++)
@@ -192,13 +222,12 @@ char * corH(char * texto){
 
 
 
-char * imagemH(char * texto){
+char * imagemH(char * text){
 
-	//printf("_%s_\n",texto);
+
 	
-	// 5c,t:50,l:bo,c:dnfghm.jpg tem mel na tabelaz\
 	
-	char * texto2 = strdup(texto);
+	char * texto2 = strdup(text);
 
 	int i,textolen = strlen(texto2),tlen,encontrado=0,offsetlegenda=0,offsettamanho=0;
 	
@@ -216,11 +245,8 @@ char * imagemH(char * texto){
 	
 	
 	char *temp = (char *) malloc ((200+strlen(texto2)) * sizeof (char));
-	/*
-<figure>
-  <img src="botem.jpg" alt="The Pulpit Rock" width="304" height="228">
-  <figcaption>Fig1. - XML.</figcaption>
-*/
+
+	
 	strcat(temp,"<figure><img src=\"");
 	
 	
@@ -231,9 +257,7 @@ char * imagemH(char * texto){
 	char * len = texto2;
 	
 	
-	//printf("texto2=%s_\n",texto2);
-
-	//printf("len=%s_\n",len);
+	
 	
 	encontrado=0;
 	for(i=0;i<tlen && encontrado==0;i++)
@@ -244,7 +268,7 @@ char * imagemH(char * texto){
 	ratio[i-1]='\0';
 	
 	
-	//printf("ratio=%s_\n",ratio);
+	
 	
 	
 	
@@ -286,7 +310,7 @@ char * tabH(){
 }
 
 char * itemDH(char * texto){
-// texto[strlen(texto)-2]='\0';
+	
  char *texto2 = strdup(texto);
  
 
@@ -317,7 +341,7 @@ char * dicH(){
 char * hlinkH(char * text){
 	char * texto = strdup(text);
 	char *temp = (char *) malloc ((10+strlen(texto)) * sizeof (char));
-//	strcat(temp,"\\href{");
+
 	
 	char *nomelink = NULL;
  int encontrado=0;
@@ -346,4 +370,19 @@ char * citacaoH(char * text){
  
  
  return temp;
+}
+
+
+char * dotsH(){
+	return "...";
+}
+
+char * initResumoH(char * text){
+
+ char * texto = strdup(text);
+ char *temp = (char *) malloc ((22+strlen(texto)) * sizeof (char));
+ 
+ strcat(temp,"<h2>Resumo</h2>\n");
+ strcat(temp,texto);
+	return temp;
 }

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "latex.h"
 #include "html.h"
 
@@ -40,8 +41,8 @@ char *tira_ns(char * texto);
 %}
 
 /*definicao de todos os estados possiveis*/
-/*   1      2        3         4          5        6       7     8      9    10     11     12   13    14   15     16       17     18     19        20*/
-%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA_I TABELA IMAGEM NIS FOOTNOTE COR LINHA LATEX HTML LEGENDA LISTA_O ITEM DICIONARIO CITACAO
+/*   1      2        3         4          5        6       7     8      9    10     11     12   13    14   15     16       17     18     19        20      21   */
+%x NORMAL NEGRITO ITALICO SUBLINHADO COMENTARIO VERBATIM LISTA_I TABELA IMAGEM NIS FOOTNOTE COR LINHA LATEX HTML LEGENDA LISTA_O ITEM DICIONARIO CITACAO RESUMO
 
 
 %%
@@ -105,7 +106,7 @@ char *tira_ns(char * texto);
 																			 	if(_modoHTML)printaH("%s","</ol>");
 																			 	break;
 																			 	case 18:																			
-																			 	if(_modoLatex)printaL("%s","\\\\");
+																			 	if(_modoLatex)printaL("%s","\\\\\n");
 																			 	if(_modoHTML)printaH("%s","</li>\n");
 																			 	break;
 																			 	case 19:																			
@@ -114,6 +115,10 @@ char *tira_ns(char * texto);
 																			 	break;
 																			 	case 20:																			
 																			 	if(_modoLatex)printaL("%s","\\end{quote}");
+																			 	if(_modoHTML)printaH("%s","</q>\n");
+																			 	break;
+																			 	case 21:																			
+																			 	if(_modoLatex)printaL("%s","\\end{abstract}");
 																			 	if(_modoHTML)printaH("%s","</q>\n");
 																			 	break;
 																			 	default:
@@ -134,7 +139,7 @@ char *tira_ns(char * texto);
 																			 switch(ultimoEstado)
 																			 {
 																			 	case 6://verbatim
-																			 	if(_modoLatex)printaL("%s","\\end{verbatim}");
+																			 	if(_modoLatex)printaL("%s","\\end{verbatim}\n");
 																			 	if(_modoHTML)printaH("%s","</pre>");
 																			 	break;
 																			 	
@@ -178,7 +183,7 @@ char *tira_ns(char * texto);
 																								}
 
 	/*novo item*/
-<LISTA_I,LISTA_O>\/item/[^\/]*													{BEGIN ITEM;
+<LISTA_I,LISTA_O>\/item\/[^\/]*													{BEGIN ITEM;
 																				 estado=ITEM;
 																				 apontaEstados++;
 																				 estados[apontaEstados]=estado;
@@ -276,12 +281,12 @@ char *tira_ns(char * texto);
 																	 		}
 	/*cores do texto*/
 <NORMAL,NEGRITO,ITALICO,SUBLINHADO,LISTA_I,LISTA_O,TABELA,NIS,ITEM>\/(vermelho|verde|azul|amarelo|rosa|laranja|violeta|cinzento|castanho)\/[^\/]*		{BEGIN COR;
-																									 	 estado=COR;
-																									 	 apontaEstados++;
-																									 	 estados[apontaEstados]=estado;
-																							 		 	 {if(_modoLatex)printaL("%s",(char*)corL(yytext+1));
-																											if(_modoHTML)printaH("%s",(char*)corH(yytext+1));}
-																							 			}
+																																					 	 estado=COR;
+																																					 	 apontaEstados++;
+																																					 	 estados[apontaEstados]=estado;
+																																			 		 	 {if(_modoLatex)printaL("%s",(char*)corL(yytext+1));
+																																							if(_modoHTML)printaH("%s",(char*)corH(yytext+1));}
+																																			 			}
 
 	/*texto nao formatado*/
 <NORMAL,TABELA>!nf![^!]*											{BEGIN VERBATIM;//printf("VERB_%s_\n",yytext+4);
@@ -371,11 +376,27 @@ char *tira_ns(char * texto);
 										if(_modoLatex)printaL("%s",(char*)itemDL(yytext+6));
 										if(_modoHTML) printaH("%s",(char*)itemDH(yytext+6));
 									   }
+
+<*>\/reticencias\/					{if(_modoLatex)printaL("%s",(char*)dotsL());
+								     if(_modoHTML) printaH("%s",(char*)dotsH());
+								    }
+
+<NORMAL>\/resumo\/[^\/]*			{BEGIN RESUMO;
+									   estado=RESUMO;
+									   apontaEstados++;
+									   estados[apontaEstados]=estado;
+										if(_modoLatex)printaL("%s",(char*)initResumoL(yytext+8));
+										if(_modoHTML) printaH("%s",(char*)initResumoH(yytext+8));
+									   }
+
+<NORMAL>\/np\/						{if(_modoLatex)printaL("%s",(char*)newpageL());
+								    }
 									   
-<*>.																	{printaL("%s",yytext);printaH("%s",yytext);}
+<*>.								{printaL("%s",yytext);
+									 printaH("%s",yytext);
+									}
 
 %%
-
 
 
 

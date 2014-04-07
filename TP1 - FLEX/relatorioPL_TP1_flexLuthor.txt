@@ -1,31 +1,35 @@
 /titulo/Relatório de PL TP1
 /autores/Duarte Duarte 61001, Fábio Gomes 61065
-/data/
 /%/colocar a imagem da Uminho e do curso/fim/
 /fimdecapa/
 
  
 
-/indice/
-/indiceimg/
+/indice//np/
+/indiceimg//np/
+/resumo/
+lalal
+/fim//np/
+
 
 
 /sec1/ Introdução
 Dos temas apresentados, escolhemos o Pré-Processador para LaTeX e HTML pois pareceu-nos um bom desafio para aplicar os conhecimentos adquiridos nas aulas de Processamento de Linguagens. Foi assim que nasceu o flexLuthor, o programa capaz de apartir de texto pré formatado convertê-lo para LaTex e/ou HTML. 
 Para tal é necessário criar tags simples e independentes de forma a serem interpretadas e convertidas para vários tipos de documentos finais. Tendo como base um ficheiro com tags conhecidas, o Luthor analisa e converte para o tipo de ficheiro final indicado pelo utilizador. Tudo isto usando a ferramenta FLex para analisar o ficheiro fonte detetando padrões.
-
+/np/
 
 /sec1/ flexLuthor
 /sec2/ O porquê do nome escolhido
 
+
 /sec2/ Inicio da aplicação
 /sec3/ Invocação inicial
-Só é possível definir o tipo de ficheiro de output através dos argumentos com que se inicia o programa. Existem://
--l -o nome-do-ficheiro  - Imprime para o ficheiro indicado em formato LaTeX//
--h -o nome-do-ficheiro - Imprime para o ficheiro indicado em formato HTML//
--lh -o nome-do-ficheiro - Imprime para 2 ficheiros separados em LaTeX e HTML//
--hl -o nome-do-ficheiro - Imprime para 2 ficheiros separados em LaTeX e HTML//
---v ou --version  - Mostra a versão do programa//
+Só é possível definir o tipo de ficheiro de output através dos argumentos com que se inicia o programa. Existem:/nl/
+-l -o nome-do-ficheiro  - Imprime para o ficheiro indicado em formato LaTeX/nl/
+-h -o nome-do-ficheiro - Imprime para o ficheiro indicado em formato HTML/nl/
+-lh -o nome-do-ficheiro - Imprime para 2 ficheiros separados em LaTeX e HTML/nl/
+-hl -o nome-do-ficheiro - Imprime para 2 ficheiros separados em LaTeX e HTML/nl/
+--v ou --version  - Mostra a versão do programa/nl/
 
 /sec3/ Output criado
 
@@ -63,18 +67,123 @@ Só é possível definir o tipo de ficheiro de output através dos argumentos co
 /linha//tabela [numero de colunas](l|c|r) [,t:tamanho] [,l:legenda]/ ... /fim/ & Insere uma tabela, com alinhamento l(esquerda), c(centro) ou r(direita) e com tamanho em percentagem, a legenda que se pretende, estes últimos dois opcionais./fim/
 /linha//linha/ texto /fim/ & Inserção de cada linha da tabela, cada campo é separado por uma barra vertical |/fim/
 /linha/!nf! texto !fim! & Texto não formatado, aparecerá tal e qual como foi escrito/fim/
-/linha//COR/ texto /fim/ & Altera a cor do texto para a cor indicada, COR pode ser rmelho, verde, azul, amarelo, rosa, laranja, violeta, cinzento ou castanho/fim/
+/linha//COR/ texto /fim/ & Altera a cor do texto para a cor indicada, COR pode ser vermelho, verde, azul, amarelo, rosa, laranja, violeta, cinzento ou castanho/fim/
 /linha//footnote/ texto /fim/ & Insere uma nota de rodapé com o texto indicado/fim/
 /linha//nl/ & Insere uma quebra de linha/fim/
 /linha//LaTeX/ & Insere o símbolo do Latex/fim/
 /linha//tab/ & Insere um tab/fim/
 /linha//hlink/ texto | site /fim/ & Insere um link em que aparece o texto no documento mas com hiperligação para o que for colocado no local que diz site/fim/
-/linha//.../ & 					coloca reticencias/fim/
-/linha//resumo/ texto /fim/ & 		insere o resumo/fim/
+/linha//reticencias/ & 					Coloca reticencias/fim/
+/linha//resumo/ texto /fim/ & 		Insere o resumo/fim/
+/linha//reticencias/ & 		Insere reticencias/fim/
+/linha//np/ & 		Efectua uma quebra de página/fim/
 /fim/
 
 /sec2/ Exemplo de utilização
+!nf!/data/ !fim!
+/data/ /nl/
+!nf!/n/ texto /fim/!fim!
+/n/ texto /fim/ /nl/
+!nf!/s/ texto !fim! 
+/s/ texto /fim/ /nl/
+!nf!/s/ texto !fim! 
+/i/ texto /fim/ /nl/
+!nf!/nis/ texto !fim! 
+/nis/ texto /fim/ /nl/
+!nf!/citar/ "Sempre que o Homem sonha o mundo pula e avança" /fim/!fim! 
+/citar/ "Sempre que o Homem sonha o mundo pula e avança" /fim/
+!nf!/li/ 
+/item/ Este é um topico/fim/
+/item/ Este é outro/fim/
+/item/ E apareceu mais um/fim/
+/fim/!fim!
+/li/
+/item/ Este é um topico/fim/
+/item/ Este é outro/fim/
+/item/ E apareceu mais um/fim/
+/fim/
+!nf!/lo/
+/item/ Este é o ponto 1/fim/
+/item/ Este é o ponto 2/fim/
+/item/ Este é o ponto 3/fim/
+/fim/!fim!
+/lo/
+/item/ Este é o ponto 1/fim/
+/item/ Este é o ponto 2/fim/
+/item/ Este é o ponto 3/fim/
+/fim/
+!nf!/lo/
+/item/ Este é o ponto 1/fim/
+/item/ Este é o ponto 2/fim/
+/lo/
+/item/ Este é um ponto mais dentro/fim/
+/li/
+/item/ E nao ordenado ainda mais dentro/fim/
+/item/ E este é outro/fim/
+/fim/
+/fim/
+/fim/!fim!
+/lo/
+/item/ Este é o ponto 1/fim/
+/item/ Este é o ponto 2/fim/
+/lo/
+/item/ Este é um ponto mais dentro/fim/
+/li/
+/item/ E nao ordenado ainda mais dentro/fim/
+/item/ E este é outro/fim/
+/fim/
+/fim/
+/fim/
+!nf!/dic/
+/item/ Cabeçadas | só nada parede /fim/
+/item/ Patadas | só na bola /fim/
+/fim/
+!fim!
+/dic/
+/item/ Cabeçadas | só na parede /fim/
+/item/ Patadas | só na bola /fim/
+/item/ Pinheiros | só no monte /fim/
+/fim/
+!nf! /imagem,t:0.4,l:Universidade do Minho,c:uminho.jpg/ !fim!
+/imagem,t:0.4,l:Universidade do Minho,c:uminho.jpg/
+!nf! /sl/ este aparece só no LaTeX, por isso no HTML não o vão ler /fim/ !fim! 
+/sl/ este aparece só no LaTeX, por isso no HTML não o vão ler /fim/
+!nf! /sh/ este aparece só no HTML, por isso no LaTeX não o vão ler /fim/ !fim! 
+/sh/ este aparece só no HTML, por isso no LaTeX não o vão ler /fim/
+!nf!/tabela2l,t:1,l:A tabela/ 
+/linha/A primeira linha, primeira coluna & A primeira linha, segunda coluna/fim/
+/linha/A segunda linha, primeira coluna & A segunda linha, segunda coluna/fim/
+/fim/!fim!
+/tabela2l,t:1,l:A tabela/ 
+/linha/A primeira linha, primeira coluna & A primeira linha, segunda coluna
+/linha/A segunda linha, primeira coluna & A segunda linha, segunda coluna
+/fim/
+!nf! /vermelho/ Equipa que veste de vermelho /fim/ !fim! 
+/vermelho/ Equipa que veste de vermelho /fim/
+!nf!/verde/ A relva do campo é verde /fim/!fim! 
+/verde/ A relva do campo é verde /fim/
+!nf!/azul/ O céu hoje é azul /fim/!fim! 
+/azul/ O céu hoje é azul /fim/
+!nf!/amarelo/ O sol brilha sem parar /fim/!fim! 
+/amarelo/ O sol brilha sem parar /fim/
+!nf!/rosa/ E as petalas da flor são rosa /fim/!fim! 
+/rosa/ E as petalas da flor são rosa /fim/
+!nf!/laranja/ e outras são laranja /fim/!fim! 
+/laranja/ e outras são laranja /fim/
+!nf!/violeta/ A violeta é a mais bonita /fim/!fim! 
+/violeta/ A violeta é a mais bonita /fim/
+!nf!/cinzento/ De repente o céu ficou cinzento /fim/!fim! 
+/cinzento/ De repente o céu ficou cinzento /fim/
+!nf!/castanho/ Um troco todo castanho /fim/!fim! 
+/castanho/ Um troco todo castanho /fim/
+!nf! /LaTeX/ !fim!
+/LaTeX/
+!nf! /hlink/ Google | www.google.com /fim/ !fim!
+/hlink/ Google | www.google.com /fim/
+!nf! este texto pode ser/reticencias/ !fim!
+este texto pode ser /reticencias/
 
+/nl/
 /sec1/ Previsões do trabalho futuro
 Futuramente poderíamos incluir mais formatos de output como o XML ou RTF e mais tags de formatação de forma bastante simples pois é apenas necessário um ficheiro para cada e acrescentar as respetivas funções de conversão.
 As tags por nós criadas foram pensadas a serem legíveis para que o utilizador detete logo a sua função, pretendemos depois que estas sejam mais curtas para diminuir a sua presença no texto fonte.
@@ -86,5 +195,5 @@ Este tipo de abordagem permitiu-nos um ponto de vista diferente sobre como abord
 
 /sec1/ Autores
 /%/colocar imagem dos autores do flexLuthor e respetivos nomes/fim/
-/imagem,t:1,l:Duarte Duarte 61001,c:12.jpg/
+/imagem,t:0.75,l:Duarte Duarte 61001,c:12.png/
 /imagem,t:1,l:Fábio Gomes 61065,c:112.jpg/
