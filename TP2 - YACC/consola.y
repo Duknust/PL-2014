@@ -31,7 +31,7 @@ ListaInstrucoes : ListaInstrucoes SEPN Inst
 Inst : LOAD Comando_load ficheiro {printf("LOAD! Ficheiro lido com o nome: %s\n",$3);}
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
 	 | RANKING ficheiro
-	 | EXIT {printf("---Até à proxima!---\n"); exit(0);}
+	 | EXIT {printf("---Até à proxima!---\n"); return;/*exit(0);*/}
 	 | LISTING Comando_list
 	 | INFO
 	 ;
@@ -53,9 +53,9 @@ int yyerror(char *s){
 	fprintf(stderr,"%s",s);
 	return -1;
 }
-
+/*
 int main(){
 	yyparse();
 	return 0;
-}
+}*/
 

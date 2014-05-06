@@ -1,5 +1,6 @@
 %{
 #include "y.tab.h"	
+#include "list.h"	
 %}
 
 %%
@@ -29,7 +30,7 @@
 
 "torneio"			return TORNEIO;
 
-\"[a-z\ \.]*\"		{ yylval.tipoficheiro=strdup(yytext);
+\"[a-zA-Z0-9\ \.]*\"		{ yylval.tipoficheiro=strdup(yytext);
 					  printf("estou aqui tex!\n");
 				 	  return ficheiro;}
 
@@ -46,3 +47,15 @@
 .					;			
 
 %%
+
+
+int main(int argc, char *argv[])
+{
+    yyparse();
+    yylex();
+    yyin = fopen("f.txt", "r");
+    yyparse();
+    yylex();
+    fclose(yyin);
+    return 1;
+}
