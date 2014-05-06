@@ -2,6 +2,8 @@
 #include "y.tab.h"	
 %}
 
+%option prefix ="consola"
+
 %%
 "load"				return LOAD;
 
