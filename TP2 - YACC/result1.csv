@@ -1,4 +1,5 @@
-Stno;Chip;Database Id;Surname;First name;YB;S;Block;nc;Start;Finish;Time;DIF
+﻿Stno;Chip;Database Id;Surname;First name;YB;S;Block;nc;Start;Finish;Time;DIF
 5063;9992323;5063;Castro;Sandro;72;M;5;0;16:01:00;16:30:07;00:29:07;FAC
 90051;424534;467;Silva;Rui;98;M;5;0;16:05:00;16:50:01;00:45:01;DIF
-55815;606060;4845;Ninho;Bru;92;M;5;0;16:10:00;20:15;06:05:00;DIF
+90051;424534;467;Silva;Rui;98;M;5;0;16:05:00;16:50:01;00:45:01;DIF
+90051;424534;467;Silva;Rui;98;M;5;0;16:05:00;16:50:01;00:45:01;DIF

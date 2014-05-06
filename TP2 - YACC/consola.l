@@ -55,9 +55,9 @@ int main(int argc, char *argv[])
 {
     consolaparse();
     yylex();
-    yyin = fopen("f.txt", "r");
-    consolaparse();
-    yylex();
+    //yyin = fopen("z.txt", "r");
+    //consolaparse();
+    //yylex();
     fclose(yyin);
     return 1;
 }

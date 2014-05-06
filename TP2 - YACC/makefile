@@ -1,4 +1,4 @@
-objects=lex.consola.o csv.tab.o consola.tab.o lex.csv.o -ll
+objects=lex.consola.o csv.tab.o consola.tab.o lex.csv.o list.o -ll
 
 cons : $(objects)
 	gcc -o cons $(objects)
@@ -30,11 +30,12 @@ lex.consola.c : consola.l
 	flex consola.l
 	
 	
-consola.tab.h consola.tab.c : consola.y
+consola.tab.h consola.tab.c : consola.y 
 	yacc -d -b "consola" -p "consola" consola.y
 	
-
+list.o: list.h
+		gcc -c list.c
 
 
 clean:
-	rm -f *.o consola.tab.* lex.consola.* csv.tab* lex.csv*
+	rm -f *.o consola.tab.* lex.consola.* csv.tab* lex.csv* cons
