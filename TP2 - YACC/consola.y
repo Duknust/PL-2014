@@ -14,7 +14,7 @@ int yyerror(char* s);
 }
 
 %type <tipoficheiro> ficheiro Inst
-%type <tiponProva> prova Comando_list
+%type <tiponProva> prova
 
 
 
@@ -30,8 +30,8 @@ ListaInstrucoes : ListaInstrucoes SEPN Inst
 
 Inst : LOAD Comando_load ficheiro {printf("LOAD! Ficheiro lido com o nome: %s\n",$3);}
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
-	 | RANKING ficheiro
-	 | EXIT {printf("---Até à proxima!---\n"); exit(0);}
+	 | RANKING ficheiro {$$=$2;}
+	 | EXIT {printf("---Até à proxima!---\n"); return;/*exit(0);*/}
 	 | LISTING Comando_list
 	 | INFO
 	 ;
@@ -42,7 +42,7 @@ Comando_load : CONF
 			 ;
 
 Comando_list : PROVAS
-			 | PARTICIPANTES prova {$$ = $2; printf("PARTICIPANTES DA PROVA: %d\n",$2);}
+			 | PARTICIPANTES prova {printf("PARTICIPANTES DA PROVA: %d\n",$2);}
 			 | PROVA
 			 | TORNEIO
 			 ;
@@ -53,9 +53,9 @@ int yyerror(char *s){
 	fprintf(stderr,"%s",s);
 	return -1;
 }
-
+/*
 int main(){
 	yyparse();
 	return 0;
-}
+}*/
 

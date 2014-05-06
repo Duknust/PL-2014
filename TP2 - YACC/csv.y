@@ -15,13 +15,13 @@ int yyerror(char* s);
 %type <tipoString> ListaAtributos
 %type <tipoInt> Campo Linha
 
-%start Consola
+%start Csv
 
 %%
 
 Csv : ListaAtributos SEPL ListaLinhas '$'
 
-ListaAtributos : ListaAtributos SEPC string
+ListaAtributos : ListaAtributos SEPC c_string
 			   | c_string
 			   ;
 
@@ -37,13 +37,9 @@ Campo : c_string
       | c_inteiro
       ;
 
+%%
 
 int yyerror(char *s){
 	fprintf(stderr,"%s",s);
 	return -1;
-}
-
-int main(){
-	yyparse();
-	return 0;
 }

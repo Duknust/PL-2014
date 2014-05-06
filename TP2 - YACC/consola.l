@@ -1,8 +1,11 @@
 %{
-#include "y.tab.h"	
+#include "consola.tab.h"	
+
 %}
 
 %option prefix ="consola"
+
+%option noyywrap
 
 %%
 "load"				return LOAD;
@@ -31,11 +34,11 @@
 
 "torneio"			return TORNEIO;
 
-\"[a-z\ \.]*\"		{ yylval.tipoficheiro=strdup(yytext);
+\"[a-zA-Z0-9\ \.]*\"		{ consolalval.tipoficheiro=strdup(yytext);
 					  printf("estou aqui tex!\n");
 				 	  return ficheiro;}
 
-[0-9]+				{ yylval.tiponProva=atoi(yytext);
+[0-9]+				{ consolalval.tiponProva=atoi(yytext);
 					  printf("estou aqui num!\n");
 				 	  return prova;}
 
@@ -48,3 +51,15 @@
 .					;			
 
 %%
+
+
+int main(int argc, char *argv[])
+{
+    consolaparse();
+    yylex();
+    yyin = fopen("f.txt", "r");
+    consolaparse();
+    yylex();
+    fclose(yyin);
+    return 1;
+}

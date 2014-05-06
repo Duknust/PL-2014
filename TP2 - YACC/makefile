@@ -1,14 +1,40 @@
-cons : y.tab.o lex.yy.o
-	gcc -o cons y.tab.o lex.yy.o -ll
+objects=lex.consola.o csv.tab.o consola.tab.o lex.csv.o -ll
 
-y.tab.o : y.tab.h y.tab.c
-	gcc -c y.tab.c
+cons : $(objects)
+	gcc -o cons $(objects)
 
-lex.yy.o : lex.yy.c y.tab.h
-	gcc -c lex.yy.c
 
-y.tab.h y.tab.c : consola.y
-	yacc -d consola.y
 
-lex.yy.c : consola.l
+csv.tab.o : csv.tab.h csv.tab.c
+	gcc -c csv.tab.c
+
+lex.csv.o : lex.csv.c csv.tab.h
+	gcc -c lex.csv.c
+
+csv.tab.h csv.tab.c : csv.y
+	yacc -d -b "csv" -p "csv" csv.y
+
+lex.csv.c : csv.l
+	flex csv.l
+
+
+consola.tab.o : consola.tab.h consola.tab.c
+	gcc -c consola.tab.c
+
+
+lex.consola.o : lex.consola.c consola.tab.h
+	gcc -c lex.consola.c
+
+
+lex.consola.c : consola.l
 	flex consola.l
+	
+	
+consola.tab.h consola.tab.c : consola.y
+	yacc -d -b "consola" -p "consola" consola.y
+	
+
+
+
+clean:
+	rm -f *.o consola.tab.* lex.consola.* csv.tab* lex.csv*
