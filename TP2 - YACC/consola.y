@@ -5,7 +5,7 @@ int yylex(void);
 int yyerror(char* s);
 %}
 
-%token SEP LOAD SAVE RANKING EXIT LISTING INFO CONF DB RESULT PROVAS 
+%token SEPN LOAD SAVE RANKING EXIT LISTING INFO CONF DB RESULT PROVAS 
 %token PARTICIPANTES PROVA TORNEIO ficheiro prova
 
 %union{
@@ -24,12 +24,12 @@ int yyerror(char* s);
 Consola : ListaInstrucoes '$';
 
 
-ListaInstrucoes : ListaInstrucoes SEP Inst
+ListaInstrucoes : ListaInstrucoes SEPN Inst
 				| Inst
 				;
 
-Inst : LOAD Comando_load ficheiro {printf("Apanhei! %s\n",$3);}
-	 | SAVE ficheiro {printf("JA FOSTE! %s\n",$2);}
+Inst : LOAD Comando_load ficheiro {printf("LOAD! Ficheiro lido com o nome: %s\n",$3);}
+	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
 	 | RANKING ficheiro
 	 | EXIT {printf("---Até à proxima!---\n"); exit(0);}
 	 | LISTING Comando_list
@@ -42,7 +42,7 @@ Comando_load : CONF
 			 ;
 
 Comando_list : PROVAS
-			 | PARTICIPANTES prova
+			 | PARTICIPANTES prova {$$ = $2; printf("PARTICIPANTES DA PROVA: %d\n",$2);}
 			 | PROVA
 			 | TORNEIO
 			 ;
