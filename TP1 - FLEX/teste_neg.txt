@@ -6,19 +6,29 @@
 
 \sec1\Capitulo 1
 \sec2\O principio 
-O bo tem mel para\footnote\o bo tem mel\fim\ me dominar assim no amor o bo tem mel!\nl\ NOVO PARAGROFO\nl\OOOO!\nl\
+O bo tem mel para\footnote\o bo tem mel\fim\ me dominar assim no amor o bo tem mel!\nl\ NOVO PARAGRAFO\nl\OOOO!\nl\
 
-\nl\
 \vermelho\vermelhinho \fim\\azul\azul a belem \fim\\rosa\que usava a Juve \fim\\verde\das cobras \fim\\amarelo\ da cor do solinho \fim\\laranja\ o fruto dos citrinos \fim\\violeta\  are vio \fim\\cinzento\ as fifty \fim\\castanho\ aquilo que sai e nao entra mais\fim\
 \nl\
-
+\n\Preto \i\em italia\fim\\fim\ tipo \LaTeX\ em \vermelho\vermelhinho\fim\ no dia \data\.
+\nl\
 
 
 
 \%\o grande comentario da actualidade\fim\
 
 
-normal
+
+
+\tabela5c,t:3.5,l:bo tem mel na tabelaz\
+\linha\1 & 2 & 3 & 4 & 5\fim\
+\linha\6 & 7 & 8 & 9 &10\fim\
+\linha\11&12 &13 &14 &15\fim\
+\fim\
+
+
+
+\tab\normal
 \li\
 \item\iiiii\fim\
 \item\ooooo\fim\
@@ -30,7 +40,7 @@ normal
 \fim\
 \fim\
 
-ordenada
+\tab\ordenada
 
 \lo\
 \item\iiiii\fim\
@@ -39,6 +49,27 @@ ordenada
 \fim\
 
 
-\imagem,t:1,l:xml,c:botem.jpg\\fim\
+\imagem,t:1,l:xml,c:botem.jpg\
 
 
+\dic\
+\item\lixo qualquer| bo tem mel\fim\
+\item\zé | acosta\fim\
+\fim\
+
+
+\nf\
+
+ gnend            jfyf
+  \LaTeX  \b
+
+\fim\
+
+\sl\ \n\NO LATEX\fim\ \fim\
+
+\sh\ \i\NO HTML\fim\\fim\
+
+
+Site do \hlink\Google |http://www.google.com\fim\
+\nl\
+JJ \citar\A Experiência\fim\
