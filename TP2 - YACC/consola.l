@@ -1,6 +1,5 @@
 %{
 #include "consola.tab.h"	
-
 %}
 
 %option prefix ="consola"

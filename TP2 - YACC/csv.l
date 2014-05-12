@@ -1,3 +1,4 @@
+%{
 #include "csv.tab.h"	
 %}
 
@@ -5,13 +6,20 @@
 %option noyywrap
 
 %%
-[a-zA-Z\_][a-zA-Z0-9\_\-]+			{ csvlval.tipoString=strdup(yytext);
-									  printf("estou aqui csv!\n");
-				 			  		  return c_string;}
+[a-zA-Z0-9\_\-\ ]+			{ /*csvlval.tipoString=strdup(yytext);*/
+							  //printf("estou aqui csv!\n");
+				 			  return c_string;
+				 			}
 
-[0-9]+								{ csvlval.tipoInt=atoi(yytext);
-									  printf("estou aqui csv!\n");
-				 			  		  return c_inteiro;}
+\n+ 						{//printf("SL!\n");
+							 return SEPL;
+							}
+
+\; 							{//printf("SC!\n");
+                             return SEPC;
+                            }
+
+.							return 33;
 
 %%
 

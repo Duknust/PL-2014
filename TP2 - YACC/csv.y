@@ -5,15 +5,13 @@ int yylex(void);
 int yyerror(char* s);
 %}
 
-%token SEPL SEPC c_string c_inteiro
+%token SEPL SEPC c_string
 
 %union{
 	char* tipoString;
-	int tipoInt;
 }
 
-%type <tipoString> ListaAtributos
-%type <tipoInt> Campo Linha
+%type <tipoString> ListaAtributos c_string
 
 %start Csv
 
@@ -29,13 +27,10 @@ ListaLinhas : ListaLinhas SEPL Linha
 			| Linha
 			;
 
-Linha : Linha SEPC Campo
-	  | Campo
+Linha : Linha SEPC c_string
+	  | c_string
 	  ;
 
-Campo : c_string
-      | c_inteiro
-      ;
 
 %%
 
@@ -43,3 +38,8 @@ int yyerror(char *s){
 	fprintf(stderr,"%s",s);
 	return -1;
 }
+
+//int main(){
+//	yyparse();
+//	return 0;
+//}
