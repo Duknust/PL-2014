@@ -1,12 +1,17 @@
 %{
-#include <stdio.h>	
+#include "linked_list.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+extern FILE * csvin;
 int yylex(void);
 int yyerror(char* s);
+
 %}
 
 %token SEPN LOAD SAVE RANKING EXIT LISTING INFO CONF DB RESULT PROVAS 
 %token PARTICIPANTES PROVA TORNEIO ficheiro prova
+
 
 %union{
 	char* tipoficheiro;
@@ -28,7 +33,19 @@ ListaInstrucoes : ListaInstrucoes SEPN Inst
 				| Inst
 				;
 
-Inst : LOAD Comando_load ficheiro {printf("LOAD! Ficheiro lido com o nome: %s\n",$3);}
+Inst : LOAD Comando_load ficheiro {$3++; ; 
+								   $3[strlen($3)-1]='\0';
+								   printf("LOAD! Ficheiro lido com o nome: %s\n",$3);
+								   csvin = fopen($3, "r");
+								   char ***m=NULL;
+								   m= (char ***) csvparse();
+								   if(!m==NULL)
+										print_matriz(m);
+								   else
+										printf("ERRO\n");
+								   /*if($2==CONF){printf("CONFIG lido!\n");}*/
+								   }
+								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
 	 | RANKING ficheiro {$$=$2;}
 	 | EXIT {printf("---Até à proxima!---\n"); return 0; /*exit(0);*/}
