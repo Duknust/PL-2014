@@ -8,8 +8,15 @@
 int yylex(void);
 int yyerror(char* s);
 #include "linked_list.h"
-int m=50,n=20,p=20;
-char matriz [50][20][20];
+
+#define _NUMLINHAS 100
+#define _NUMCOLUNAS 20
+#define _CELULA 40
+
+char matriz [_NUMLINHAS][_NUMCOLUNAS][_CELULA];
+
+List csv_list;
+
 char *** m2;
 int h=0,l=0,hh=0,ll=0;
 
@@ -23,29 +30,50 @@ void print_matriz(){
 			}
 	}
 	
-	
+void print_lista(List lista){
+	//printf("%d\n", csv_list->totalCount);
+	List x = lista;
+	while(x->elems!=NULL){
+		List y = (List)x->elems->data;//printf(":%d\n", y->totalCount);
+		while(y->elems!=NULL){
+			printf("%s_",(char*)y->elems->data );
+			y->elems=y->elems->next;
+		}x->elems=x->elems->next;printf("\n");
+	}
+
+}	
 
 void Ato3P(){
 		int i,j;
 		
-		m2 = malloc(m * sizeof(char **));
+		m2 = malloc(_NUMLINHAS * sizeof(char **));
     assert(m2 != NULL);
-    for (i = 0; i < m; ++i)
+    for (i = 0; i < _NUMLINHAS; ++i)
     {
-        m2[i] = malloc(n * sizeof(char *));
+        m2[i] = malloc(_NUMCOLUNAS * sizeof(char *));
         assert(m2[i] != NULL);
-        for (j = 0; j < n; ++j)
+        for (j = 0; j < _NUMCOLUNAS; ++j)
         {
-            m2[i][j] = malloc(p);
+            m2[i][j] = malloc(_CELULA);
             assert(m2[i][j] != NULL);
         }
+    }}
+
+
+void AtoLL(){
+	//printf("ATOLL \n");
+    int i,j;
+    csv_list = List_Create(NULL,NULL,NULL);
+    
+    
+    for(i=0;i<h;i++){
+    	List l2 = List_Create(NULL,NULL,NULL);
+    	List_Push(csv_list,l2);
+        for(j=0;j<l;j++){
+        	List_Push(l2,matriz[i][j]);//printf("%d_", l2->totalCount);
+        }//printf("\n");
     }
-       
-printf("ALOCOU\n");
-		for(i=0;i<h;i++){
-			for(j=0;j<l;j++)
-				strcpy(m2[i][j],matriz[i][j]);
-			}
+
 	}
 	
 %}
@@ -60,8 +88,7 @@ printf("ALOCOU\n");
 }
 
 %type <tipoString>  c_string 
-%type <tipoLista>  '$'  Linha ListaLinhas
-%type <tipo3C>  Csv 
+%type <tipoLista>  '$'  Linha ListaLinhas Csv
 
 %start Csv
 
@@ -71,8 +98,10 @@ Csv : ListaLinhas '$' {printf("_FIM_\n");
 						//print_matriz(); 
 						//if($$!=NULL)
 							printf("\nCHEGUEIII\n");
-						Ato3P();
-						return m2;} ;
+						//Ato3P();
+							AtoLL();
+							//printf(".....Print da csv_list\n");print_lista(csv_list);printf(".....\n");
+						return csv_list;} ;
 
 ListaLinhas : ListaLinhas SEPL Linha {
 					 int i = 0;

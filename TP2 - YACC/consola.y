@@ -7,6 +7,8 @@ extern FILE * csvin;
 int yylex(void);
 int yyerror(char* s);
 
+
+
 %}
 
 %token SEPN LOAD SAVE RANKING EXIT LISTING INFO CONF DB RESULT PROVAS 
@@ -28,19 +30,19 @@ int yyerror(char* s);
 %%
 Consola : ListaInstrucoes '$';
 
-
 ListaInstrucoes : ListaInstrucoes SEPN Inst
-				| Inst
+				| Inst 
 				;
 
 Inst : LOAD Comando_load ficheiro {$3++; ; 
 								   $3[strlen($3)-1]='\0';
 								   printf("LOAD! Ficheiro lido com o nome: %s\n",$3);
 								   csvin = fopen($3, "r");
-								   char ***m=NULL;
-								   m= (char ***) csvparse();
-								   if(!m==NULL)
-										print_matriz(m);
+								   //char ***m=NULL;
+								   List ll = NULL;
+								   ll= (List) csvparse();
+								   if(!ll==NULL)
+										print_lista(ll);
 								   else
 										printf("ERRO\n");
 								   /*if($2==CONF){printf("CONFIG lido!\n");}*/
@@ -48,9 +50,10 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
 	 | RANKING ficheiro {$$=$2;}
-	 | EXIT {printf("---Até à proxima!---\n"); return;/*exit(0);*/}
+	 | EXIT {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
 	 | LISTING Comando_list
 	 | INFO
+	 | '$' {return 0;}
 	 ;
 
 Comando_load : CONF
