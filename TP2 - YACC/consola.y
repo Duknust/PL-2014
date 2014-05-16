@@ -16,6 +16,54 @@ extern List csvparse();
 int comando_flag = -1;
 
 
+void print_ListaLinhas(ListaLinhas l){
+	ListaLinhas lis = l;
+	Linha linha;
+	char * x ;
+	linha = l->u.d2.s1;
+	char * texto;
+		while(lis->flag!=PScons_csv_ListaLinhas_Fim){
+			//printf("listaflag=%d\n",lis->flag);
+			linha = lis->u.d1.s2;
+				
+				while(linha->flag!=PScons_csv_Linha_Fim){
+					
+					//printf("linhaflag=%d\n",linha->flag);
+					x = (char*)linha->u.d1.s2;
+					texto=strdup(x);
+					printf("%s_",texto);
+					linha = linha->u.d1.s1;					
+					}
+				x = (char*)linha->u.d2.s1;
+				texto=strdup(x);
+				printf("%s_\n",texto);
+					
+				
+			lis = lis->u.d1.s1;	
+			}
+			
+		linha = lis->u.d2.s1;
+			
+		while(linha->flag!=PScons_csv_Linha_Fim){
+			
+			//printf("linhaflag=%d\n",linha->flag);
+			x = (char*)linha->u.d1.s2;
+			texto=strdup(x);
+			printf("%s_",texto);
+			linha = linha->u.d1.s1;					
+			}
+		x = (char*)linha->u.d2.s1;
+		texto=strdup(x);
+		printf("%s_\n",texto);
+				
+			
+		
+		
+		
+	
+}
+
+
 %}
 
 %token SEPN LOAD SAVE RANKING EXIT LISTING INFO CONF DB RESULT PROVAS 
@@ -47,13 +95,17 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   printf("LOAD! Ficheiro lido com o nome: %s\n",$3);
 								   csvin = fopen($3, "r");
 
-								   printf("devia morrer!");
 
 									if (comando_flag == _CONF){
 										(void)csvparse();
-										printf("antes do Push\n");
+										printf("Push na Lista\n");
 										List_Push(listaProvas,csvList);
-										printf("\ncount=%d\n",listaProvas->totalCount);
+										if(listaProvas==NULL)
+											printf("lista NULL\n");
+										else
+											printf("\ncount da listaProvas=%d\n",listaProvas->totalCount);
+											
+										print_ListaLinhas(csvList);
 									}
 								   }
 								   

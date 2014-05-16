@@ -27,7 +27,7 @@ int yyerror(char* s);
 
 %%
 
-Csv : ListaLinhasC '$' {$$ = $1; csvList = $$; YYACCEPT;}
+Csv : ListaLinhasC '$' {$$ = $1; valorzinho=1;csvList = $$; YYACCEPT;}
     ;
 
 ListaLinhasC : ListaLinhasC SEPL LinhaC {$$ = cons_csv_ListaLinhas($1, $3);}

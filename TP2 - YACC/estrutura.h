@@ -5,7 +5,7 @@
 #include "csv.ger.h"
 
 ListaLinhas csvList;
-
+int valorzinho;
 List listaProvas;
 
 #endif

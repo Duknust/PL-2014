@@ -18,11 +18,11 @@ int total = 0;
 								}
 
 \n+ 						{total++;
-							 printf("\nSL! %d\n",total);
+							 //printf("\nSL! %d\n",total);
 							 return SEPL;
 							}
 
-\; 							{printf(" SC ");
+\; 							{//printf(" SC ");
                              return SEPC;
                             }
                             
