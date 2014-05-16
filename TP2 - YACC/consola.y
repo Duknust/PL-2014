@@ -1,5 +1,4 @@
 %{
-#include "linked_list.h"
 #include "estrutura.h"	
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,9 +50,10 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   printf("devia morrer!");
 
 									if (comando_flag == _CONF){
-										int i =csvparse();
+										(void)csvparse();
+										printf("antes do Push\n");
 										List_Push(listaProvas,csvList);
-										printf("%d",i);
+										printf("\ncount=%d\n",listaProvas->totalCount);
 									}
 								   }
 								   

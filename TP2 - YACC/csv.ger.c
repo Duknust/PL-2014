@@ -2,7 +2,7 @@
  * Constructor Function Implementations
  * -----------------------------------
  */
-
+#include "csv.ger.h"
 ListaLinhas  cons_csv_ListaLinhas( ListaLinhas a1, Linha a2)
 {
     ListaLinhas aux0;

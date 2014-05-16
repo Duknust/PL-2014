@@ -1,16 +1,15 @@
 #ifndef _CSVGER
 #define _CSVGER
 
-/* -----------------------------------
- * Production Selectors
- * -----------------------------------
- */
-
 #define PScons_csv_ListaLinhas  2000
 #define PScons_csv_ListaLinhas_Fim  2001
 
 #define PScons_csv_Linha  2002
 #define PScons_csv_Linha_Fim  2003
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 /* -----------------------------------
  * Abstract Data Types Definition

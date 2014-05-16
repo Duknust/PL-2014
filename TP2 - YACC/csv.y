@@ -5,8 +5,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <assert.h>
-#include "csv.ger.h"
-#include "estrutura.h"	
+#include "estrutura.h"
 
 int yylex(void);
 int yyerror(char* s);	

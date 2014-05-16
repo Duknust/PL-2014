@@ -1,7 +1,8 @@
 %{
 
+#include "csv.ger.h"	
 #include "linked_list.h"
-#include "csv.tab.h"	
+#include "csv.tab.h"
 
 int total = 0;
 
