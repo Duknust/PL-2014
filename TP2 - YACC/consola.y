@@ -1,12 +1,20 @@
 %{
 #include "linked_list.h"
+#include "estrutura.h"	
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 extern FILE * csvin;
 int yylex(void);
 int yyerror(char* s);
+extern List csvparse();
 
+#define _CONF 1000
+#define _DB 1001
+#define _RESULT 1002
+
+int comando_flag = -1;
 
 
 %}
@@ -25,6 +33,7 @@ int yyerror(char* s);
 
 
 
+
 %start Consola
 
 %%
@@ -38,14 +47,14 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   $3[strlen($3)-1]='\0';
 								   printf("LOAD! Ficheiro lido com o nome: %s\n",$3);
 								   csvin = fopen($3, "r");
-								   //char ***m=NULL;
-								   List ll = NULL;
-								   ll= (List) csvparse();
-								   if(!ll==NULL)
-										print_lista(ll);
-								   else
-										printf("ERRO\n");
-								   /*if($2==CONF){printf("CONFIG lido!\n");}*/
+
+								   printf("devia morrer!");
+
+									if (comando_flag == _CONF){
+										int i =csvparse();
+										List_Push(listaProvas,csvList);
+										printf("%d",i);
+									}
 								   }
 								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
@@ -56,9 +65,9 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 	 | '$' {return 0;}
 	 ;
 
-Comando_load : CONF
-			 | DB
-			 | RESULT
+Comando_load : CONF {comando_flag = _CONF;}
+			 | DB {comando_flag = _DB;}
+			 | RESULT {comando_flag = _RESULT;}
 			 ;
 
 Comando_list : PROVAS

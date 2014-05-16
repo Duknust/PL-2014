@@ -54,15 +54,14 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 83 "csv.y"
+#line 17 "csv.y"
 {
 	char* tipoString;
-	List tipoLista;
-	int tipoInt;
-	char *** tipo3C;
+	ListaLinhas listalinhas;
+	Linha linha;
 }
 /* Line 1529 of yacc.c.  */
-#line 66 "csv.tab.h"
+#line 65 "csv.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

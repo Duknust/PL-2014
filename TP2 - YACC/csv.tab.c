@@ -96,77 +96,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <assert.h>
+#include "csv.ger.h"
+#include "estrutura.h"	
+
 int yylex(void);
-int yyerror(char* s);
-#include "linked_list.h"
-
-#define _NUMLINHAS 100
-#define _NUMCOLUNAS 20
-#define _CELULA 40
-
-char matriz [_NUMLINHAS][_NUMCOLUNAS][_CELULA];
-
-List csv_list;
-
-char *** m2;
-int h=0,l=0,hh=0,ll=0;
-
-void print_matriz(){
-		int i,j;
-		printf("h=%d,l=%d\n",h,l);
-		for(i=0;i<h;i++){
-			for(j=0;j<l;j++)
-				{printf("%s_",matriz[i][j]);}
-			printf("\n");
-			}
-	}
-	
-void print_lista(List lista){
-	//printf("%d\n", csv_list->totalCount);
-	List x = lista;
-	while(x->elems!=NULL){
-		List y = (List)x->elems->data;//printf(":%d\n", y->totalCount);
-		while(y->elems!=NULL){
-			printf("%s_",(char*)y->elems->data );
-			y->elems=y->elems->next;
-		}x->elems=x->elems->next;printf("\n");
-	}
-
-}	
-
-void Ato3P(){
-		int i,j;
-		
-		m2 = malloc(_NUMLINHAS * sizeof(char **));
-    assert(m2 != NULL);
-    for (i = 0; i < _NUMLINHAS; ++i)
-    {
-        m2[i] = malloc(_NUMCOLUNAS * sizeof(char *));
-        assert(m2[i] != NULL);
-        for (j = 0; j < _NUMCOLUNAS; ++j)
-        {
-            m2[i][j] = malloc(_CELULA);
-            assert(m2[i][j] != NULL);
-        }
-    }}
-
-
-void AtoLL(){
-	//printf("ATOLL \n");
-    int i,j;
-    csv_list = List_Create(NULL,NULL,NULL);
-    
-    
-    for(i=0;i<h;i++){
-    	List l2 = List_Create(NULL,NULL,NULL);
-    	List_Push(csv_list,l2);
-        for(j=0;j<l;j++){
-        	List_Push(l2,matriz[i][j]);//printf("%d_", l2->totalCount);
-        }//printf("\n");
-    }
-
-	}
-	
+int yyerror(char* s);	
 
 
 /* Enabling traces.  */
@@ -189,15 +123,14 @@ void AtoLL(){
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 83 "csv.y"
+#line 17 "csv.y"
 {
 	char* tipoString;
-	List tipoLista;
-	int tipoInt;
-	char *** tipo3C;
+	ListaLinhas listalinhas;
+	Linha linha;
 }
 /* Line 193 of yacc.c.  */
-#line 201 "csv.tab.c"
+#line 134 "csv.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -210,7 +143,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 214 "csv.tab.c"
+#line 147 "csv.tab.c"
 
 #ifdef short
 # undef short
@@ -493,7 +426,7 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    97,    97,   106,   114,   124,   125
+       0,    31,    31,    34,    35,    38,    39
 };
 #endif
 
@@ -503,7 +436,7 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "SEPL", "SEPC", "c_string", "'$'",
-  "$accept", "Csv", "ListaLinhas", "Linha", 0
+  "$accept", "Csv", "ListaLinhasC", "LinhaC", 0
 };
 #endif
 
@@ -1393,54 +1326,33 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 97 "csv.y"
-    {printf("_FIM_\n");
-						//print_matriz(); 
-						//if($$!=NULL)
-							printf("\nCHEGUEIII\n");
-						//Ato3P();
-							AtoLL();
-							//printf(".....Print da csv_list\n");print_lista(csv_list);printf(".....\n");
-						return csv_list;}
+#line 31 "csv.y"
+    {(yyval.listalinhas) = (yyvsp[(1) - (2)].listalinhas); csvList = (yyval.listalinhas); YYACCEPT;}
     break;
 
   case 3:
-#line 106 "csv.y"
-    {
-					 int i = 0;
-					 //List t = (List)$$;
-					 //l = t->totalCount;
-					 //printf("l=%d h=%d\n",t->totalCount,h);
-					 
-					 h++;
-					 hh++;ll=0;}
+#line 34 "csv.y"
+    {(yyval.listalinhas) = cons_csv_ListaLinhas((yyvsp[(1) - (3)].listalinhas), (yyvsp[(3) - (3)].linha));}
     break;
 
   case 4:
-#line 114 "csv.y"
-    {
-					 int i = 0;
-					 //List t = (List)$$;
-					 //l = t->totalCount;
-					 //printf("l=%d h=%d\n",t->totalCount,h);
-					 l=ll;
-					 h++;
-					 hh++;ll=0;}
+#line 35 "csv.y"
+    {(yyval.listalinhas) = cons_csv_ListaLinhas_Fim((yyvsp[(1) - (1)].linha));}
     break;
 
   case 5:
-#line 124 "csv.y"
-    {/*printf("_%s_",$3);*/strcpy(matriz[hh][ll],(char*)(yyvsp[(3) - (3)].tipoString));ll++;}
+#line 38 "csv.y"
+    {(yyval.linha) = cons_csv_Linha((yyvsp[(1) - (3)].linha), (yyvsp[(3) - (3)].tipoString));}
     break;
 
   case 6:
-#line 125 "csv.y"
-    { /*printf("_I%s_",$1);*/ strcpy(matriz[hh][ll],(char*)(yyvsp[(1) - (1)].tipoString));ll++;}
+#line 39 "csv.y"
+    {(yyval.linha) = cons_csv_Linha_Fim((yyvsp[(1) - (1)].tipoString));}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1444 "csv.tab.c"
+#line 1356 "csv.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1654,24 +1566,10 @@ yyreturn:
 }
 
 
-#line 129 "csv.y"
+#line 43 "csv.y"
 
 
 int yyerror(char *s){
 	fprintf(stderr,"ERRO:%s",s);
 	return -1;
 }
-/*
-int main(){
-//fflush(stdin);
-//int fd = open("output.txt",O_CREAT | O_WRONLY | O_TRUNC, 0666);
- //dup2(fd,1);
- 
-	
- 
-	yyparse();
-	
-	return total;
-}
-*/
-

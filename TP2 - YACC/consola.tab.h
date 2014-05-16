@@ -80,7 +80,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 16 "consola.y"
+#line 26 "consola.y"
 {
 	char* tipoficheiro;
 	int tiponProva;

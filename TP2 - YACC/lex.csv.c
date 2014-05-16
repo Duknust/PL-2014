@@ -476,9 +476,10 @@ char *csvtext;
 
 #include "linked_list.h"
 #include "csv.tab.h"	
+
 int total = 0;
 
-#line 482 "lex.csv.c"
+#line 483 "lex.csv.c"
 
 #define INITIAL 0
 
@@ -660,9 +661,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 12 "csv.l"
+#line 13 "csv.l"
 
-#line 666 "lex.csv.c"
+#line 667 "lex.csv.c"
 
 	if ( !(yy_init) )
 		{
@@ -747,7 +748,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 13 "csv.l"
+#line 14 "csv.l"
 { 	csvlval.tipoString=strdup(csvtext);
 									//printf("cena ");
 									return c_string;
@@ -756,7 +757,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 18 "csv.l"
+#line 19 "csv.l"
 {total++;
 							 printf("\nSL! %d\n",total);
 							 return SEPL;
@@ -764,21 +765,21 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "csv.l"
+#line 24 "csv.l"
 {printf(" SC ");
                              return SEPC;
                             }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 27 "csv.l"
-{ 	csvlval.tipoInt=total; return '$';}
+#line 28 "csv.l"
+{ return '$';}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 29 "csv.l"
+#line 30 "csv.l"
 ECHO;
 	YY_BREAK
-#line 782 "lex.csv.c"
+#line 783 "lex.csv.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1773,7 +1774,7 @@ void csvfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 29 "csv.l"
+#line 30 "csv.l"
 
 
 

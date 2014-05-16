@@ -2,6 +2,7 @@
 
 #include "linked_list.h"
 #include "csv.tab.h"	
+
 int total = 0;
 
 %}
@@ -24,7 +25,7 @@ int total = 0;
                              return SEPC;
                             }
                             
-<<EOF>>   			{ 	csvlval.tipoInt=total; return '$';}
+<<EOF>>   			{ return '$';}
 
 %%
 

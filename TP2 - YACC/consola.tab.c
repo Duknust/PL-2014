@@ -117,12 +117,22 @@
 #line 1 "consola.y"
 
 #include "linked_list.h"
+#include "estrutura.h"	
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 extern FILE * csvin;
 int yylex(void);
 int yyerror(char* s);
+extern List csvparse();
+
+#define _CONF 1000
+#define _DB 1001
+#define _RESULT 1002
+
+int comando_flag = -1;
+
 
 
 
@@ -146,13 +156,13 @@ int yyerror(char* s);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 16 "consola.y"
+#line 26 "consola.y"
 {
 	char* tipoficheiro;
 	int tiponProva;
 }
 /* Line 193 of yacc.c.  */
-#line 156 "consola.tab.c"
+#line 166 "consola.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -165,7 +175,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 169 "consola.tab.c"
+#line 179 "consola.tab.c"
 
 #ifdef short
 # undef short
@@ -453,8 +463,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    29,    29,    31,    32,    35,    48,    49,    50,    51,
-      52,    53,    56,    57,    58,    61,    62,    63,    64
+       0,    40,    40,    42,    43,    46,    60,    61,    62,    63,
+      64,    65,    68,    69,    70,    73,    74,    75,    76
 };
 #endif
 
@@ -1367,49 +1377,65 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 35 "consola.y"
+#line 46 "consola.y"
     {(yyvsp[(3) - (3)].tipoficheiro)++; ; 
 								   (yyvsp[(3) - (3)].tipoficheiro)[strlen((yyvsp[(3) - (3)].tipoficheiro))-1]='\0';
 								   printf("LOAD! Ficheiro lido com o nome: %s\n",(yyvsp[(3) - (3)].tipoficheiro));
 								   csvin = fopen((yyvsp[(3) - (3)].tipoficheiro), "r");
-								   char ***m=NULL;
-								   m= (char ***) csvparse();
-								   if(!m==NULL)
-										print_matriz(m);
-								   else
-										printf("ERRO\n");
-								   /*if($2==CONF){printf("CONFIG lido!\n");}*/
+
+								   printf("devia morrer!");
+
+									if (comando_flag == _CONF){
+										int i =csvparse();
+										List_Push(listaProvas,csvList);
+										printf("%d",i);
+									}
 								   }
     break;
 
   case 6:
-#line 48 "consola.y"
+#line 60 "consola.y"
     {(yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro); printf("SAVE! Ficheiro gravado com o nome: %s\n",(yyvsp[(2) - (2)].tipoficheiro));}
     break;
 
   case 7:
-#line 49 "consola.y"
+#line 61 "consola.y"
     {(yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro);}
     break;
 
   case 8:
-#line 50 "consola.y"
+#line 62 "consola.y"
     {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
     break;
 
   case 11:
-#line 53 "consola.y"
+#line 65 "consola.y"
     {return 0;}
     break;
 
+  case 12:
+#line 68 "consola.y"
+    {comando_flag = _CONF;}
+    break;
+
+  case 13:
+#line 69 "consola.y"
+    {comando_flag = _DB;}
+    break;
+
+  case 14:
+#line 70 "consola.y"
+    {comando_flag = _RESULT;}
+    break;
+
   case 16:
-#line 62 "consola.y"
+#line 74 "consola.y"
     {printf("PARTICIPANTES DA PROVA: %d\n",(yyvsp[(2) - (2)].tiponProva));}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1413 "consola.tab.c"
+#line 1439 "consola.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1623,7 +1649,7 @@ yyreturn:
 }
 
 
-#line 67 "consola.y"
+#line 79 "consola.y"
 
 
 int yyerror(char *s){
