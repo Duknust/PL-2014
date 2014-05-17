@@ -21,7 +21,7 @@ csv.ger.o : csv.ger.h csv.ger.c
 	gcc -c csv.ger.c
 
 consola.tab.o : consola.tab.h consola.tab.c
-	gcc -c consola.tab.c
+	gcc -c consola.tab.c -g
 
 lex.consola.o : lex.consola.c consola.tab.h
 	gcc -c lex.consola.c

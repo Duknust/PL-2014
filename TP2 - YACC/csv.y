@@ -27,7 +27,7 @@ int yyerror(char* s);
 
 %%
 
-Csv : ListaLinhasC '$' {$$ = $1; valorzinho=1;csvList = $$; YYACCEPT;}
+Csv : ListaLinhasC '$' {$$ = $1; csvList = $$; YYACCEPT;}
     ;
 
 ListaLinhasC : ListaLinhasC SEPL LinhaC {$$ = cons_csv_ListaLinhas($1, $3);}
@@ -42,6 +42,6 @@ LinhaC : LinhaC SEPC c_string {$$ = cons_csv_Linha($1, $3);}
 %%
 
 int yyerror(char *s){
-	fprintf(stderr,"ERRO:%s",s);
+	fprintf(stderr,"ERRO CSV:%s",s);
 	return -1;
 }
