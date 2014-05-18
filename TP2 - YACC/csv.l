@@ -1,5 +1,15 @@
 %{
+<<<<<<< HEAD
 #include "csv.tab.h"	
+=======
+
+#include "csv.ger.h"	
+#include "linked_list.h"
+#include "csv.tab.h"
+
+int total = 0;
+
+>>>>>>> 112
 %}
 
 %option prefix ="csv"
@@ -11,6 +21,7 @@
 				 			  return c_string;
 				 			}
 
+<<<<<<< HEAD
 \n+ 						{//printf("SL!\n");
 							 return SEPL;
 							}
@@ -20,6 +31,18 @@
                             }
 
 .							return 33;
+=======
+\n+ 						{total++;
+							 //printf("\nSL! %d\n",total);
+							 return SEPL;
+							}
+
+\; 							{//printf(" SC ");
+                             return SEPC;
+                            }
+                            
+<<EOF>>   			{ return '$';}
+>>>>>>> 112
 
 %%
 

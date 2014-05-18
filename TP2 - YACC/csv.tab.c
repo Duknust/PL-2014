@@ -59,14 +59,90 @@
 #define YYLSP_NEEDED 0
 
 /* Substitute the variable and function names.  */
-#define yyparse csvparse
-#define yylex   csvlex
-#define yyerror csverror
-#define yylval  csvlval
-#define yychar  csvchar
-#define yydebug csvdebug
-#define yynerrs csvnerrs
+#define yyparse         csvparse
+#define yylex           csvlex
+#define yyerror         csverror
+#define yylval          csvlval
+#define yychar          csvchar
+#define yydebug         csvdebug
+#define yynerrs         csvnerrs
 
+
+/* Tokens.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+   /* Put the tokens into the symbol table, so that GDB and other debuggers
+      know about them.  */
+   enum yytokentype {
+     SEPL = 258,
+     SEPC = 259,
+     TITULO = 260,
+     NPROVAS = 261,
+     NUM = 262,
+     CAMPO = 263,
+     PROVAS = 264,
+     c_string = 265
+   };
+#endif
+/* Tokens.  */
+#define SEPL 258
+#define SEPC 259
+#define TITULO 260
+#define NPROVAS 261
+#define NUM 262
+#define CAMPO 263
+#define PROVAS 264
+#define c_string 265
+
+
+
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+
+/* Copy the first part of user declarations.  */
+#line 1 "conf.y"
+=======
+/* Line 268 of yacc.c  */
+#line 1 "csv.y"
+>>>>>>> 112:TP2 - YACC/csv.tab.c
+
+#include <stdio.h>	
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <assert.h>
+#include "estrutura.h"
+
+int yylex(void);
+int yyerror(char* s);	
+
+
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+=======
+/* Line 268 of yacc.c  */
+#line 93 "csv.tab.c"
+
+>>>>>>> 112:TP2 - YACC/csv.tab.c
+/* Enabling traces.  */
+#ifndef YYDEBUG
+# define YYDEBUG 0
+#endif
+
+/* Enabling verbose error messages.  */
+#ifdef YYERROR_VERBOSE
+# undef YYERROR_VERBOSE
+# define YYERROR_VERBOSE 1
+#else
+# define YYERROR_VERBOSE 0
+#endif
+
+/* Enabling the token table.  */
+#ifndef YYTOKEN_TABLE
+# define YYTOKEN_TABLE 0
+#endif
+
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+=======
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -87,42 +163,34 @@
 
 
 
-/* Copy the first part of user declarations.  */
-#line 1 "csv.y"
-
-#include <stdio.h>	
-#include <stdlib.h>
-int yylex(void);
-int yyerror(char* s);
-
-
-/* Enabling traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-
-/* Enabling verbose error messages.  */
-#ifdef YYERROR_VERBOSE
-# undef YYERROR_VERBOSE
-# define YYERROR_VERBOSE 1
-#else
-# define YYERROR_VERBOSE 0
-#endif
-
-/* Enabling the token table.  */
-#ifndef YYTOKEN_TABLE
-# define YYTOKEN_TABLE 0
-#endif
-
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 10 "csv.y"
+#line 10 "conf.y"
 {
-	char* tipoString;
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+	char* texto;
+	int numero;
 }
 /* Line 193 of yacc.c.  */
-#line 125 "csv.tab.c"
+#line 128 "y.tab.c"
 	YYSTYPE;
+=======
+
+/* Line 293 of yacc.c  */
+#line 16 "csv.y"
+
+	char* tipoString;
+	ListaLinhas listalinhas;
+	Linha linha;
+
+
+
+/* Line 293 of yacc.c  */
+#line 147 "csv.tab.c"
+} YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
@@ -133,8 +201,13 @@ typedef union YYSTYPE
 /* Copy the second part of user declarations.  */
 
 
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
 /* Line 216 of yacc.c.  */
-#line 138 "csv.tab.c"
+#line 141 "y.tab.c"
+=======
+/* Line 343 of yacc.c  */
+#line 159 "csv.tab.c"
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 
 #ifdef short
 # undef short
@@ -347,22 +420,41 @@ union yyalloc
 #endif
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  4
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+#define YYFINAL  15
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   14
+#define YYLAST   21
+
+/* YYNTOKENS -- Number of terminals.  */
+#define YYNTOKENS  12
+/* YYNNTS -- Number of nonterminals.  */
+#define YYNNTS  5
+/* YYNRULES -- Number of rules.  */
+#define YYNRULES  11
+/* YYNRULES -- Number of states.  */
+#define YYNSTATES  21
+
+/* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
+#define YYUNDEFTOK  2
+#define YYMAXUTOK   265
+=======
+#define YYFINAL  5
+/* YYLAST -- Last index in YYTABLE.  */
+#define YYLAST   6
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  7
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  5
+#define YYNNTS  4
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  8
+#define YYNRULES  6
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  16
+#define YYNSTATES  11
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   260
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -373,7 +465,11 @@ static const yytype_uint8 yytranslate[] =
        0,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       2,     2,     2,     2,     2,     2,    11,     2,     2,     2,
+=======
        2,     2,     2,     2,     2,     2,     6,     2,     2,     2,
+>>>>>>> 112:TP2 - YACC/csv.tab.c
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -396,7 +492,11 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       5,     6,     7,     8,     9,    10
+=======
        5
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 #if YYDEBUG
@@ -404,21 +504,37 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     8,    12,    14,    18,    20,    24
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       0,     0,     3,     6,    10,    12,    15,    18,    21,    24,
+      27,    31
+=======
+       0,     0,     3,     6,    10,    12,    16
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-       8,     0,    -1,     9,     3,    10,     6,    -1,     9,     4,
-       5,    -1,     5,    -1,    10,     3,    11,    -1,    11,    -1,
-      11,     4,     5,    -1,     5,    -1
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+      13,     0,    -1,    14,    11,    -1,    14,     3,    15,    -1,
+      15,    -1,     5,    10,    -1,     6,    10,    -1,     7,    10,
+      -1,     8,    16,    -1,     9,    16,    -1,    16,     4,    10,
+      -1,    10,    -1
+=======
+       8,     0,    -1,     9,     6,    -1,     9,     3,    10,    -1,
+      10,    -1,    10,     4,     5,    -1,     5,    -1
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    20,    20,    22,    23,    26,    27,    30,    31
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       0,    21,    21,    23,    24,    27,    28,    29,    30,    31,
+      34,    35
+=======
+       0,    30,    30,    33,    34,    37,    38
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 #endif
 
@@ -427,8 +543,14 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+  "$end", "error", "$undefined", "SEPL", "SEPC", "TITULO", "NPROVAS",
+  "NUM", "CAMPO", "PROVAS", "c_string", "'$'", "$accept", "Conf",
+  "ListaLinhas", "Linha", "ListaCampos", 0
+=======
   "$end", "error", "$undefined", "SEPL", "SEPC", "c_string", "'$'",
-  "$accept", "Csv", "ListaAtributos", "ListaLinhas", "Linha", 0
+  "$accept", "Csv", "ListaLinhasC", "LinhaC", 0
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 #endif
 
@@ -437,20 +559,35 @@ static const char *const yytname[] =
    token YYLEX-NUM.  */
 static const yytype_uint16 yytoknum[] =
 {
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
+     265,    36
+=======
        0,   256,   257,   258,   259,   260,    36
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 # endif
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,     7,     8,     9,     9,    10,    10,    11,    11
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       0,    12,    13,    14,    14,    15,    15,    15,    15,    15,
+      16,    16
+=======
+       0,     7,     8,     9,     9,    10,    10
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     4,     3,     1,     3,     1,     3,     1
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       0,     2,     2,     3,     1,     2,     2,     2,     2,     2,
+       3,     1
+=======
+       0,     2,     2,     3,     1,     3,     1
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -458,29 +595,48 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     4,     0,     0,     1,     0,     0,     8,     0,     6,
-       3,     0,     2,     0,     5,     7
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       0,     0,     0,     0,     0,     0,     0,     0,     4,     5,
+       6,     7,    11,     8,     9,     1,     0,     2,     0,     3,
+      10
+=======
+       0,     6,     0,     0,     4,     1,     0,     2,     0,     3,
+       5
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3,     8,     9
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+      -1,     6,     7,     8,    13
+=======
+      -1,     2,     3,     4
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -4
+#define YYPACT_NINF -5
 static const yytype_int8 yypact[] =
 {
-      -1,    -4,     5,    -2,    -4,     1,     2,    -4,    -3,     4,
-      -4,     1,    -4,     6,     4,    -4
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+      -4,    -1,     0,     1,     2,     2,     6,    -3,    -5,    -5,
+      -5,    -5,    -5,     3,     3,    -5,    -4,    -5,     4,    -5,
+=======
+      -4,    -5,     2,    -3,     0,    -5,    -4,    -5,     1,     0,
+>>>>>>> 112:TP2 - YACC/csv.tab.c
+      -5
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -4,    -4,    -4,    -4,     3
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+      -5,    -5,    -5,     5,     8
+=======
+      -5,    -5,    -5,    -1
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -490,22 +646,45 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      11,     5,     6,    12,     1,     4,     7,    10,    13,     0,
-       0,    15,     0,     0,    14
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+      16,     1,     2,     3,     4,     5,    15,    18,    17,     9,
+      10,    11,    12,    14,    20,     0,     0,     0,     0,     0,
+       0,    19
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     3,     4,     6,     5,     0,     5,     5,     4,    -1,
-      -1,     5,    -1,    -1,    11
+       3,     5,     6,     7,     8,     9,     0,     4,    11,    10,
+      10,    10,    10,     5,    10,    -1,    -1,    -1,    -1,    -1,
+      -1,    16
+=======
+       6,     1,     5,     7,     8,     9,    10
+};
+
+#define yypact_value_is_default(yystate) \
+  ((yystate) == (-5))
+
+#define yytable_value_is_error(yytable_value) \
+  YYID (0)
+
+static const yytype_uint8 yycheck[] =
+{
+       3,     5,     0,     6,     4,     6,     5
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     5,     8,     9,     0,     3,     4,     5,    10,    11,
-       5,     3,     6,     4,    11,     5
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+       0,     5,     6,     7,     8,     9,    13,    14,    15,    10,
+      10,    10,    10,    16,    16,     0,     3,    11,     4,    15,
+      10
+=======
+       0,     5,     8,     9,    10,     0,     3,     6,     4,    10,
+       5
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1319,9 +1498,51 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
       
 /* Line 1267 of yacc.c.  */
-#line 1325 "csv.tab.c"
+#line 1340 "y.tab.c"
+=======
+        case 2:
+
+/* Line 1806 of yacc.c  */
+#line 30 "csv.y"
+    {(yyval.listalinhas) = (yyvsp[(1) - (2)].listalinhas); valorzinho=1;csvList = (yyval.listalinhas); YYACCEPT;}
+    break;
+
+  case 3:
+
+/* Line 1806 of yacc.c  */
+#line 33 "csv.y"
+    {(yyval.listalinhas) = cons_csv_ListaLinhas((yyvsp[(1) - (3)].listalinhas), (yyvsp[(3) - (3)].linha));}
+    break;
+
+  case 4:
+
+/* Line 1806 of yacc.c  */
+#line 34 "csv.y"
+    {(yyval.listalinhas) = cons_csv_ListaLinhas_Fim((yyvsp[(1) - (1)].linha));}
+    break;
+
+  case 5:
+
+/* Line 1806 of yacc.c  */
+#line 37 "csv.y"
+    {(yyval.linha) = cons_csv_Linha((yyvsp[(1) - (3)].linha), (yyvsp[(3) - (3)].tipoString));}
+    break;
+
+  case 6:
+
+/* Line 1806 of yacc.c  */
+#line 38 "csv.y"
+    {(yyval.linha) = cons_csv_Linha_Fim((yyvsp[(1) - (1)].tipoString));}
+    break;
+
+
+
+/* Line 1806 of yacc.c  */
+#line 1408 "csv.tab.c"
+>>>>>>> 112:TP2 - YACC/csv.tab.c
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1535,16 +1756,25 @@ yyreturn:
 }
 
 
-#line 35 "csv.y"
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
+#line 38 "conf.y"
+=======
+
+/* Line 2067 of yacc.c  */
+#line 42 "csv.y"
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 
 
 int yyerror(char *s){
-	fprintf(stderr,"%s",s);
+	fprintf(stderr,"ERRO:%s",s);
 	return -1;
 }
+<<<<<<< HEAD:TP2 - YACC/y.tab.c
 
 //int main(){
 //	yyparse();
 //	return 0;
 //}
+=======
+>>>>>>> 112:TP2 - YACC/csv.tab.c
 

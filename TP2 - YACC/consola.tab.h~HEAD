@@ -39,43 +39,59 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     SEPL = 258,
-     SEPC = 259,
-     TITULO = 260,
-     NPROVAS = 261,
-     NUM = 262,
-     CAMPO = 263,
-     PROVAS = 264,
-     c_string = 265
+     SEPN = 258,
+     LOAD = 259,
+     SAVE = 260,
+     RANKING = 261,
+     EXIT = 262,
+     LISTING = 263,
+     INFO = 264,
+     CONF = 265,
+     DB = 266,
+     RESULT = 267,
+     PROVAS = 268,
+     PARTICIPANTES = 269,
+     PROVA = 270,
+     TORNEIO = 271,
+     ficheiro = 272,
+     prova = 273
    };
 #endif
 /* Tokens.  */
-#define SEPL 258
-#define SEPC 259
-#define TITULO 260
-#define NPROVAS 261
-#define NUM 262
-#define CAMPO 263
-#define PROVAS 264
-#define c_string 265
+#define SEPN 258
+#define LOAD 259
+#define SAVE 260
+#define RANKING 261
+#define EXIT 262
+#define LISTING 263
+#define INFO 264
+#define CONF 265
+#define DB 266
+#define RESULT 267
+#define PROVAS 268
+#define PARTICIPANTES 269
+#define PROVA 270
+#define TORNEIO 271
+#define ficheiro 272
+#define prova 273
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 10 "conf.y"
+#line 11 "consola.y"
 {
-	char* texto;
-	int numero;
+	char* tipoficheiro;
+	int tiponProva;
 }
 /* Line 1529 of yacc.c.  */
-#line 74 "y.tab.h"
+#line 90 "consola.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
 
-extern YYSTYPE yylval;
+extern YYSTYPE consolalval;
 

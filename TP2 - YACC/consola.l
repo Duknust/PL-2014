@@ -1,5 +1,10 @@
 %{
 #include "consola.tab.h"	
+<<<<<<< HEAD
+=======
+#include "estrutura.h"	
+
+>>>>>>> 112
 %}
 
 %option prefix ="consola"
@@ -34,11 +39,11 @@
 "torneio"			return TORNEIO;
 
 \"[a-zA-Z0-9\ \.]*\"		{ consolalval.tipoficheiro=strdup(yytext);
-					  printf("estou aqui tex!\n");
+					  //printf("estou aqui tex!\n");
 				 	  return ficheiro;}
 
 [0-9]+				{ consolalval.tiponProva=atoi(yytext);
-					  printf("estou aqui num!\n");
+					  //printf("estou aqui num!\n");
 				 	  return prova;}
 
 \n					return SEPN;
@@ -54,6 +59,7 @@
 
 int main(int argc, char *argv[])
 {
+	listaProvas = List_Create(NULL,NULL,NULL);
     consolaparse();
     yylex();
     //yyin = fopen("z.txt", "r");
