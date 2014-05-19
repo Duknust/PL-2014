@@ -61,6 +61,10 @@ int main(int argc, char *argv[])
 	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
 	idTempo = 12;
 	idIdentificador = 3;
+
+	nPontos=2;
+	numeroProvas=2;
+
     consolaparse();
     yylex();
     //yyin = fopen("z.txt", "r");

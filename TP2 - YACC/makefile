@@ -1,4 +1,4 @@
-objects=lex.consola.o csv.tab.o consola.tab.o lex.csv.o linked_list.o csv.ger.o -ll
+objects=lex.consola.o csv.tab.o consola.tab.o lex.csv.o linked_list.o csv.ger.o estrutura.o -ll
 
 cons : $(objects)
 	gcc -o cons $(objects) -g 
@@ -32,8 +32,11 @@ lex.consola.c : consola.l
 consola.tab.h consola.tab.c : consola.y linked_list.o estrutura.h
 	yacc -d -b "consola" -p "consola" consola.y 
 	
-linked_list.o: linked_list.h
+linked_list.o: linked_list.h estrutura.c
 		gcc -c linked_list.c
+
+estrutura.o: estrutura.h estrutura.c linked_list.h csv.ger.h
+		gcc -c estrutura.c
 
 
 clean:
