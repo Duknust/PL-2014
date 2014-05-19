@@ -1,10 +1,8 @@
 %{
 #include "consola.tab.h"	
-<<<<<<< HEAD
-=======
 #include "estrutura.h"	
 
->>>>>>> 112
+extern int compara2scores(void*,void*);
 %}
 
 %option prefix ="consola"
@@ -60,6 +58,15 @@
 int main(int argc, char *argv[])
 {
 	listaProvas = List_Create(NULL,NULL,NULL);
+	lista_Atletas = List_Create(NULL,NULL,NULL);
+	lista_Resultados = List_Create(NULL,*compara2scores,NULL);
+	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
+	idTempo = 12;
+	idIdentificador = 3;
+
+	nPontos=2;
+	numeroProvas=2;
+
     consolaparse();
     yylex();
     //yyin = fopen("z.txt", "r");

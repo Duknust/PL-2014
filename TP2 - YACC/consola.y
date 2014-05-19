@@ -16,52 +16,16 @@ extern List csvparse();
 int comando_flag = -1;
 
 
-void print_ListaLinhas(ListaLinhas l){
-	ListaLinhas lis = l;
-	Linha linha;
-	char * x ;
-	linha = l->u.d2.s1;
-	char * texto;
-		while(lis->flag!=PScons_csv_ListaLinhas_Fim){
-			//printf("listaflag=%d\n",lis->flag);
-			linha = lis->u.d1.s2;
-				
-				while(linha->flag!=PScons_csv_Linha_Fim){
-					
-					//printf("linhaflag=%d\n",linha->flag);
-					x = (char*)linha->u.d1.s2;
-					texto=strdup(x);
-					printf("%s_",texto);
-					linha = linha->u.d1.s1;					
-					}
-				x = (char*)linha->u.d2.s1;
-				texto=strdup(x);
-				printf("%s_\n",texto);
-					
-				
-			lis = lis->u.d1.s1;	
-			}
-			
-		linha = lis->u.d2.s1;
-			
-		while(linha->flag!=PScons_csv_Linha_Fim){
-			
-			//printf("linhaflag=%d\n",linha->flag);
-			x = (char*)linha->u.d1.s2;
-			texto=strdup(x);
-			printf("%s_",texto);
-			linha = linha->u.d1.s1;					
-			}
-		x = (char*)linha->u.d2.s1;
-		texto=strdup(x);
-		printf("%s_\n",texto);
-				
-			
-		
-		
-		
-	
-}
+
+
+//----------------------------------------------
+
+
+
+
+
+
+//-----------------------------------------------
 
 
 %}
@@ -96,16 +60,31 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   csvin = fopen($3, "r");
 
 
-									if (comando_flag == _CONF){
-										(void)csvparse();
-										printf("Push na Lista\n");
-										List_Push(listaProvas,csvList);
-										if(listaProvas==NULL)
-											printf("lista NULL\n");
-										else
-											printf("\ncount da listaProvas=%d\n",listaProvas->totalCount);
-											
-										print_ListaLinhas(csvList);
+									switch(comando_flag){
+										case _RESULT : printf("RESULT\n");
+														(void)csvparse();
+														printf("Push na Lista\n");
+														ListaLinhas ll = csvList;
+														if(ll!=NULL)
+															List_Push(listaProvas,ll);
+														else
+															break;//discutir isto
+															
+														printf("\ncount da listaProvas=%d\n",listaProvas->totalCount);
+														
+														
+														insere_atletas(lista_Atletas,csvList);
+														
+														insere_Resultados(csvList,lista_Resultados);
+															
+														//print_ListaLinhas(csvList);
+														print_ListaProvas();
+														print_ListaResultados();
+														//printl();
+														csvList = NULL;
+														break;
+										case _CONF :printf("CONF\n");break;
+										case _DB : printf("DB\n");break;
 									}
 								   }
 								   
