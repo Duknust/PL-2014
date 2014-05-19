@@ -1,5 +1,7 @@
 =titulo= VII Torneio COMmapa 2014
 =nprovas= 8
 =N= 6
-=campos= First name; Surname; Time; Short; Long
+=campos= 1; 5; 4; 12
 =prova= Santa Isabel; Santa Isabel; Centro Historico; Centro Historico Score 100; Falperra; Vieira do Minho; Parque da Ponte; Universidade de Minho
+=defNOME= 6; 5
+=defID= 3

@@ -1,37 +1,34 @@
 %{
-//#include "conf.tab.h"	
-#include "y.tab.h"	
+#include "conf.tab.h"	
 %}
 
-	//%option prefix ="conf"
+%option prefix ="conf"
 %option noyywrap
 
 %%
-"=titulo= "					{printf(" lTIT ");return TITULO;}
+"=titulo= "					return TITULO;
 
-"=nprovas= "				{printf(" lNP ");return NPROVAS;}
+"=nprovas= "				return NPROVAS;
 
-"=N= "						{printf(" lN ");return NUM;}
+"=N= "						return NUM;
 
-"=campos= "					{printf(" lCMP ");return CAMPO;}
+"=campos= "					return CAMPO;
 
-"=prova= "					{printf(" lPROVS ");return PROVAS;}
+"=prova= "					return PROVAS;
 
-[a-zA-Z0-9\_\-\ ]+			{ yylval.texto=strdup(yytext);
-							  //printf("estou aqui csv!\n");
-							  printf(" cena ");
+"=defNome= "				return DEFNOME;
+
+"=defId= "					return DEFID;
+
+[a-zA-Z0-9\_\-\ ]+			{ conflval.texto=strdup(yytext);
 				 			  return c_string;
 				 			}
 
-\n 							{printf("SL!\n");
-							 return SEPL;
-							}
+\n 							return SEPL;
 
-\; 							{printf(" SC! ");
-                             return SEPC;
-                            }
+\; 							return SEPC;
 
-.							return '$';
+<<EOF>>						return '$';
 
 %%
 

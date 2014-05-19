@@ -1,26 +1,28 @@
 %{
 #include <stdio.h>	
 #include <stdlib.h>
-#include "linked_list2elems.h"
+#include "estrutura.h"
+
 int yylex(void);
 int yyerror(char* s);
-List *listaLigada;
 %}
 
-%token SEPL SEPC TITULO NPROVAS NUM CAMPO PROVAS c_string
+%token SEPL SEPC TITULO NPROVAS NUM CAMPO PROVAS DEFNOME DEFID c_string
 
 %union{
 	char* texto;
-	int numero;
+      List lista;
 }
 
-%type <texto> ListaCampos Linha c_string
+%type <texto> c_string
+%type <lista> ListaCampos ListaLinhas
 
 %start Conf
 
 %%
 
-Conf : ListaLinhas '$' ; {$$=$1;}
+Conf : ListaLinhas '$' 
+     ; 
 
 ListaLinhas : ListaLinhas SEPL Linha
             | Linha
@@ -31,11 +33,14 @@ Linha : TITULO c_string
       | NUM c_string
       | CAMPO ListaCampos
       | PROVAS ListaCampos
+      | DEFNOME ListaCampos
+      | DEFID c_string
+      |
       ;
 
-ListaCampos : ListaCampos SEPC c_string {push($1, $3);}
-			| c_string {List tmp = listCreate(NULL,NULL,NULL); push(tmp, $1);}
-			;
+ListaCampos : ListaCampos SEPC c_string 
+		| c_string 
+		;
 
 %%
 
@@ -43,8 +48,3 @@ int yyerror(char *s){
 	fprintf(stderr,"%s",s);
 	return -1;
 }
-
-//int main(){
-//	yyparse();
-//	return 0;
-//}

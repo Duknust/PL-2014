@@ -172,16 +172,12 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
 #ifndef YY_TYPEDEF_YY_SIZE_T
 #define YY_TYPEDEF_YY_SIZE_T
 typedef size_t yy_size_t;
 #endif
 
-extern yy_size_t yyleng;
-=======
-extern int consolaleng;
->>>>>>> 112:TP2 - YACC/lex.consola.c
+extern yy_size_t consolaleng;
 
 extern FILE *consolain, *consolaout;
 
@@ -294,13 +290,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when consolatext is formed. */
 static char yy_hold_char;
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
 static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
-yy_size_t yyleng;
-=======
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int consolaleng;
->>>>>>> 112:TP2 - YACC/lex.consola.c
+yy_size_t consolaleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = (char *) 0;
@@ -326,15 +317,9 @@ static void consola_init_buffer (YY_BUFFER_STATE b,FILE *file  );
 
 #define YY_FLUSH_BUFFER consola_flush_buffer(YY_CURRENT_BUFFER )
 
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-YY_BUFFER_STATE yy_scan_buffer (char *base,yy_size_t size  );
-YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,yy_size_t len  );
-=======
 YY_BUFFER_STATE consola_scan_buffer (char *base,yy_size_t size  );
 YY_BUFFER_STATE consola_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE consola_scan_bytes (yyconst char *bytes,int len  );
->>>>>>> 112:TP2 - YACC/lex.consola.c
+YY_BUFFER_STATE consola_scan_bytes (yyconst char *bytes,yy_size_t len  );
 
 void *consolaalloc (yy_size_t  );
 void *consolarealloc (void *,yy_size_t  );
@@ -366,11 +351,7 @@ void consolafree (void *  );
 
 /* Begin user sect3 */
 
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-#define yywrap(n) 1
-=======
 #define consolawrap(n) 1
->>>>>>> 112:TP2 - YACC/lex.consola.c
 #define YY_SKIP_YYWRAP
 
 typedef unsigned char YY_CHAR;
@@ -396,17 +377,13 @@ static void yy_fatal_error (yyconst char msg[]  );
  */
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-	yyleng = (yy_size_t) (yy_cp - yy_bp); \
-=======
-	consolaleng = (size_t) (yy_cp - yy_bp); \
->>>>>>> 112:TP2 - YACC/lex.consola.c
+	consolaleng = (yy_size_t) (yy_cp - yy_bp); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 10
-#define YY_END_OF_BUFFER 11
+#define YY_NUM_RULES 19
+#define YY_END_OF_BUFFER 20
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -414,33 +391,20 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[46] =
+static yyconst flex_int16_t yy_accept[81] =
     {   0,
-        0,    0,   11,    9,    7,    6,    8,    9,    6,    0,
-        0,    0,    0,    0,    0,    0,    0,    0,    0,    3,
+        0,    0,   20,   18,   17,   16,   18,   15,   18,   18,
+       18,   18,   18,   18,   18,   18,   18,    0,   14,   15,
+        0,    8,    0,    0,    0,    0,    0,    0,    0,    0,
         0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-        0,    0,    0,    0,    0,    0,    0,    0,    5,    0,
-        4,    0,    1,    2,    0
+        0,    0,    0,    7,    4,    6,    0,    1,    0,    0,
+        0,    0,    0,    0,    0,    0,   12,    0,    0,    0,
+        0,    0,    0,   10,    0,    9,    0,    0,    5,    0,
+        3,    2,   13,    0,    0,    0,    0,    0,   11,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
     {   0,
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    2,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    3,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    4,    1,    1,    4,    4,    4,
-        4,    4,    4,    4,    4,    4,    4,    1,    5,    1,
-        6,    1,    1,    1,    4,    4,    4,    4,    4,    4,
-        4,    4,    4,    4,    4,    4,    4,    7,    4,    4,
-        4,    4,    4,    4,    4,    4,    4,    4,    4,    4,
-        1,    1,    1,    1,    4,    1,    8,    4,    9,    4,
-
-        4,    4,    4,    4,   10,    4,    4,   11,   12,   13,
-       14,   15,    4,   16,   17,   18,   19,   20,    4,    4,
-        4,    4,    1,    1,    1,    1,    1,    1,    1,    1,
-=======
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -455,7 +419,6 @@ static yyconst flex_int32_t yy_ec[256] =
        13,   14,   15,    6,   16,    6,   17,   18,    6,   19,
        20,   21,    6,   22,   23,   24,   25,   26,    6,   27,
         6,    6,    1,    1,    1,    1,    1,    1,    1,    1,
->>>>>>> 112:TP2 - YACC/lex.consola.c
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -472,56 +435,71 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int32_t yy_meta[21] =
+static yyconst flex_int32_t yy_meta[28] =
     {   0,
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-        1,    1,    2,    2,    1,    1,    2,    2,    2,    2,
-        2,    2,    2,    2,    2,    2,    2,    2,    2,    2
-=======
         1,    1,    1,    2,    2,    2,    2,    1,    2,    2,
         2,    2,    2,    2,    2,    2,    2,    2,    2,    2,
         2,    2,    2,    2,    2,    2,    2
->>>>>>> 112:TP2 - YACC/lex.consola.c
     } ;
 
-static yyconst flex_int16_t yy_base[48] =
+static yyconst flex_int16_t yy_base[82] =
     {   0,
-        0,    6,   47,   48,   48,    0,   48,    6,    0,   40,
-       37,   29,   27,   32,   38,   28,   23,   24,   19,   48,
-       21,   21,   14,   14,   18,   11,   22,   18,   11,   19,
-       17,    8,   14,    1,   14,   10,   11,    4,   48,    6,
-       48,    1,   48,   48,   48,   24,    1
+        0,    0,   92,   93,   93,   93,   86,   83,   69,   78,
+       60,   67,   12,   20,   21,   76,   64,   78,   93,   75,
+       62,   93,   64,   65,   55,   68,   54,   55,   55,   50,
+       46,   49,   56,   45,   48,   43,   54,   41,   38,   46,
+       37,   48,   41,   93,   93,   93,   43,   93,   42,   48,
+       40,   37,   46,   40,   33,   40,   27,   30,   24,   35,
+       30,   30,   28,   93,   28,   93,   31,   20,   93,   18,
+       93,   93,   93,   29,   18,   12,   22,   10,   93,   93,
+       29
     } ;
 
-static yyconst flex_int16_t yy_def[48] =
+static yyconst flex_int16_t yy_def[82] =
     {   0,
-       46,   46,   45,   45,   45,   47,   45,   45,   47,   45,
-       45,   45,   45,   45,   45,   45,   45,   45,   45,   45,
-       45,   45,   45,   45,   45,   45,   45,   45,   45,   45,
-       45,   45,   45,   45,   45,   45,   45,   45,   45,   45,
-       45,   45,   45,   45,    0,   45,   45
+       80,    1,   80,   80,   80,   80,   81,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   81,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,    0,
+       80
     } ;
 
-static yyconst flex_int16_t yy_nxt[69] =
+static yyconst flex_int16_t yy_nxt[121] =
     {   0,
-        4,    5,    9,   44,    7,    8,    4,    5,   43,   42,
-        7,    8,   10,   41,   11,   40,   39,   38,   12,   37,
-       13,   36,   35,   14,    6,    6,   34,   33,   32,   31,
-       30,   29,   28,   27,   26,   25,   24,   23,   22,   21,
-       20,   19,   18,   17,   16,   15,   45,    3,   45,   45,
-       45,   45,   45,   45,   45,   45,   45,   45,   45,   45,
-       45,   45,   45,   45,   45,   45,   45,   45
+        4,    5,    6,    5,    7,    4,    8,    4,    4,    4,
+        9,   10,   11,    4,    4,   12,    4,   13,    4,    4,
+       14,   15,   16,   17,    4,    4,    4,   25,   27,   29,
+       18,   26,   79,   30,   78,   77,   76,   75,   74,   73,
+       72,   28,   71,   70,   69,   68,   67,   66,   65,   64,
+       63,   62,   61,   60,   59,   58,   57,   56,   55,   54,
+       53,   52,   51,   50,   49,   48,   47,   46,   45,   44,
+       43,   42,   41,   40,   39,   38,   37,   36,   35,   34,
+       33,   20,   19,   32,   31,   24,   23,   22,   21,   20,
+       19,   80,    3,   80,   80,   80,   80,   80,   80,   80,
+
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80
     } ;
 
-static yyconst flex_int16_t yy_chk[69] =
+static yyconst flex_int16_t yy_chk[121] =
     {   0,
-        1,    1,   47,   42,    1,    1,    2,    2,   40,   38,
-        2,    2,    8,   37,    8,   36,   35,   34,    8,   33,
-        8,   32,   31,    8,   46,   46,   30,   29,   28,   27,
-       26,   25,   24,   23,   22,   21,   19,   18,   17,   16,
-       15,   14,   13,   12,   11,   10,    3,   45,   45,   45,
-       45,   45,   45,   45,   45,   45,   45,   45,   45,   45,
-       45,   45,   45,   45,   45,   45,   45,   45
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,   13,   14,   15,
+       81,   13,   78,   15,   77,   76,   75,   74,   70,   68,
+       67,   14,   65,   63,   62,   61,   60,   59,   58,   57,
+       56,   55,   54,   53,   52,   51,   50,   49,   47,   43,
+       42,   41,   40,   39,   38,   37,   36,   35,   34,   33,
+       32,   31,   30,   29,   28,   27,   26,   25,   24,   23,
+       21,   20,   18,   17,   16,   12,   11,   10,    9,    8,
+        7,    3,   80,   80,   80,   80,   80,   80,   80,   80,
+
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80,
+       80,   80,   80,   80,   80,   80,   80,   80,   80,   80
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -537,23 +515,14 @@ int consola_flex_debug = 0;
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-char *yytext;
-#line 1 "conf.l"
-#line 2 "conf.l"
-//#include "conf.tab.h"	
-#include "y.tab.h"	
-//%option prefix ="conf"
-#line 482 "lex.yy.c"
-=======
 char *consolatext;
 #line 1 "consola.l"
 #line 2 "consola.l"
 #include "consola.tab.h"	
 #include "estrutura.h"	
 
-#line 533 "lex.consola.c"
->>>>>>> 112:TP2 - YACC/lex.consola.c
+extern int compara2scores(void*,void*);
+#line 526 "lex.consola.c"
 
 #define INITIAL 0
 
@@ -592,11 +561,7 @@ FILE *consolaget_out (void );
 
 void consolaset_out  (FILE * out_str  );
 
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-yy_size_t yyget_leng (void );
-=======
-int consolaget_leng (void );
->>>>>>> 112:TP2 - YACC/lex.consola.c
+yy_size_t consolaget_leng (void );
 
 char *consolaget_text (void );
 
@@ -646,11 +611,7 @@ static int input (void );
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-#define ECHO fwrite( yytext, yyleng, 1, yyout )
-=======
-#define ECHO do { if (fwrite( consolatext, consolaleng, 1, consolaout )) {} } while (0)
->>>>>>> 112:TP2 - YACC/lex.consola.c
+#define ECHO fwrite( consolatext, consolaleng, 1, consolaout )
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -743,15 +704,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-#line 9 "conf.l"
+#line 12 "consola.l"
 
-#line 666 "lex.yy.c"
-=======
-#line 9 "consola.l"
-
-#line 722 "lex.consola.c"
->>>>>>> 112:TP2 - YACC/lex.consola.c
+#line 710 "lex.consola.c"
 
 	if ( !(yy_init) )
 		{
@@ -804,13 +759,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 46 )
+				if ( yy_current_state >= 81 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 48 );
+		while ( yy_base[yy_current_state] != 93 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -836,141 +791,79 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-#line 10 "conf.l"
-{printf(" lTIT ");return TITULO;}
-	YY_BREAK
-case 2:
-YY_RULE_SETUP
-#line 12 "conf.l"
-{printf(" lNP ");return NPROVAS;}
-	YY_BREAK
-case 3:
-YY_RULE_SETUP
-#line 14 "conf.l"
-{printf(" lN ");return NUM;}
-	YY_BREAK
-case 4:
-YY_RULE_SETUP
-#line 16 "conf.l"
-{printf(" lCMP ");return CAMPO;}
-	YY_BREAK
-case 5:
-YY_RULE_SETUP
-#line 18 "conf.l"
-{printf(" lPROVS ");return PROVAS;}
-	YY_BREAK
-case 6:
-YY_RULE_SETUP
-#line 20 "conf.l"
-{ yylval.texto=strdup(yytext);
-							  //printf("estou aqui csv!\n");
-							  printf(" cena ");
-				 			  return c_string;
-				 			}
-=======
-#line 10 "consola.l"
+#line 13 "consola.l"
 return LOAD;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 12 "consola.l"
+#line 15 "consola.l"
 return SAVE;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "consola.l"
+#line 17 "consola.l"
 return RANKING;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 16 "consola.l"
+#line 19 "consola.l"
 return EXIT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 18 "consola.l"
+#line 21 "consola.l"
 return LISTING;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 20 "consola.l"
+#line 23 "consola.l"
 return INFO;
->>>>>>> 112:TP2 - YACC/lex.consola.c
 	YY_BREAK
 case 7:
-/* rule 7 can match eol */
 YY_RULE_SETUP
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-#line 26 "conf.l"
-{printf("SL!\n");
-							 return SEPL;
-							}
-	YY_BREAK
-case 8:
-YY_RULE_SETUP
-#line 30 "conf.l"
-{printf(" SC! ");
-                             return SEPC;
-                            }
-	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 34 "conf.l"
-return '$';
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 36 "conf.l"
-ECHO;
-	YY_BREAK
-#line 808 "lex.yy.c"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
-=======
-#line 22 "consola.l"
+#line 25 "consola.l"
 return CONF;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 24 "consola.l"
+#line 27 "consola.l"
 return DB;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 26 "consola.l"
+#line 29 "consola.l"
 return RESULT;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 28 "consola.l"
+#line 31 "consola.l"
 return PROVAS;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 30 "consola.l"
+#line 33 "consola.l"
 return PARTICIPANTES;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 32 "consola.l"
+#line 35 "consola.l"
 return PROVA;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 34 "consola.l"
+#line 37 "consola.l"
 return TORNEIO;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 36 "consola.l"
+#line 39 "consola.l"
 { consolalval.tipoficheiro=strdup(consolatext);
 					  //printf("estou aqui tex!\n");
 				 	  return ficheiro;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 40 "consola.l"
+#line 43 "consola.l"
 { consolalval.tiponProva=atoi(consolatext);
 					  //printf("estou aqui num!\n");
 				 	  return prova;}
@@ -978,30 +871,29 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 44 "consola.l"
+#line 47 "consola.l"
 return SEPN;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 46 "consola.l"
+#line 49 "consola.l"
 ;
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 48 "consola.l"
+#line 51 "consola.l"
 return '$';
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 50 "consola.l"
+#line 53 "consola.l"
 ;			
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 52 "consola.l"
+#line 55 "consola.l"
 ECHO;
 	YY_BREAK
-#line 909 "lex.consola.c"
->>>>>>> 112:TP2 - YACC/lex.consola.c
+#line 897 "lex.consola.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1291,7 +1183,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 46 )
+			if ( yy_current_state >= 81 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1319,11 +1211,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 46 )
+		if ( yy_current_state >= 81 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 45);
+	yy_is_jam = (yy_current_state == 80);
 
 	return yy_is_jam ? 0 : yy_current_state;
 }
@@ -1412,13 +1304,8 @@ static int yy_get_next_buffer (void)
 
 				case EOB_ACT_END_OF_FILE:
 					{
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-					if ( yywrap( ) )
-						return 0;
-=======
 					if ( consolawrap( ) )
-						return EOF;
->>>>>>> 112:TP2 - YACC/lex.consola.c
+						return 0;
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;
@@ -1767,11 +1654,7 @@ YY_BUFFER_STATE consola_scan_string (yyconst char * yystr )
  * 
  * @return the newly allocated buffer state object.
  */
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-YY_BUFFER_STATE yy_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
-=======
-YY_BUFFER_STATE consola_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
->>>>>>> 112:TP2 - YACC/lex.consola.c
+YY_BUFFER_STATE consola_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
@@ -1857,11 +1740,7 @@ FILE *consolaget_out  (void)
 /** Get the length of the current token.
  * 
  */
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-yy_size_t yyget_leng  (void)
-=======
-int consolaget_leng  (void)
->>>>>>> 112:TP2 - YACC/lex.consola.c
+yy_size_t consolaget_leng  (void)
 {
         return consolaleng;
 }
@@ -2009,20 +1888,23 @@ void consolafree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-#line 36 "conf.l"
-=======
-#line 52 "consola.l"
->>>>>>> 112:TP2 - YACC/lex.consola.c
+#line 55 "consola.l"
 
 
 
 
-<<<<<<< HEAD:TP2 - YACC/lex.yy.c
-=======
 int main(int argc, char *argv[])
 {
 	listaProvas = List_Create(NULL,NULL,NULL);
+	lista_Atletas = List_Create(NULL,NULL,NULL);
+	lista_Resultados = List_Create(NULL,*compara2scores,NULL);
+	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
+	idTempo = 12;
+	idIdentificador = 3;
+
+	nPontos=2;
+	numeroProvas=2;
+
     consolaparse();
     consolalex();
     //consolain = fopen("z.txt", "r");
@@ -2032,4 +1914,3 @@ int main(int argc, char *argv[])
     return 1;
 }
 
->>>>>>> 112:TP2 - YACC/lex.consola.c

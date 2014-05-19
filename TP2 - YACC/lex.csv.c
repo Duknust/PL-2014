@@ -65,10 +65,7 @@ typedef int16_t flex_int16_t;
 typedef uint16_t flex_uint16_t;
 typedef int32_t flex_int32_t;
 typedef uint32_t flex_uint32_t;
-<<<<<<< HEAD
 typedef uint64_t flex_uint64_t;
-=======
->>>>>>> 112
 #else
 typedef signed char flex_int8_t;
 typedef short int flex_int16_t;
@@ -76,10 +73,7 @@ typedef int flex_int32_t;
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-<<<<<<< HEAD
 #endif /* ! C99 */
-=======
->>>>>>> 112
 
 /* Limits of integral types. */
 #ifndef INT8_MIN
@@ -110,11 +104,6 @@ typedef unsigned int flex_uint32_t;
 #define UINT32_MAX             (4294967295U)
 #endif
 
-<<<<<<< HEAD
-=======
-#endif /* ! C99 */
-
->>>>>>> 112
 #endif /* ! FLEXINT_H */
 
 #ifdef __cplusplus
@@ -171,19 +160,7 @@ typedef unsigned int flex_uint32_t;
 
 /* Size of default input buffer. */
 #ifndef YY_BUF_SIZE
-<<<<<<< HEAD
 #define YY_BUF_SIZE 16384
-=======
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k.
- * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
- * Ditto for the __ia64__ case accordingly.
- */
-#define YY_BUF_SIZE 32768
-#else
-#define YY_BUF_SIZE 16384
-#endif /* __ia64__ */
->>>>>>> 112
 #endif
 
 /* The state buf must be large enough to hold one state per character in the main buffer.
@@ -195,16 +172,12 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-<<<<<<< HEAD
 #ifndef YY_TYPEDEF_YY_SIZE_T
 #define YY_TYPEDEF_YY_SIZE_T
 typedef size_t yy_size_t;
 #endif
 
 extern yy_size_t csvleng;
-=======
-extern int csvleng;
->>>>>>> 112
 
 extern FILE *csvin, *csvout;
 
@@ -230,14 +203,6 @@ extern FILE *csvin, *csvout;
 
 #define unput(c) yyunput( c, (yytext_ptr)  )
 
-<<<<<<< HEAD
-=======
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
-
->>>>>>> 112
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
 struct yy_buffer_state
@@ -255,11 +220,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-<<<<<<< HEAD
 	yy_size_t yy_n_chars;
-=======
-	int yy_n_chars;
->>>>>>> 112
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -329,13 +290,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when csvtext is formed. */
 static char yy_hold_char;
-<<<<<<< HEAD
 static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
 yy_size_t csvleng;
-=======
-static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int csvleng;
->>>>>>> 112
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = (char *) 0;
@@ -363,11 +319,7 @@ static void csv_init_buffer (YY_BUFFER_STATE b,FILE *file  );
 
 YY_BUFFER_STATE csv_scan_buffer (char *base,yy_size_t size  );
 YY_BUFFER_STATE csv_scan_string (yyconst char *yy_str  );
-<<<<<<< HEAD
 YY_BUFFER_STATE csv_scan_bytes (yyconst char *bytes,yy_size_t len  );
-=======
-YY_BUFFER_STATE csv_scan_bytes (yyconst char *bytes,int len  );
->>>>>>> 112
 
 void *csvalloc (yy_size_t  );
 void *csvrealloc (void *,yy_size_t  );
@@ -425,22 +377,13 @@ static void yy_fatal_error (yyconst char msg[]  );
  */
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
-<<<<<<< HEAD
 	csvleng = (yy_size_t) (yy_cp - yy_bp); \
-=======
-	csvleng = (size_t) (yy_cp - yy_bp); \
->>>>>>> 112
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-<<<<<<< HEAD
-#define YY_NUM_RULES 5
-#define YY_END_OF_BUFFER 6
-=======
 #define YY_NUM_RULES 4
 #define YY_END_OF_BUFFER 5
->>>>>>> 112
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -450,11 +393,7 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[11] =
     {   0,
-<<<<<<< HEAD
-        0,    0,    6,    4,    2,    1,    3,    2,    1,    0
-=======
         0,    0,    5,    4,    2,    1,    3,    2,    1,    0
->>>>>>> 112
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -464,11 +403,7 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    3,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    3,    1,    1,    3,    3,    3,
-<<<<<<< HEAD
         3,    3,    3,    3,    3,    3,    3,    1,    4,    1,
-=======
-        3,    3,    3,    3,    3,    3,    3,    3,    4,    1,
->>>>>>> 112
         1,    1,    1,    1,    3,    3,    3,    3,    3,    3,
         3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
         3,    3,    3,    3,    3,    3,    3,    3,    3,    3,
@@ -538,19 +473,13 @@ int csv_flex_debug = 0;
 char *csvtext;
 #line 1 "csv.l"
 #line 2 "csv.l"
-<<<<<<< HEAD
-#include "csv.tab.h"	
-#line 478 "lex.csv.c"
-=======
-
 #include "csv.ger.h"	
 #include "linked_list.h"
 #include "csv.tab.h"
 
 int total = 0;
 
-#line 492 "lex.csv.c"
->>>>>>> 112
+#line 483 "lex.csv.c"
 
 #define INITIAL 0
 
@@ -589,11 +518,7 @@ FILE *csvget_out (void );
 
 void csvset_out  (FILE * out_str  );
 
-<<<<<<< HEAD
 yy_size_t csvget_leng (void );
-=======
-int csvget_leng (void );
->>>>>>> 112
 
 char *csvget_text (void );
 
@@ -635,16 +560,7 @@ static int input (void );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
-<<<<<<< HEAD
 #define YY_READ_BUF_SIZE 8192
-=======
-#ifdef __ia64__
-/* On IA-64, the buffer size is 16k, not 8k */
-#define YY_READ_BUF_SIZE 16384
-#else
-#define YY_READ_BUF_SIZE 8192
-#endif /* __ia64__ */
->>>>>>> 112
 #endif
 
 /* Copy whatever the last rule matched to the standard output. */
@@ -652,11 +568,7 @@ static int input (void );
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-<<<<<<< HEAD
 #define ECHO fwrite( csvtext, csvleng, 1, csvout )
-=======
-#define ECHO do { if (fwrite( csvtext, csvleng, 1, csvout )) {} } while (0)
->>>>>>> 112
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -667,11 +579,7 @@ static int input (void );
 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
 		{ \
 		int c = '*'; \
-<<<<<<< HEAD
 		yy_size_t n; \
-=======
-		size_t n; \
->>>>>>> 112
 		for ( n = 0; n < max_size && \
 			     (c = getc( csvin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
@@ -753,15 +661,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-<<<<<<< HEAD
-#line 8 "csv.l"
+#line 13 "csv.l"
 
-#line 662 "lex.csv.c"
-=======
-#line 14 "csv.l"
-
-#line 681 "lex.csv.c"
->>>>>>> 112
+#line 667 "lex.csv.c"
 
 	if ( !(yy_init) )
 		{
@@ -846,72 +748,38 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-<<<<<<< HEAD
-#line 9 "csv.l"
+#line 14 "csv.l"
 { /*csvlval.tipoString=strdup(csvtext);*/
 							  //printf("estou aqui csv!\n");
 				 			  return c_string;
 				 			}
-=======
-#line 15 "csv.l"
-{ 	csvlval.tipoString=strdup(csvtext);
-									//printf("cena ");
-									return c_string;
-								}
->>>>>>> 112
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-<<<<<<< HEAD
-#line 14 "csv.l"
-{//printf("SL!\n");
-=======
-#line 20 "csv.l"
+#line 19 "csv.l"
 {total++;
 							 //printf("\nSL! %d\n",total);
->>>>>>> 112
 							 return SEPL;
 							}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-<<<<<<< HEAD
-#line 18 "csv.l"
-{//printf("SC!\n");
-                             return SEPC;
-                            }
-	YY_BREAK
-case 4:
-YY_RULE_SETUP
-#line 22 "csv.l"
-return 33;
-	YY_BREAK
-case 5:
-YY_RULE_SETUP
 #line 24 "csv.l"
-ECHO;
-	YY_BREAK
-#line 778 "lex.csv.c"
-case YY_STATE_EOF(INITIAL):
-	yyterminate();
-=======
-#line 25 "csv.l"
 {//printf(" SC ");
                              return SEPC;
                             }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 29 "csv.l"
+#line 28 "csv.l"
 { return '$';}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 31 "csv.l"
+#line 30 "csv.l"
 ECHO;
 	YY_BREAK
-#line 797 "lex.csv.c"
->>>>>>> 112
+#line 783 "lex.csv.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1095,11 +963,7 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-<<<<<<< HEAD
 			yy_size_t num_to_read =
-=======
-			int num_to_read =
->>>>>>> 112
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
@@ -1113,11 +977,7 @@ static int yy_get_next_buffer (void)
 
 			if ( b->yy_is_our_buffer )
 				{
-<<<<<<< HEAD
 				yy_size_t new_size = b->yy_buf_size * 2;
-=======
-				int new_size = b->yy_buf_size * 2;
->>>>>>> 112
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -1148,11 +1008,7 @@ static int yy_get_next_buffer (void)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-<<<<<<< HEAD
 			(yy_n_chars), num_to_read );
-=======
-			(yy_n_chars), (size_t) num_to_read );
->>>>>>> 112
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -1262,11 +1118,7 @@ static int yy_get_next_buffer (void)
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-<<<<<<< HEAD
 		register yy_size_t number_to_move = (yy_n_chars) + 2;
-=======
-		register int number_to_move = (yy_n_chars) + 2;
->>>>>>> 112
 		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		register char *source =
@@ -1315,11 +1167,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-<<<<<<< HEAD
 			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
-=======
-			int offset = (yy_c_buf_p) - (yytext_ptr);
->>>>>>> 112
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -1343,11 +1191,7 @@ static int yy_get_next_buffer (void)
 				case EOB_ACT_END_OF_FILE:
 					{
 					if ( csvwrap( ) )
-<<<<<<< HEAD
 						return 0;
-=======
-						return EOF;
->>>>>>> 112
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;
@@ -1599,11 +1443,7 @@ void csvpop_buffer_state (void)
  */
 static void csvensure_buffer_stack (void)
 {
-<<<<<<< HEAD
 	yy_size_t num_to_alloc;
-=======
-	int num_to_alloc;
->>>>>>> 112
     
 	if (!(yy_buffer_stack)) {
 
@@ -1695,7 +1535,6 @@ YY_BUFFER_STATE csv_scan_string (yyconst char * yystr )
 
 /** Setup the input buffer state to scan the given bytes. The next call to csvlex() will
  * scan from a @e copy of @a bytes.
-<<<<<<< HEAD
  * @param bytes the byte buffer to scan
  * @param len the number of bytes in the buffer pointed to by @a bytes.
  * 
@@ -1706,19 +1545,6 @@ YY_BUFFER_STATE csv_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len
 	YY_BUFFER_STATE b;
 	char *buf;
 	yy_size_t n, i;
-=======
- * @param yybytes the byte buffer to scan
- * @param _yybytes_len the number of bytes in the buffer pointed to by @a bytes.
- * 
- * @return the newly allocated buffer state object.
- */
-YY_BUFFER_STATE csv_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
-{
-	YY_BUFFER_STATE b;
-	char *buf;
-	yy_size_t n;
-	int i;
->>>>>>> 112
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
@@ -1800,11 +1626,7 @@ FILE *csvget_out  (void)
 /** Get the length of the current token.
  * 
  */
-<<<<<<< HEAD
 yy_size_t csvget_leng  (void)
-=======
-int csvget_leng  (void)
->>>>>>> 112
 {
         return csvleng;
 }
@@ -1952,11 +1774,7 @@ void csvfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-<<<<<<< HEAD
-#line 24 "csv.l"
-=======
-#line 31 "csv.l"
->>>>>>> 112
+#line 30 "csv.l"
 
 
 

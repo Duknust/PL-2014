@@ -1,0 +1,11 @@
+<ga>
+
+    ListaLinhas -> cons_csv_ListaLinhas(ListaLinhas Linha)
+                |  cons_csv_ListaLinhas_Fim(Linha)
+                ;
+
+    Linha -> cons_csv_Linha(Linha STR)
+          |  cons_csv_Linha_Fim(STR)
+          ;
+
+</ga>
