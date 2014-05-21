@@ -3,11 +3,10 @@
 #include "linked_list.h"
 
 
-List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *, void *),int (*igualFunction)(void *, void *)) {
+List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *, void *)) {
     List newList = (List) malloc(sizeof (struct list));
     newList->elems = NULL;
     newList->compareFunction = compareFunction;
-    newList->igualFunction = igualFunction;
     newList->getKey = getKey;
     newList->totalCount = 0;
 
@@ -17,7 +16,7 @@ List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *,
 int List_Push(List list, void *newData) {
 	
 	if(list==NULL)
-		list = List_Create(NULL,NULL,NULL);
+		list = List_Create(NULL,NULL);
 		
     ListElem newElem = malloc(sizeof(struct list_elem));
 		struct list_elem *ptrlist;
@@ -73,7 +72,7 @@ void *List_Pop(List list) {
     return data;
 }
 
-int List_InsertOrd(List list, void *newData, int (*compareFunction)(void *, void *),int (*igualFunction)(void *, void *)) {
+int List_InsertOrd(List list, void *newData) {
     ListElem *aux = &(list->elems);
 
     while (*aux != NULL && list->compareFunction((*aux)->data, newData)<0) {
@@ -82,8 +81,8 @@ int List_InsertOrd(List list, void *newData, int (*compareFunction)(void *, void
     
     if (*aux !=NULL)
     {
-		if (list->compareFunction((*aux)->data, newData)==0&&list->igualFunction)	
-			{list->igualFunction((*aux)->data, newData);return 0;}
+		if (list->compareFunction((*aux)->data, newData)==0)	
+			{return 0;}
 		else
 			{
 			ListElem newElem;

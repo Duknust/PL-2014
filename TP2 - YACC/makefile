@@ -6,10 +6,10 @@ cons : $(objects)
 
 
 csv.tab.o : csv.tab.h csv.tab.c
-	gcc -c csv.tab.c
+	gcc -c csv.tab.c -g
 
 lex.csv.o : lex.csv.c csv.tab.h csv.ger.h
-	gcc -c lex.csv.c
+	gcc -c lex.csv.c -g
 
 csv.tab.h csv.tab.c : csv.y linked_list.h estrutura.h csv.ger.h
 	yacc -d -b "csv" -p "csv" csv.y
@@ -18,7 +18,7 @@ lex.csv.c : csv.l
 	flex csv.l
 
 csv.ger.o : csv.ger.h csv.ger.c
-	gcc -c csv.ger.c
+	gcc -c csv.ger.c -g
 
 consola.tab.o : consola.tab.h consola.tab.c
 	gcc -c consola.tab.c -g
@@ -33,10 +33,10 @@ consola.tab.h consola.tab.c : consola.y linked_list.o estrutura.h
 	yacc -d -b "consola" -p "consola" consola.y 
 	
 linked_list.o: linked_list.h estrutura.c
-		gcc -c linked_list.c
+		gcc -c linked_list.c -g
 
 estrutura.o: estrutura.h estrutura.c linked_list.h csv.ger.h
-		gcc -c estrutura.c
+		gcc -c estrutura.c -g 
 
 
 clean:
