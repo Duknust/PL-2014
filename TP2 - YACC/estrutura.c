@@ -2,7 +2,23 @@
 
 
 
+char * calcPontosAtleta(Atleta a, int maxP){
+	char * pontosc;
+	int pontos=0,countP = 0;
+	
+	
+	ListElem aux = a->listaOrdPontos->elems;
 
+    while (aux != NULL && countP < maxP) {
+        pontos += atoi((char*)aux->data);
+        countP++;
+        aux = aux->next;
+    }
+	pontosc = (char*)malloc(sizeof(char)*5);
+	sprintf(pontosc,"%d",pontos);
+						 
+	return pontosc;
+}
 
 void print_ListaLinhas(ListaLinhas l){
 	ListaLinhas lis = l;
@@ -161,7 +177,7 @@ void print_ListaProvas(){
 void update_ListaResultados(){
 	
 	
-	lista_ResTotal = List_Create(NULL,*compara2scores);
+	lista_ResTotal = List_Create(NULL,*compara2scoresAtleta);
 	List lista_Temp = List_Create(NULL,NULL);
 	
 	
@@ -198,29 +214,31 @@ void update_ListaResultados(){
 			
 			
 			ListElem laux = lista_Temp->elems;
-			int somado = 0;
+			int inserido = 0;
 			
-			while (laux != NULL&& somado == 0) {//Percorrer a Lista dos Resultados Totais e fazer a soma dos pontos
-				List li = (List)laux->data;
-				ListElem lie2 = li->elems;	
+			while (laux != NULL&& inserido == 0) {//Percorrer a Lista dos Resultados Totais e fazer a soma dos pontos
+				//List li = (List)laux->data;
+				//ListElem lie2 = li->elems;	
 				//printf("res_%s\n",(char*)lie2->data);
-				if (strcmp((char*)lie2->data, cid)==0)//Soma caso haja um igual
-					{ListElem nle = (ListElem)lie2->next;
-					 char* pontosL= (char*)nle->data;//printf("    pontos:%s",pontosL);
-					 int pont=atoi(pontosL)+atoi(cpontos);
-					 sprintf(pontosL,"%d",pont);
-					 nle->data =pontosL;//printf("->%s\n",pontosL);
-					 somado = 1;}
+				Atleta atl = NULL;
+				atl = (Atleta)laux->data;
+
+				if(atl != NULL)
+				 if (strcmp(atl->Identificador, cid)==0)//Ser for este atleta
+					{List_InsertOrd(atl->listaOrdPontos,cpontos,*compara2scoresChar);//Insere os Pontos de forma ordenada
+					 inserido = 1;}
 				 
 				
 					laux = laux->next;
 			}
-			if(somado==0)//Se nao tem ainda la esse Atleta
+			if(inserido==0)//Se nao tem ainda la esse Atleta
 				{//Criar a Lista do Resultado do Atleta e inserir na lista final para somar pontos
-				List clista = List_Create(NULL,NULL);
-				List_Push(clista,cid);
-				List_Push(clista,cpontos);
-				List_Push(lista_Temp,clista);}
+				Atleta at= (Atleta)malloc(sizeof(NodoAtleta));
+				at->Nome = strdup("NOME");
+				at->listaOrdPontos = List_Create(NULL,*compara2scoresChar);
+				at->Identificador=strdup(cid);
+				List_Push(at->listaOrdPontos,cpontos);
+				List_Push(lista_Temp,at);}
 			
 			le2=le2->next;}//Iterar Resultados Individuais
         
@@ -233,16 +251,47 @@ void update_ListaResultados(){
 	ListElem taux = lista_Temp->elems;
 
     while (taux != NULL) {
-		List copia = (List)taux->data;
-        List_InsertOrd(lista_ResTotal,copia);
+		Atleta lisAt = (Atleta)taux->data;
+		char * pontos = calcPontosAtleta(lisAt,numeroMelhorProvas);
+		Atleta novo = (Atleta)malloc(sizeof(NodoAtleta));
+		novo->Nome = lisAt->Nome;
+		novo->Identificador=lisAt->Identificador;
+		novo->listaOrdPontos= List_Create(NULL,NULL);
+		List_Push(novo->listaOrdPontos,pontos);
+		
+        List_InsertOrd(lista_ResTotal,novo,*compara2scoresAtleta);
         taux = taux->next;
     }
 }	
 
 
+void print_Ranking(List lr){
+	if (lr==NULL)
+		return;
+		
+	ListElem aux = lr->elems;
+	printf("------------------------\nRanking de %d Atletas\n\n",lr->totalCount);
+		
+    while (aux != NULL) {
+		Atleta a = (Atleta)aux->data;
+		List l = a->listaOrdPontos;
+		ListElem le1 = l->elems;
+	
+		char * pontos = (char*) le1->data;
+
+		printf("Nome=%s\nid=%s\n    pontos=%s\n",a->Nome,a->Identificador,pontos);
+		
+		printf("\n--------------\n");
+        
+        aux = aux->next;
+    }
+	
+}	
 	
 void print_Lista(List lr){
-	
+	if (lr==NULL)
+		return;
+		
 	ListElem aux = lr->elems;
 	printf("l=%d\n",lr->totalCount);
 		
@@ -339,13 +388,31 @@ int compara2scores(void* d1,void * d2){
      
 }
 
-int compara2scoresSoma(void* d1,void * d2){
+
+int compara2scoresAtleta(void* d1,void * d2){
+    
+    Atleta l1 = (Atleta)d1;
+    Atleta l2 = (Atleta)d2;
      
-    List l1 = (List)d1;
-    List l2 = (List)d2;
+    int n1 = atoi((char*)l1->listaOrdPontos->elems->data);
+    int n2 = atoi((char*)l2->listaOrdPontos->elems->data);
      
-    int n1 = atoi((char*)getNcampo(l1,nPontos));
-    int n2 = atoi((char*)getNcampo(l2,nPontos));
+    if (n1>n2)
+        return -1;
+    else if (n1<n2)
+        return 1;
+    else
+        return 0;
+     
+}
+
+int compara2scoresChar(void* d1,void * d2){
+     
+    char* l1 = (char*)d1;
+    char* l2 = (char*)d2;
+     
+    int n1 = atoi(l1);
+    int n2 = atoi(l2);
      
     if (n1>n2)
         return -1;
@@ -454,7 +521,7 @@ void insere_Resultados(ListaLinhas prova, List provas){
 				List score= List_Create(NULL,NULL);
 				List_Push(score,iden);
 				List_Push(score,pontos);
-				List_InsertOrd(resprova,score);
+				List_InsertOrd(resprova,score,*compara2scores);
 			}
 			
 		int r = List_Push(provas,resprova);
@@ -464,8 +531,10 @@ void insere_Resultados(ListaLinhas prova, List provas){
 
 
 List getNProva (List lista,int n){
-	if(n<=0 || n>lista->totalCount)
-		return NULL;
+	if(n<=0 || n>numeroProvas)
+		{printf("ERRO : Prova inexistente\n");return NULL;}
+	else if(n>lista->totalCount && n<numeroProvas)
+			{printf("ERRO : Prova ainda foi carregada\n");return NULL;}
 		
 	int count = 1;
 	ListElem aux = lista->elems;
@@ -474,6 +543,7 @@ List getNProva (List lista,int n){
         if(count == n)
 			return (List)aux->data;
         count++;
+        aux = aux->next;
     }
 	return NULL;
 }

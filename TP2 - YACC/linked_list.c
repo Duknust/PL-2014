@@ -72,10 +72,10 @@ void *List_Pop(List list) {
     return data;
 }
 
-int List_InsertOrd(List list, void *newData) {
+int List_InsertOrd(List list, void *newData,int (*compareFunction)(void *, void *)) {
     ListElem *aux = &(list->elems);
 
-    while (*aux != NULL && list->compareFunction((*aux)->data, newData)<0) {
+    while (*aux != NULL && compareFunction((*aux)->data, newData)<0) {
         aux = &((*aux)->next);        
     }
     

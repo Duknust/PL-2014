@@ -67,7 +67,7 @@ void *List_Pop(List list);
  * @param newData Apontador para os dados a inserir
  * @return 0 em caso de sucesso
  */
-int List_InsertOrd(List list, void *newData);
+int List_InsertOrd(List list, void *newData, int (*compareFunction)(void *, void *));
 
 /**
  * @fn List_Search

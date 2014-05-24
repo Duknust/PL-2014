@@ -90,7 +90,7 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   }
 								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
-	 | RANKING ficheiro {print_Lista(lista_ResTotal);$$=$2;}
+	 | RANKING ficheiro {print_Ranking(lista_ResTotal);$$=$2;}
 	 | EXIT {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
 	 | LISTING Comando_list
 	 | INFO
