@@ -15,7 +15,7 @@ typedef struct sAtleta{
 int idTotal;//total de identificadores nos resultados
 int idIdentificador;//indice do Identificador de Atleta
 int idTempo;//indice do tempo da prova do atleta
-
+int idNome;//indice do Nome
 
 int nPontos;
 int numeroProvas;//quantas provas sao ao todo
@@ -32,10 +32,13 @@ List lista_Atletas; //Lista de Atletas -> Identificador,Nome(s),Pontos...
 List lista_Resultados; //Lista da Lista de Resultados por prova -> Identificador,Pontos
 List lista_ResTotal; //Lista Ordenada da Pontuacao Final -> Identificador,Pontos
 
+
+char * getNomeAtletabyId(List lista, char* id);
 char * calcPontosAtleta(Atleta a, int maxP);
 int compara2Int(void* d1,void * d2);
 int compara2nomes(void* ,void * );
 int compara2scores(void* ,void * );
+int compara2IdsAtleta(void* d1,void * d2);
 int compara2scoresAtleta(void*,void*);
 int compara2scoresChar(void* ,void * );
 char * getNcampo (List ,int );

@@ -1,6 +1,20 @@
 #include "estrutura.h"
 
+char * getNomeAtletabyId(List lista, char* id){//Retorna o Nome do Atleta de uma Lista de Atletas com o id
+	
+	int encontrado = 0;
+	char * nome;
+	ListElem aux = lista->elems;
 
+    while (aux != NULL) {
+        Atleta a = (Atleta)aux->data;
+		if(strcmp(a->Identificador,id)==0)
+			 return a->Nome;
+        aux = aux->next;
+    }
+    return NULL;//Não tem esse ID na Lista
+	
+}
 
 char * calcPontosAtleta(Atleta a, int maxP){
 	char * pontosc;
@@ -68,27 +82,94 @@ void insere_atletas (List lAtletas, ListaLinhas prova){//Vai inserir atletas nov
 	Linha linha;
 	char * x ;
 	char * texto;
-	int nLinha=1,nColuna=1;
+	char * cIden,*cNome;
+	int nLinha=0,nColuna=0;
 	//linha = lis->u.d2.s1;
 		while(lis->flag!=PScons_csv_ListaLinhas_Fim){
 			linha = lis->u.d1.s2;
-
+			cIden = NULL;cNome=NULL;
 				while(linha->flag!=PScons_csv_Linha_Fim){
 					
 					x = (char*)linha->u.d1.s2;
 					texto=strdup(x);
-					if(idTotal-nColuna==idIdentificador)
-						if(procura_atleta(lAtletas,texto)==0)
-							List_Push(lAtletas,texto);
+					
+					if(idTotal-nColuna==idIdentificador){//Se for um ID
+						cIden = strdup(texto);
+						if(cNome!=NULL)//Se ja lemos um Nome entao vamos tentar inserir
+							{
+							 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
+								 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
+								 at->Identificador=strdup(texto);
+								 at->Nome=strdup(cNome);
+								 at->listaOrdPontos=List_Create(NULL,NULL);
+								 List_Push(lAtletas,at);
+								 free(cNome);
+								 free(cIden);}
+								}
+							
+					}
+							
+					if(idTotal-nColuna==idNome){//Se for um Nome
+							cNome = strdup(texto);
+						if(cIden!=NULL)//Se ja lemos um Id entao vamos tentar inserir
+							{
+							 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
+								 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
+								 at->Identificador=strdup(cIden);
+								 at->Nome=strdup(texto);
+								 at->listaOrdPontos=List_Create(NULL,NULL);
+								 List_Push(lAtletas,at);
+								 free(cNome);
+								 free(cIden);}
+								}
+					}
+					
+					
 					linha = linha->u.d1.s1;	
 					nColuna++;				
 					}
-				x = (char*)linha->u.d2.s1;
-				texto=strdup(x);
-				if(idTotal-nColuna==idIdentificador)
-					if(procura_atleta(lAtletas,texto)==0)
-						List_Push(lAtletas,texto);
-				nColuna=1;
+					
+			x = (char*)linha->u.d2.s1;
+			texto=strdup(x);
+			
+			if(idTotal-nColuna==idIdentificador){//Se for um ID
+					if(cNome!=NULL)//Se ja lemos um Nome entao vamos tentar inserir
+						{
+						 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
+							 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
+							 at->Identificador=strdup(texto);
+							 at->Nome=strdup(cNome);
+							 at->listaOrdPontos=List_Create(NULL,NULL);
+							 List_Push(lAtletas,at);
+							 free(cNome);
+							 free(cIden);}
+							}
+					else//Se ainda nao lemos o Nome entao fica guardado o ID
+					cIden = strdup(texto);
+			}
+					
+			if(idTotal-nColuna==idNome){//Se for um Nome
+				if(cIden!=NULL)//Se ja lemos um Id entao vamos tentar inserir
+					{
+					 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
+						 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
+						 at->Identificador=strdup(cIden);
+						 at->Nome=strdup(texto);
+						 at->listaOrdPontos=List_Create(NULL,NULL);
+						 List_Push(lAtletas,at);
+						 free(cNome);
+						 free(cIden);}
+						}
+				else//Se ainda nao inseriu entao fica guardado o Nome
+					cNome = strdup(texto);
+			}
+			
+			
+			
+			
+			
+			
+			nColuna=0;
 				
 			lis = lis->u.d1.s1;	
 			nLinha++;
@@ -140,8 +221,8 @@ int compara2Int(void* d1,void * d2){
 
 
 int procura_atleta(List lAtletas,char*atleta){
-	char * nome = List_Search(lAtletas,*compara2nomes,atleta);
-	if(nome==NULL)
+	Atleta a = List_Search(lAtletas,*compara2IdsAtleta,atleta);
+	if(a ==NULL)
 		return 0;
 	else
 		return 1;	
@@ -234,7 +315,11 @@ void update_ListaResultados(){
 			if(inserido==0)//Se nao tem ainda la esse Atleta
 				{//Criar a Lista do Resultado do Atleta e inserir na lista final para somar pontos
 				Atleta at= (Atleta)malloc(sizeof(NodoAtleta));
-				at->Nome = strdup("NOME");
+				char * NomeA = getNomeAtletabyId(lista_Atletas,cid);
+				if(NomeA!=NULL)
+					at->Nome = strdup(NomeA);
+				else
+					at->Nome = strdup("NOME");
 				at->listaOrdPontos = List_Create(NULL,*compara2scoresChar);
 				at->Identificador=strdup(cid);
 				List_Push(at->listaOrdPontos,cpontos);
@@ -271,7 +356,7 @@ void print_Ranking(List lr){
 		
 	ListElem aux = lr->elems;
 	printf("------------------------\nRanking de %d Atletas\n\n",lr->totalCount);
-		
+		int posicao = 1;
     while (aux != NULL) {
 		Atleta a = (Atleta)aux->data;
 		List l = a->listaOrdPontos;
@@ -279,10 +364,10 @@ void print_Ranking(List lr){
 	
 		char * pontos = (char*) le1->data;
 
-		printf("Nome=%s\nid=%s\n    pontos=%s\n",a->Nome,a->Identificador,pontos);
+		printf("%d - %s pontos | %s (%s)\n",posicao,pontos,a->Nome,a->Identificador);
 		
 		printf("\n--------------\n");
-        
+        posicao++;
         aux = aux->next;
     }
 	
@@ -388,6 +473,21 @@ int compara2scores(void* d1,void * d2){
      
 }
 
+
+int compara2IdsAtleta(void* d1,void * d2){// d1 é um Atleta (da Lista) e d2 é o char* (Identificador)
+    
+    Atleta l1 = (Atleta)d1;
+     
+    char* c1= l1->Identificador;
+    char * c2= (char*)d2;
+    
+    int s = strcmp(c1,c2);
+    if (s==0)
+        return 1;
+    else 
+        return 0;
+     
+}
 
 int compara2scoresAtleta(void* d1,void * d2){
     
