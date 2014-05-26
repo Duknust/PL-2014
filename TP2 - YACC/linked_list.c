@@ -81,7 +81,7 @@ int List_InsertOrd(List list, void *newData,int (*compareFunction)(void *, void 
     
     if (*aux !=NULL)
     {
-		if (list->compareFunction((*aux)->data, newData)==0)	
+		if (compareFunction((*aux)->data, newData)==0)	
 			{return 0;}
 		else
 			{

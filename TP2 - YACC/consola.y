@@ -77,11 +77,11 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 														insere_atletas(lista_Atletas,csvList);
 														
 														insere_Resultados(csvList,lista_Resultados);
-															
+
 														//print_ListaLinhas(csvList);
 														print_ListaProvas();
 														print_ListaResultados();
-														update_ListaResultados();
+														update_Ranking();
 														//printl();
 														csvList = NULL;
 														break;
@@ -91,7 +91,7 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   }
 								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
-	 | RANKING ficheiro {print_Ranking(lista_ResTotal);$$=$2;}
+	 | RANKING ficheiro {print_Ranking(lista_Ranking);$$=$2;}
 	 | EXIT {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
 	 | LISTING Comando_list
 	 | INFO
@@ -105,7 +105,7 @@ Comando_load : CONF {comando_flag = _CONF;}
 
 Comando_list : PROVAS {print_ListaProvas();}
 			 | PARTICIPANTES prova {printf("PARTICIPANTES DA PROVA: %d\n",$2);}
-			 | PROVA prova {print_Lista(getNProva(lista_Resultados,$2));}
+			 | PROVA prova {print_Prova(getNProva(lista_Resultados,$2));}
 			 | TORNEIO
 			 ;
 

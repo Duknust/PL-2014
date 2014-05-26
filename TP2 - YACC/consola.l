@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	listaProvas = List_Create(NULL,NULL);
 	lista_Atletas = List_Create(NULL,NULL);
 	lista_Resultados = List_Create(NULL,*compara2scores);
-	lista_ResTotal = List_Create(NULL,NULL);
+	lista_Ranking = List_Create(NULL,NULL);
 	
 	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
 	idTempo = 12;
