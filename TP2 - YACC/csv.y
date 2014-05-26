@@ -8,7 +8,7 @@
 #include "estrutura.h"
 
 int yylex(void);
-int yyerror(char* s);
+int yyerror(char* s);	
 %}
 
 %token SEPL SEPC c_string

@@ -9,6 +9,7 @@ int yylex(void);
 int yyerror(char* s);
 extern List csvparse();
 
+
 #define _CONF 1000
 #define _DB 1001
 #define _RESULT 1002
@@ -80,6 +81,7 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 														//print_ListaLinhas(csvList);
 														print_ListaProvas();
 														print_ListaResultados();
+														update_ListaResultados();
 														//printl();
 														csvList = NULL;
 														break;
@@ -89,7 +91,7 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   }
 								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
-     | RANKING ficheiro {$$=$2;}
+	 | RANKING ficheiro {print_Ranking(lista_ResTotal);$$=$2;}
 	 | EXIT {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
 	 | LISTING Comando_list
 	 | INFO
@@ -101,9 +103,9 @@ Comando_load : CONF {comando_flag = _CONF;}
 			 | RESULT {comando_flag = _RESULT;}
 			 ;
 
-Comando_list : PROVAS
+Comando_list : PROVAS {print_ListaProvas();}
 			 | PARTICIPANTES prova {printf("PARTICIPANTES DA PROVA: %d\n",$2);}
-			 | PROVA
+			 | PROVA prova {print_Lista(getNProva(lista_Resultados,$2));}
 			 | TORNEIO
 			 ;
 

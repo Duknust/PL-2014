@@ -1,55 +1,48 @@
-objects=lex.consola.o csv.tab.o consola.tab.o conf.tab.o lex.csv.o lex.conf.o linked_list.o csv.ger.o conf.ger.o estrutura.o -ll
-
-cons : $(objects)
-	gcc -o cons $(objects) -g 
+grandeParser : estrutura.o linked_list.o lex.consola.o consola.tab.o lex.conf.o conf.tab.o lex.csv.o csv.tab.o csv.ger.o -ll
+	gcc -o grandeParser estrutura.o linked_list.o lex.consola.o consola.tab.o lex.conf.o conf.tab.o lex.csv.o csv.tab.o csv.ger.o -ll
 
 
+estrutura.o : linked_list.h estrutura.c estrutura.h
+	gcc -c estrutura.c
 
-csv.tab.o : csv.tab.h csv.tab.c
-	gcc -c csv.tab.c
-
-lex.csv.o : lex.csv.c csv.tab.h csv.ger.h
-	gcc -c lex.csv.c
-
-csv.tab.h csv.tab.c : csv.y linked_list.h estrutura.h csv.ger.h
-	yacc -d -b "csv" -p "csv" csv.y
-
-lex.csv.c : csv.l
-	flex csv.l
-
-csv.ger.o : csv.ger.h csv.ger.c
-	gcc -c csv.ger.c
-
-consola.tab.o : consola.tab.h consola.tab.c
-	gcc -c consola.tab.c -g
-
-conf.tab.o : conf.tab.h conf.tab.c 
-	gcc -c conf.tab.c
-
-lex.conf.o : lex.conf.c conf.tab.h conf.ger.h
-	gcc -c lex.conf.c 
-
-lex.consola.o : lex.consola.c consola.tab.h
-	gcc -c lex.consola.c
-
-conf.tab.h conf.tab.c : conf.y linked_list.h estrutura.h conf.ger.h
-	yacc -d -b "conf" -p "conf" conf.y
-
-lex.conf.c : conf.l 
-	flex conf.l
+linked_list.o : linked_list.c linked_list.h
+	gcc -c linked_list.c
 
 lex.consola.c : consola.l
 	flex consola.l
-	
-consola.tab.h consola.tab.c : consola.y linked_list.o estrutura.h
-	yacc -d -b "consola" -p "consola" consola.y 
 
-linked_list.o: linked_list.h estrutura.c
-		gcc -c linked_list.c
+lex.consola.o : lex.consola.c
+	gcc -c lex.consola.c
 
-estrutura.o: estrutura.h estrutura.c linked_list.h csv.ger.h conf.ger.h
-		gcc -c estrutura.c
+lex.conf.c : conf.l
+	flex conf.l
 
+lex.conf.o : lex.conf.c 
+	gcc -c lex.conf.c
 
-clean:
-	rm -f *.o consola.tab.* lex.consola.* csv.tab* lex.csv* cons
+conf.tab.c conf.tab.h : linked_list.o estrutura.o conf.y
+	yacc -d -b "conf" -p "conf" conf.y
+
+conf.tab.o : conf.tab.c conf.tab.h
+	gcc -c conf.tab.c
+
+lex.csv.c : csv.ger.h csv.l
+	flex csv.l
+
+lex.csv.o : lex.csv.c
+	gcc -c lex.csv.c
+
+csv.ger.o : csv.ger.c csv.ger.h
+	gcc -c csv.ger.c
+
+csv.tab.c csv.tab.h : csv.y
+	yacc -d -b "csv" -p "csv" csv.y
+
+csv.tab.o : csv.tac.c csv.tab.h
+	gcc -c csv.tab.c
+
+consola.tab.c consola.tab.h : estrutura.o consola.y
+	yacc -d -b "consola" -p "consola" consola.y
+
+consola.tab.o : consola.tab.c consola.tab.h
+	gcc -c consola.tab.c

@@ -6,9 +6,7 @@ extern int compara2scores(void*,void*);
 %}
 
 %option prefix ="consola"
-
 %option noyywrap
-
 %%
 "load"				return LOAD;
 
@@ -57,15 +55,19 @@ extern int compara2scores(void*,void*);
 
 int main(int argc, char *argv[])
 {
-	listaProvas = List_Create(NULL,NULL,NULL);
-	lista_Atletas = List_Create(NULL,NULL,NULL);
-	lista_Resultados = List_Create(NULL,*compara2scores,NULL);
+	listaProvas = List_Create(NULL,NULL);
+	lista_Atletas = List_Create(NULL,NULL);
+	lista_Resultados = List_Create(NULL,*compara2scores);
+	lista_ResTotal = List_Create(NULL,NULL);
+	
 	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
 	idTempo = 12;
 	idIdentificador = 3;
-
+	idNome = 5;
+	
 	nPontos=2;
-	numeroProvas=2;
+	numeroProvas=3;
+	numeroMelhorProvas=2;
 
     consolaparse();
     yylex();

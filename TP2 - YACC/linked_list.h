@@ -17,7 +17,6 @@ typedef struct list {
 	ListElem elems;                         /**< Lista de elementos */
 	long long int (*getKey)(void *);                   /**< Funcao que extrai a chave */
 	int (*compareFunction)(void *, void *); /**< Funcao de comparacao */
-	int (*igualFunction)(void *,void *); /**< Funcao para valores repetidos */
 	int totalCount;                              /**< Contagem de elementos */
 } *List;
 
@@ -28,7 +27,7 @@ typedef struct list {
  * @param compareFunction Funcao de comparacao para insercao ordenada
  * @return Lista criada
  */
-List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *, void *),int (*igualFunction)(void *, void *));
+List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *, void *));
 
 /**
  * @fn List_Push
@@ -68,7 +67,7 @@ void *List_Pop(List list);
  * @param newData Apontador para os dados a inserir
  * @return 0 em caso de sucesso
  */
-int List_InsertOrd(List list, void *newData,int (*compareFunction)(void *, void *),int (*igualFunction)(void *, void *));
+int List_InsertOrd(List list, void *newData, int (*compareFunction)(void *, void *));
 
 /**
  * @fn List_Search

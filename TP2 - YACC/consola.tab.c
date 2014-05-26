@@ -126,6 +126,7 @@ int yylex(void);
 int yyerror(char* s);
 extern List csvparse();
 
+
 #define _CONF 1000
 #define _DB 1001
 #define _RESULT 1002
@@ -167,13 +168,13 @@ int comando_flag = -1;
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 37 "consola.y"
+#line 38 "consola.y"
 {
 	char* tipoficheiro;
 	int tiponProva;
 }
 /* Line 193 of yacc.c.  */
-#line 177 "consola.tab.c"
+#line 178 "consola.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -186,7 +187,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 190 "consola.tab.c"
+#line 191 "consola.tab.c"
 
 #ifdef short
 # undef short
@@ -401,7 +402,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  22
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   22
+#define YYLAST   23
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  20
@@ -410,7 +411,7 @@ union yyalloc
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  18
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  28
+#define YYNSTATES  29
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -458,7 +459,7 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     6,    10,    12,    16,    19,    22,    24,
-      27,    29,    31,    33,    35,    37,    39,    42,    44
+      27,    29,    31,    33,    35,    37,    39,    42,    45
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -468,14 +469,14 @@ static const yytype_int8 yyrhs[] =
       23,    -1,     4,    24,    17,    -1,     5,    17,    -1,     6,
       17,    -1,     7,    -1,     8,    25,    -1,     9,    -1,    19,
       -1,    10,    -1,    11,    -1,    12,    -1,    13,    -1,    14,
-      18,    -1,    15,    -1,    16,    -1
+      18,    -1,    15,    18,    -1,    16,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    51,    51,    53,    54,    57,    91,    92,    93,    94,
-      95,    96,    99,   100,   101,   104,   105,   106,   107
+       0,    52,    52,    54,    55,    58,    93,    94,    95,    96,
+      97,    98,   101,   102,   103,   106,   107,   108,   109
 };
 #endif
 
@@ -513,7 +514,7 @@ static const yytype_uint8 yyr1[] =
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     2,     3,     1,     3,     2,     2,     1,     2,
-       1,     1,     1,     1,     1,     1,     2,     1,     1
+       1,     1,     1,     1,     1,     1,     2,     2,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -522,8 +523,8 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     8,     0,    10,    11,     0,     0,
-       4,    12,    13,    14,     0,     6,     7,    15,     0,    17,
-      18,     9,     1,     0,     2,     5,    16,     3
+       4,    12,    13,    14,     0,     6,     7,    15,     0,     0,
+      18,     9,     1,     0,     2,     5,    16,    17,     3
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -538,8 +539,8 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_int8 yypact[] =
 {
       -2,     2,   -16,     1,   -17,    -5,   -17,   -17,    15,    -3,
-     -17,   -17,   -17,   -17,     3,   -17,   -17,   -17,     4,   -17,
-     -17,   -17,   -17,    -2,   -17,   -17,   -17,   -17
+     -17,   -17,   -17,   -17,     3,   -17,   -17,   -17,     4,     5,
+     -17,   -17,   -17,    -2,   -17,   -17,   -17,   -17,   -17
 };
 
 /* YYPGOTO[NTERM-NUM].  */
@@ -556,15 +557,15 @@ static const yytype_int8 yypgoto[] =
 static const yytype_uint8 yytable[] =
 {
       23,    15,     1,     2,     3,     4,     5,     6,    17,    18,
-      19,    20,    11,    12,    13,    22,    24,     7,    16,    27,
-      25,     0,    26
+      19,    20,    11,    12,    13,    22,    24,     7,    16,    28,
+      25,     0,    26,    27
 };
 
 static const yytype_int8 yycheck[] =
 {
        3,    17,     4,     5,     6,     7,     8,     9,    13,    14,
       15,    16,    10,    11,    12,     0,    19,    19,    17,    23,
-      17,    -1,    18
+      17,    -1,    18,    18
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -573,7 +574,7 @@ static const yytype_uint8 yystos[] =
 {
        0,     4,     5,     6,     7,     8,     9,    19,    21,    22,
       23,    10,    11,    12,    24,    17,    17,    13,    14,    15,
-      16,    25,     0,     3,    19,    17,    18,    23
+      16,    25,     0,     3,    19,    17,    18,    18,    23
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1388,7 +1389,7 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 57 "consola.y"
+#line 58 "consola.y"
     {(yyvsp[(3) - (3)].tipoficheiro)++; ; 
 								   (yyvsp[(3) - (3)].tipoficheiro)[strlen((yyvsp[(3) - (3)].tipoficheiro))-1]='\0';
 								   printf("LOAD! Ficheiro lido com o nome: %s\n",(yyvsp[(3) - (3)].tipoficheiro));
@@ -1415,6 +1416,7 @@ yyreduce:
 														//print_ListaLinhas(csvList);
 														print_ListaProvas();
 														print_ListaResultados();
+														update_ListaResultados();
 														//printl();
 														csvList = NULL;
 														break;
@@ -1425,48 +1427,58 @@ yyreduce:
     break;
 
   case 6:
-#line 91 "consola.y"
+#line 93 "consola.y"
     {(yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro); printf("SAVE! Ficheiro gravado com o nome: %s\n",(yyvsp[(2) - (2)].tipoficheiro));}
     break;
 
   case 7:
-#line 92 "consola.y"
-    {(yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro);}
+#line 94 "consola.y"
+    {print_Ranking(lista_ResTotal);(yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro);}
     break;
 
   case 8:
-#line 93 "consola.y"
+#line 95 "consola.y"
     {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
     break;
 
   case 11:
-#line 96 "consola.y"
+#line 98 "consola.y"
     {return 0;}
     break;
 
   case 12:
-#line 99 "consola.y"
+#line 101 "consola.y"
     {comando_flag = _CONF;}
     break;
 
   case 13:
-#line 100 "consola.y"
+#line 102 "consola.y"
     {comando_flag = _DB;}
     break;
 
   case 14:
-#line 101 "consola.y"
+#line 103 "consola.y"
     {comando_flag = _RESULT;}
     break;
 
+  case 15:
+#line 106 "consola.y"
+    {print_ListaProvas();}
+    break;
+
   case 16:
-#line 105 "consola.y"
+#line 107 "consola.y"
     {printf("PARTICIPANTES DA PROVA: %d\n",(yyvsp[(2) - (2)].tiponProva));}
+    break;
+
+  case 17:
+#line 108 "consola.y"
+    {print_Lista(getNProva(lista_Resultados,(yyvsp[(2) - (2)].tiponProva)));}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1470 "consola.tab.c"
+#line 1482 "consola.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1680,7 +1692,7 @@ yyreturn:
 }
 
 
-#line 110 "consola.y"
+#line 112 "consola.y"
 
 
 int yyerror(char *s){

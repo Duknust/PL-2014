@@ -704,7 +704,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 12 "consola.l"
+#line 10 "consola.l"
 
 #line 710 "lex.consola.c"
 
@@ -791,79 +791,79 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 13 "consola.l"
+#line 11 "consola.l"
 return LOAD;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "consola.l"
+#line 13 "consola.l"
 return SAVE;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 17 "consola.l"
+#line 15 "consola.l"
 return RANKING;
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 19 "consola.l"
+#line 17 "consola.l"
 return EXIT;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 21 "consola.l"
+#line 19 "consola.l"
 return LISTING;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 23 "consola.l"
+#line 21 "consola.l"
 return INFO;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 25 "consola.l"
+#line 23 "consola.l"
 return CONF;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 27 "consola.l"
+#line 25 "consola.l"
 return DB;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 29 "consola.l"
+#line 27 "consola.l"
 return RESULT;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 31 "consola.l"
+#line 29 "consola.l"
 return PROVAS;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 33 "consola.l"
+#line 31 "consola.l"
 return PARTICIPANTES;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 35 "consola.l"
+#line 33 "consola.l"
 return PROVA;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 37 "consola.l"
+#line 35 "consola.l"
 return TORNEIO;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 39 "consola.l"
+#line 37 "consola.l"
 { consolalval.tipoficheiro=strdup(consolatext);
 					  //printf("estou aqui tex!\n");
 				 	  return ficheiro;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 43 "consola.l"
+#line 41 "consola.l"
 { consolalval.tiponProva=atoi(consolatext);
 					  //printf("estou aqui num!\n");
 				 	  return prova;}
@@ -871,26 +871,26 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 47 "consola.l"
+#line 45 "consola.l"
 return SEPN;
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 49 "consola.l"
+#line 47 "consola.l"
 ;
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 51 "consola.l"
+#line 49 "consola.l"
 return '$';
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 53 "consola.l"
+#line 51 "consola.l"
 ;			
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 55 "consola.l"
+#line 53 "consola.l"
 ECHO;
 	YY_BREAK
 #line 897 "lex.consola.c"
@@ -1888,22 +1888,26 @@ void consolafree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 55 "consola.l"
+#line 53 "consola.l"
 
 
 
 
 int main(int argc, char *argv[])
 {
-	listaProvas = List_Create(NULL,NULL,NULL);
-	lista_Atletas = List_Create(NULL,NULL,NULL);
-	lista_Resultados = List_Create(NULL,*compara2scores,NULL);
+	listaProvas = List_Create(NULL,NULL);
+	lista_Atletas = List_Create(NULL,NULL);
+	lista_Resultados = List_Create(NULL,*compara2scores);
+	lista_ResTotal = List_Create(NULL,NULL);
+	
 	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
 	idTempo = 12;
 	idIdentificador = 3;
-
+	idNome = 5;
+	
 	nPontos=2;
-	numeroProvas=2;
+	numeroProvas=3;
+	numeroMelhorProvas=2;
 
     consolaparse();
     consolalex();
