@@ -30,6 +30,7 @@ typedef struct sResultado{
 }*Resultado, NodoResultado;
 
 
+
 int estado;
 int saveActualizado;//Saber se o programa esta gravado
 
@@ -44,7 +45,12 @@ int nPontos;
 int numeroProvas;//quantas provas sao ao todo
 int numeroMelhorProvas;//quantos melhores resultados das provas contam
 
-char * titulo;
+char *titulo; //nome do campeonato ou conjunto de provas
+char *provasTemp; //variavel temporaria para guardar o nome das provas
+char *camposTemp; //variavel temporaria para guardar os campos de interesse
+char *defNomeTemp; //variavel temporaria para guardar os campos do nome
+char *defIdTemp; //variavel temporaria para guardar a posicao do ID
+
 
 ListaLinhas csvList;
 
@@ -53,6 +59,7 @@ List listaProvas; //Lista de listaLinhas que correspondem a todas as provas
 
 List lista_Atletas; //Lista de Atletas -> Identificador,Nome(s),Pontos...
 List lista_Resultados; //Lista da Lista de Resultados por prova -> Identificador,Pontos
+
 List lista_Ranking; //Lista Ordenada da Pontuacao Final -> Identificador,Pontos
 
 Atleta getAtletabyId(List lista, char* id);
@@ -78,14 +85,14 @@ void print_info();
 int procura_atleta(List lAtletas,char*atleta);
 int tempo2segundos(char * );
 void print_ListaLinhas(ListaLinhas );
+
 void update_Ranking();
 Prova getNProva (List lista,int n);
 
 
 void print_ProvaHTML(Prova ,FILE *);
 void initHTML (FILE * , char * );
-
+List split(char* mensagem, char* sep); //Parte uma string por um determinado token
 void vazio();
-
 
 #endif

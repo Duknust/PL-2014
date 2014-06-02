@@ -6,6 +6,7 @@ char * getNomeAtletabyId(List lista, char* id){//Retorna o Nome do Atleta de uma
 	char * nome;
 	ListElem aux = lista->elems;
 
+
     while (aux != NULL) {
         Atleta a = (Atleta)aux->data;
 		if(strcmp(a->Identificador,id)==0)
@@ -23,9 +24,11 @@ Atleta getAtletabyId(List lista, char* id){//Retorna o apontador para o Atleta d
 	char * nome;
 	ListElem aux = lista->elems;
 
+
     while (aux != NULL) {
         Atleta a = (Atleta)aux->data;
 		if(strcmp(a->Identificador,id)==0)
+
 			 return a;
         aux = aux->next;
     }
@@ -38,6 +41,7 @@ char * calcPontosAtleta(Atleta a, int maxP){
 	int pontos=0,countP = 0;
 	
 	
+
 	ListElem aux = a->lista->elems;
 
     while (aux != NULL && countP < maxP) {
@@ -272,6 +276,7 @@ void print_ListaProvas(){
 
 
 	
+
 void update_Ranking(){ // Actualiza o Ranking
 	
 	
@@ -464,7 +469,6 @@ void print_ListaResultados(){
 		Prova p = (Prova)aux->data;
 		print_Prova(p);
 		printf("\n--------------\n");
-    
         aux = aux->next;
     }
 	
@@ -560,7 +564,7 @@ int compara2scoresAtleta(void* d1,void * d2){
     
     Atleta l1 = (Atleta)d1;
     Atleta l2 = (Atleta)d2;
-     
+
     int n1 = atoi((char*)l1->lista->elems->data);
     int n2 = atoi((char*)l2->lista->elems->data);
      
@@ -692,8 +696,7 @@ void insere_Resultados(ListaLinhas prova, List provas){
 				nLinha++;
 				
 				 printf("id=%s,pontos=%s,seg=%d\n",iden,pontos,seg);
-				
-				
+
 				Atleta at = getAtletabyId(lista_Atletas,iden);//O Atleta que tem o ID daquele Resultado
 				
 				Resultado result = (Resultado)malloc(sizeof(NodoResultado));
@@ -709,6 +712,7 @@ void insere_Resultados(ListaLinhas prova, List provas){
 	
 		
 }
+
 
 
 Prova getNProva (List lista,int n){
@@ -727,6 +731,18 @@ Prova getNProva (List lista,int n){
         aux = aux->next;
     }
 	return NULL;
+}
+
+List split(char* mensagem, char* sep){
+    List res = List_Create(NULL,NULL);
+    
+    char *p = strtok(mensagem, sep);
+    while(p != NULL) {
+        List_Push(res,p);
+        p = strtok(NULL, sep);
+    }
+    
+    return res;
 }
 
 

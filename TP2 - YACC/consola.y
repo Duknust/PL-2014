@@ -81,6 +81,7 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 														//print_ListaLinhas(csvList);
 														print_ListaProvas();
 														print_ListaResultados();
+<<<<<<< HEAD
 														update_Ranking();
 														
 														//HTML
@@ -100,6 +101,10 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 															{initHTML(html_file,titulo);
 															 print_ProvaHTML(getNProva(lista_Resultados,nprova),html_file);
 															 fclose(html_file);}
+=======
+														update_ListaResultados();
+														//printl();
+>>>>>>> origin/12
 														csvList = NULL;
 														break;
 										case _CONF :printf("CONF\n");break;
@@ -108,7 +113,11 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   }
 								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
+<<<<<<< HEAD
 	 | RANKING ficheiro {print_Ranking(lista_Ranking);$$=$2;} //HTML
+=======
+	 | RANKING ficheiro {print_Ranking(lista_ResTotal);$$=$2;}
+>>>>>>> origin/12
 	 | EXIT {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
 	 | LISTING Comando_list
 	 | INFO {print_info();}
@@ -122,7 +131,11 @@ Comando_load : CONF {comando_flag = _CONF;}
 
 Comando_list : PROVAS {print_ListaProvas();}
 			 | PARTICIPANTES prova {printf("PARTICIPANTES DA PROVA: %d\n",$2);}
+<<<<<<< HEAD
 			 | PROVA prova {print_Prova(getNProva(lista_Resultados,$2));}
+=======
+			 | PROVA prova {print_Lista(getNProva(lista_Resultados,$2));}
+>>>>>>> origin/12
 			 | TORNEIO
 			 ;
 

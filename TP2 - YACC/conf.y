@@ -15,7 +15,7 @@ int yyerror(char* s);
 }
 
 %type <texto> c_string
-%type <lista> ListaCampos ListaLinhas
+%type <lista> ListaLinhas
 
 %start Conf
 
@@ -28,19 +28,15 @@ ListaLinhas : ListaLinhas SEPL Linha
             | Linha
             ;
 
-Linha : TITULO c_string
-      | NPROVAS c_string
-      | NUM c_string
-      | CAMPO ListaCampos
-      | PROVAS ListaCampos
-      | DEFNOME ListaCampos
-      | DEFID c_string
+Linha : TITULO c_string {titulo = strdup($2);}
+      | NPROVAS c_string {numeroProvas = atoi($2);}
+      | NUM c_string {numeroMelhorProvas = atoi($2);}
+      | CAMPO c_string {camposTemp = strdup($2);}
+      | PROVAS c_string {provasTemp = strdup($2);}
+      | DEFNOME c_string {defNomeTemp = strdup($2);}
+      | DEFID c_string {defIdTemp = strdup($2);}
       |
       ;
-
-ListaCampos : ListaCampos SEPC c_string 
-		| c_string 
-		;
 
 %%
 

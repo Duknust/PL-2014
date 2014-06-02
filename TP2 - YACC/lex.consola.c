@@ -1912,7 +1912,11 @@ int main(int argc, char *argv[])
 	listaProvas = List_Create(NULL,NULL);
 	lista_Atletas = List_Create(NULL,NULL);
 	lista_Resultados = List_Create(NULL,*compara2scores);
+<<<<<<< HEAD
 	lista_Ranking = List_Create(NULL,NULL);
+=======
+	lista_ResTotal = List_Create(NULL,NULL);
+>>>>>>> origin/12
 	
 	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
 	idTempo = 12;
@@ -1922,9 +1926,12 @@ int main(int argc, char *argv[])
 	nPontos=2;
 	numeroProvas=3;
 	numeroMelhorProvas=2;
+<<<<<<< HEAD
 
 	estado = INICIADO;
 	titulo = strdup("Campeonato da Festa");
+=======
+>>>>>>> origin/12
 
     consolaparse();
     consolalex();
