@@ -387,6 +387,27 @@ void print_Ranking(List lr){
     }
 	printf("\n--------------\n");
 }	
+	void print_info(){
+		if(estado==NAO_INICIADO)//Ainda não foi iniciado um Campeonato
+			{printf("Campeonato ainda não carregado!\n");return;}
+			
+		printf("INFORMAÇÕES SOBRE O CAMPEONATO\n\n");
+		printf("Nome: %s\n",titulo);
+		printf("Número de Atletas: %d\n",lista_Atletas->totalCount);
+		printf("Total de Provas: %d\n",numeroProvas);
+		printf("Total de Provas Realizadas: %d\n",listaProvas->totalCount);
+		printf("Número de Melhores Provas: %d\n",numeroMelhorProvas);
+		char* melhor;
+		if(lista_Ranking->elems!=NULL)
+			melhor = (char*)((Atleta)lista_Ranking->elems->data)->Nome;
+		else
+			melhor = strdup("NENHUM (Prova não iniciada)\n");
+		printf("Atleta Melhor Classificado: %s\n",melhor);
+		
+		printf("\n\n");
+		}
+	
+	
 	
 void print_Prova(Prova p){
 	if (p==NULL)
@@ -407,7 +428,33 @@ void print_Prova(Prova p){
 	
 }	
 
+void print_ProvaHTML(Prova p,FILE * ficheiro){
+	
+	if (p==NULL)
+		{printf("ERRO na Prova\n");return;}
+		
+	fprintf(ficheiro,"<table border=\"1\" style=\"width:300px\">\n<tbody>\n");
+	fprintf(ficheiro,"<tr><td>Posicao</td><td>Identificador</td><td>Nome</td><td>Pontos</td></tr>\n");
+	
+	int posicao=1;	
+	
+		List l = p->listaResultados;
+		ListElem le1 = l->elems;	
+		
+		while (le1 != NULL) {
+			Resultado c1 = (Resultado) le1->data;
+			char c='\0';
+			if(strlen(c1->pontos)==2)
+				c=' ';
+			fprintf(ficheiro,"<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",posicao,c1->atleta->Identificador,c1->atleta->Nome,c1->pontos);
+			le1=le1->next;
+			posicao++;}
+			
+	fprintf(ficheiro,"</tbody></table>\n");
+	
+}	
 
+void vazio(){}
 void print_ListaResultados(){
 	
 	ListElem aux = lista_Resultados->elems;
@@ -684,3 +731,10 @@ Prova getNProva (List lista,int n){
 
 
 
+void initHTML (FILE * html_file, char * nome_prova){
+	fprintf(html_file,"<html>");
+    fprintf(html_file,"<head>");
+    fprintf(html_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
+    fprintf(html_file,"<title>Resultado da Prova: %s</title>",nome_prova);
+	fprintf(html_file,"</head><body>");
+}

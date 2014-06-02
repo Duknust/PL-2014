@@ -3,6 +3,11 @@
 
 #include "linked_list.h"
 #include "csv.ger.h"
+#include <stdio.h>
+
+#define NAO_INICIADO 1
+#define INICIADO 2
+#define FINALIZADO 3
 
 typedef struct sAtleta{
 	char * Nome;
@@ -23,6 +28,11 @@ typedef struct sResultado{
 	char * tempo;//Tempo
 	char * pontos;//Pontos obtidos	
 }*Resultado, NodoResultado;
+
+
+int estado;
+int saveActualizado;//Saber se o programa esta gravado
+
 
 //No ficheiro de resultados csv
 int idTotal;//total de identificadores nos resultados
@@ -64,12 +74,18 @@ void print_Prova(Prova p);
 void print_ListaResultados();
 void printaNome(void * ,void * );
 void printl();
+void print_info();
 int procura_atleta(List lAtletas,char*atleta);
 int tempo2segundos(char * );
 void print_ListaLinhas(ListaLinhas );
 void update_Ranking();
 Prova getNProva (List lista,int n);
 
+
+void print_ProvaHTML(Prova ,FILE *);
+void initHTML (FILE * , char * );
+
+void vazio();
 
 
 #endif

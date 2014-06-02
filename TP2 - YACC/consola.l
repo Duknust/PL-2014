@@ -69,6 +69,9 @@ int main(int argc, char *argv[])
 	numeroProvas=3;
 	numeroMelhorProvas=2;
 
+	estado = INICIADO;
+	titulo = strdup("Campeonato da Festa");
+
     consolaparse();
     yylex();
     //yyin = fopen("z.txt", "r");

@@ -62,7 +62,7 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 
 
 									switch(comando_flag){
-										case _RESULT : printf("RESULT\n");
+										case _RESULT : printf("RESULT\n");//HTML
 														(void)csvparse();
 														printf("Push na Lista\n");
 														ListaLinhas ll = csvList;
@@ -82,7 +82,24 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 														print_ListaProvas();
 														print_ListaResultados();
 														update_Ranking();
-														//printl();
+														
+														//HTML
+														vazio();
+														int nprova = listaProvas->totalCount;
+														char *c=(char*)malloc(sizeof(3));
+														sprintf(c,"%d",nprova);
+														char* nome = (char*)malloc(strlen(titulo)+35);
+														strcpy(nome,titulo);
+														strcat(nome,"_res");
+														strcat(nome,c);
+														strcat(nome,".html");
+														FILE * html_file = fopen(nome, "w+");
+														if(html_file < 0)
+															printf("ERRO AO CRIAR O FICHEIRO: %s\n",nome);
+														else
+															{initHTML(html_file,titulo);
+															 print_ProvaHTML(getNProva(lista_Resultados,nprova),html_file);
+															 fclose(html_file);}
 														csvList = NULL;
 														break;
 										case _CONF :printf("CONF\n");break;
@@ -91,10 +108,10 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 								   }
 								   
 	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
-	 | RANKING ficheiro {print_Ranking(lista_Ranking);$$=$2;}
+	 | RANKING ficheiro {print_Ranking(lista_Ranking);$$=$2;} //HTML
 	 | EXIT {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
 	 | LISTING Comando_list
-	 | INFO
+	 | INFO {print_info();}
 	 | '$' {return 0;}
 	 ;
 
