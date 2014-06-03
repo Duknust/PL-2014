@@ -43,7 +43,7 @@ char save[20]="";
 %}
 
 %token SEPN LOAD SAVE RANKING EXIT LISTING INFO CONF DB RESULT PROVAS 
-%token PARTICIPANTES PROVA TORNEIO ficheiro prova
+%token ATLETAS PROVA TORNEIO ficheiro prova
 
 
 %union{
@@ -175,7 +175,7 @@ Comando_load : CONF {saveActualizado=0; comando_flag = _CONF;}
 			 ;
 
 Comando_list : PROVAS {print_ListaProvas();}
-			 | PARTICIPANTES prova {printf("PARTICIPANTES DA PROVA: %d\n",$2);}
+			 | ATLETAS {printf("\nATLETAS\n\n");print_lAtletas();}
 			 | PROVA prova {print_Prova(getNProva(lista_Resultados,$2));}
 			 | TORNEIO
 			 ;

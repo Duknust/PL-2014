@@ -28,7 +28,7 @@ extern int compara2scores(void*,void*);
 
 "provas"			return PROVAS;
 
-"participantes"		return PARTICIPANTES;
+"atletas"		return ATLETAS;
 
 "prova"				return PROVA;
 

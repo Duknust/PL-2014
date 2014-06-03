@@ -1,5 +1,5 @@
-#ifndef _ESTRUTURAS
-#define _ESTRUTURAS
+//#ifndef _ESTRUTURAS
+//#define _ESTRUTURAS
 
 #include "linked_list.h"
 #include "csv.ger.h"
@@ -96,6 +96,6 @@ void print_RankingHTML(List ,FILE *);
 
 void initHTML (FILE * , char * );
 List split(char* mensagem, char* sep); //Parte uma string por um determinado token
-void vazio();
+void print_lAtletas();
 
-#endif
+//#endif

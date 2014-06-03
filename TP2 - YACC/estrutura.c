@@ -437,7 +437,7 @@ void print_RankingHTML(List lr,FILE * ficheiro){
 		printf("Nome: %s\n",titulo);
 		printf("Número de Atletas: %d\n",lista_Atletas->totalCount);
 		printf("Total de Provas: %d\n",numeroProvas);
-		printf("Total de Provas Realizadas: %d\n",listaProvas->totalCount);
+		printf("Total de Provas Realizadas: %d\n",lista_Resultados->totalCount);
 		printf("Número de Melhores Provas: %d\n",numeroMelhorProvas);
 		char* melhor;
 		if(lista_Ranking->elems!=NULL)
@@ -496,7 +496,7 @@ void print_ProvaHTML(Prova p,FILE * ficheiro){
 	
 }	
 
-void vazio(){}
+
 void print_ListaResultados(){
 	
 	ListElem aux = lista_Resultados->elems;
@@ -790,4 +790,20 @@ void initHTML (FILE * html_file, char * nome_prova){
     fprintf(html_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
     fprintf(html_file,"<title>Resultado da Prova: %s</title>",nome_prova);
 	fprintf(html_file,"</head><body>");
+}
+
+
+
+void print_lAtletas(){
+	
+	char * nome;
+	ListElem aux = lista_Atletas->elems;
+
+
+    while (aux != NULL) {
+        Atleta a = (Atleta)aux->data;
+		printf("-%s\n",a->Nome);
+        aux = aux->next;
+    }
+	printf("---------------\n");
 }

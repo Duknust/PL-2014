@@ -1,6 +1,6 @@
-#ifndef _LINKED_LIST_H
+//#ifndef _LINKED_LIST_H
 
-#define _LINKED_LIST_H 1
+//#define _LINKED_LIST_H 1
 
 /**
  * Elemento de uma lista
@@ -108,4 +108,4 @@ int List_ClearAll(List list);
  */
 void List_ApplyToAll(List list, void (*function)(void *, void *), void *params);
 
-#endif
+//#endif
