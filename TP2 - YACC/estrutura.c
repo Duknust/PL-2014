@@ -373,6 +373,10 @@ void print_Ranking(List lr){
 		
 	
 	ListElem aux = lr->elems;
+	
+	if(lr->totalCount==0)
+		{printf("Não há dados para calcular o Ranking\n");return;}
+	
 	printf("------------------------\nRanking de %d Atletas\n\n",lr->totalCount);
 		int posicao = 1;
     while (aux != NULL) {
@@ -392,6 +396,39 @@ void print_Ranking(List lr){
     }
 	printf("\n--------------\n");
 }	
+
+
+
+void print_RankingHTML(List lr,FILE * ficheiro){
+	
+	if (lr==NULL)
+		{printf("ERRO no Ranking\n");return;}
+		
+	fprintf(ficheiro,"<table border=\"1\" style=\"width:300px\">\n<tbody>\n");
+	fprintf(ficheiro,"<tr><td>Posicao</td><td>Identificador</td><td>Nome</td><td>Pontos</td></tr>\n");
+	
+	ListElem aux = lr->elems;
+	
+		int posicao = 1;
+    while (aux != NULL) {
+		Atleta a = (Atleta)aux->data;
+		List l = a->lista;
+		ListElem le1 = l->elems;
+	
+		char * pontos = (char*) le1->data;
+		
+		fprintf(ficheiro,"<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",posicao,a->Identificador,a->Nome,pontos);
+		
+        posicao++;
+        aux = aux->next;
+    }
+		
+				
+	fprintf(ficheiro,"</tbody></table>\n");
+	
+}
+
+
 	void print_info(){
 		if(estado==NAO_INICIADO)//Ainda não foi iniciado um Campeonato
 			{printf("Campeonato ainda não carregado!\n");return;}

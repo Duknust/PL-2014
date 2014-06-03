@@ -91,6 +91,9 @@ Prova getNProva (List lista,int n);
 
 
 void print_ProvaHTML(Prova ,FILE *);
+void print_RankingHTML(List ,FILE *);
+
+
 void initHTML (FILE * , char * );
 List split(char* mensagem, char* sep); //Parte uma string por um determinado token
 void vazio();

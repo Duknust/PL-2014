@@ -15,7 +15,7 @@ extern List csvparse();
 #define _RESULT 1002
 
 int comando_flag = -1;
-char* buffer=(char*)malloc(2);
+char buffer[2];
 
 
 
@@ -85,7 +85,6 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 														update_Ranking();
 														
 														//HTML
-														vazio();
 														int nprova = listaProvas->totalCount;
 														char *c=(char*)malloc(sizeof(3));
 														sprintf(c,"%d",nprova);
@@ -109,7 +108,24 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 									}
 								   }
 	 | SAVE ficheiro {$$=$2; saveActualizado=1; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
-	 | RANKING ficheiro {print_Ranking(lista_Ranking);$$=$2;} //HTML
+	 | RANKING ficheiro {print_Ranking(lista_Ranking);
+						 //HTML
+						 if(lista_Ranking->totalCount!=0){//Se há ranking
+								   
+							char* nome = (char*)malloc(strlen($2));
+							strcpy(nome,$2);
+							nome++; ; 
+						    nome[strlen(nome)-1]='\0';
+							
+							FILE * html_file = fopen(nome, "w+");
+							if(html_file < 0)
+								printf("ERRO AO CRIAR O FICHEIRO: %s\n",nome);
+							else
+								{initHTML(html_file,titulo);
+								 print_RankingHTML(lista_Ranking,html_file);
+								 fclose(html_file);}
+						 }//Se não o erro foi dado no print_Ranking
+						 $$=$2;} //HTML
 	 | EXIT {if(saveActualizado==1){
 	 			printf("---Até à proxima!---\n"); 
 	 			return 0;
@@ -119,6 +135,7 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 	 		    printf("Pretende sair com as informações por gravar? [y/N]\n");
 	 		    read(0,buffer,1);
 	 		    if(strcmp(buffer,"y")==0) {
+					//FAZER SAVE
 	 		    	printf("---Até à proxima!---\n"); 
 	 				return 0;
 	 				}
