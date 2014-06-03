@@ -108,5 +108,6 @@ void print_Historico();
 void load_c_result(char * );
 void save_db(char * nome);
 void load_db(char * nome);
+void ranking (char *);
 
 //#endif

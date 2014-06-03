@@ -71,7 +71,7 @@ Inst : LOAD Comando_load ficheiro {
 									$3++; ; 
 								   $3[strlen($3)-1]='\0';
 								   printf("LOAD! Ficheiro lido com o nome: %s\n",$3);
-								   csvin = fopen($3, "r");
+								   
 
 
 									switch(comando_flag){
@@ -84,25 +84,8 @@ Inst : LOAD Comando_load ficheiro {
 									}
 								   }
 	 | SAVE ficheiro {$$=$2; print_Historico();save_db($2);}
-	 | RANKING ficheiro {print_Ranking(lista_Ranking);
-						 //HTML
-						 if(lista_Ranking->totalCount!=0){//Se há ranking
-								   
-							char* nome = (char*)malloc(strlen($2));
-							strcpy(nome,$2);
-							nome++; ; 
-						    nome[strlen(nome)-1]='\0';
-							
-							FILE * html_file = fopen(nome, "w+");
-							if(html_file < 0)
-								printf("ERRO AO CRIAR O FICHEIRO: %s\n",nome);
-							else
-								{initHTML(html_file,titulo);
-								 print_RankingHTML(lista_Ranking,html_file);
-								 fimHTML(html_file);
-								 fclose(html_file);}
-						 }//Se não o erro foi dado no print_Ranking
-						 $$=$2;} //HTML
+	 | RANKING ficheiro {ranking($2);
+						 $$=$2;} 
 	 | EXIT {if(saveActualizado==1){
 	 			printf("---Até à proxima!---\n"); 
 	 			return 0;

@@ -1,4 +1,5 @@
 #include "estrutura.h"
+extern FILE * csvin;
 
 char * getNomeAtletabyId(List lista, char* id){//Retorna o Nome do Atleta de uma Lista de Atletas com o id
 	
@@ -455,7 +456,7 @@ void print_Prova(Prova p){
 	if (p==NULL)
 		return;
 	int posicao=1;	
-	
+		
 		List l = p->listaResultados;
 		ListElem le1 = l->elems;	
 		
@@ -755,9 +756,9 @@ void insere_Resultados(ListaLinhas prova, List provas){
 Prova getNProva (List lista,int n){
 	if(n<=0 || n>numeroProvas)
 		{printf("ERRO : Prova inexistente\n");return NULL;}
-	else if(n>lista->totalCount && n<numeroProvas)
+	else if(n>lista->totalCount && n<=numeroProvas)
 			{printf("ERRO : Prova ainda foi carregada\n");return NULL;}
-		
+
 	int count = 1;
 	ListElem aux = lista->elems;
 
@@ -788,7 +789,7 @@ void initHTML (FILE * html_file, char * nome_prova){
 	fprintf(html_file,"<html>");
     fprintf(html_file,"<head>");
     fprintf(html_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
-    fprintf(html_file,"<title>Resultado da Prova: %s</title>",nome_prova);
+    fprintf(html_file,"<title>%s</title>",nome_prova);
 	fprintf(html_file,"</head><body>");
 }
 
@@ -814,9 +815,10 @@ void print_lAtletas(){
 
 
 void load_c_result(char *ficheiro){
-	printf("RESULT\n");//HTML
+	csvin = fopen(ficheiro, "r");
+	//printf("RESULT\n");
 	(void)csvparse();
-	printf("Push na Lista\n");
+	//printf("Push na Lista\n");
 	ListaLinhas ll = csvList;
 	if(ll!=NULL)
 		List_Push(listaProvas,ll);
@@ -834,7 +836,7 @@ void load_c_result(char *ficheiro){
 	print_ListaProvas();
 	print_ListaResultados();
 	update_Ranking();
-	
+
 	//HTML
 	int nprova = listaProvas->totalCount;
 	char *c=(char*)malloc(sizeof(3));
@@ -848,7 +850,9 @@ void load_c_result(char *ficheiro){
 	if(html_file < 0)
 		printf("ERRO AO CRIAR O FICHEIRO: %s\n",nome);
 	else
-		{initHTML(html_file,titulo);
+		{Prova pp = getNProva(lista_Resultados,lista_Resultados->totalCount); char * tituloP = pp->nome;
+		 char * tit2 = (char*)malloc(strlen(tituloP)+strlen("Resultado da Prova: ")+1);strcat(tit2,"Resultado da Prova: ");strcat(tit2,tituloP);
+	     initHTML(html_file,tit2);
 		 print_ProvaHTML(getNProva(lista_Resultados,nprova),html_file);
 		 fclose(html_file);}
 
@@ -902,6 +906,33 @@ void print_Historico(){
 }
 
 
+
+
+
+
+void ranking (char * ficheiro){
+	print_Ranking(lista_Ranking);// No ecra
+	//HTML
+	if(lista_Ranking->totalCount!=0){//Se há ranking
+		   
+		char* nome = (char*)malloc(strlen(ficheiro));
+		strcpy(nome,ficheiro);
+		nome++; ; 
+		nome[strlen(nome)-1]='\0';
+
+		FILE * html_file = fopen(nome, "w+");
+		if(html_file < 0)
+			printf("ERRO AO CRIAR O FICHEIRO: %s\n",nome);
+		else
+			{char * tit2 = (char*)malloc(strlen(titulo)+strlen("Ranking Geral: ")+1);strcat(tit2,"Ranking Geral: ");strcat(tit2,titulo);
+			 initHTML(html_file,titulo);
+			 print_RankingHTML(lista_Ranking,html_file);
+			 fimHTML(html_file);
+			 fclose(html_file);}
+	}//Se não o erro foi dado no print_Ranking
+	
+	
+}
 
 
 
