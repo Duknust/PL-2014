@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
 
 extern FILE * csvin;
 int yylex(void);
@@ -14,8 +17,15 @@ extern List csvparse();
 #define _DB 1001
 #define _RESULT 1002
 
+#define KGRN  "\x1B[32m"
+#define KRED  "\x1b[31m"
+#define KNRM  "\x1B[0m"
+#define KNEG  "\033[1;30m"  
+
+
 int comando_flag = -1;
-char buffer[2];
+char buffer[2]={'\0','\0'};
+char save[20]="";
 
 
 
@@ -132,14 +142,26 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 	 			}
 	 		 else{
 	 		 	printf("As informações não se encontram gravadas\n");
-	 		    printf("Pretende sair com as informações por gravar? [y/N]\n");
+	 		    printf("Pretende gravar antes de sair? [Y/n]\n");
 	 		    read(0,buffer,1);
-	 		    if(strcmp(buffer,"y")==0) {
-					//FAZER SAVE
-	 		    	printf("---Até à proxima!---\n"); 
+
+	 		    if((strcmp(buffer,"y")==0) || (strcmp(buffer,"Y")==0)) {
+	 		   		printf("Indique o nome do ficheiro onde pretende gravar\n");
+	 		   		printf("> ");
+	 		   		scanf("%s",save);
+	 		   			 		    
+	 		   			 		    	//GRAVAR!!
+
+	 		    	printf(KGRN "O estado foi gravado em ");
+	 		    	printf(KGRN "%s\n",save);
+	 		    	printf(KNRM "---Até à proxima!---\n"); 
 	 				return 0;
 	 				}
-	 			else printf("O programa vai continuar\n");
+	 			else {
+	 				printf(KRED "O estado não foi gravado\n");
+	  		    	printf(KNRM "---Até à proxima!---\n"); 
+	 				return 0;
+	 				}
 	 		    }
 	 		}
 	 | LISTING Comando_list
