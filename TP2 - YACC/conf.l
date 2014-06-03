@@ -2,6 +2,7 @@
 #include "conf.tab.h"	
 %}
 
+
 %option prefix ="conf"
 %option noyywrap
 
