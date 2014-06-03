@@ -792,6 +792,9 @@ void initHTML (FILE * html_file, char * nome_prova){
 	fprintf(html_file,"</head><body>");
 }
 
+void fimHTML(FILE * html_file){
+	fprintf(html_file, "</div></body></html>");
+}
 
 
 void print_lAtletas(){
@@ -807,3 +810,99 @@ void print_lAtletas(){
     }
 	printf("---------------\n");
 }
+
+
+
+void load_c_result(char *ficheiro){
+	printf("RESULT\n");//HTML
+	(void)csvparse();
+	printf("Push na Lista\n");
+	ListaLinhas ll = csvList;
+	if(ll!=NULL)
+		List_Push(listaProvas,ll);
+	else
+		return;//discutir isto
+		
+	printf("\ncount da listaProvas=%d\n",listaProvas->totalCount);
+	
+	
+	insere_atletas(lista_Atletas,csvList);
+	
+	insere_Resultados(csvList,lista_Resultados);
+
+	//print_ListaLinhas(csvList);
+	print_ListaProvas();
+	print_ListaResultados();
+	update_Ranking();
+	
+	//HTML
+	int nprova = listaProvas->totalCount;
+	char *c=(char*)malloc(sizeof(3));
+	sprintf(c,"%d",nprova);
+	char* nome = (char*)malloc(strlen(titulo)+35);
+	strcpy(nome,titulo);
+	strcat(nome,"_res");
+	strcat(nome,c);
+	strcat(nome,".html");
+	FILE * html_file = fopen(nome, "w+");
+	if(html_file < 0)
+		printf("ERRO AO CRIAR O FICHEIRO: %s\n",nome);
+	else
+		{initHTML(html_file,titulo);
+		 print_ProvaHTML(getNProva(lista_Resultados,nprova),html_file);
+		 fclose(html_file);}
+
+	csvList = NULL;}
+	
+	
+void save_db(char * nome){
+	saveActualizado=1;
+	
+	
+	printf("SAVE! Ficheiro gravado com o nome: %s\n",nome);
+
+
+}
+
+
+void load_db(char * nome){
+	
+	FILE * fp;
+	char * line = NULL;
+	size_t len = 0;
+	ssize_t read;
+
+	fp = fopen(nome, "r");
+	if (fp == NULL)
+	   {printf("ERRO AO LER O FICHEIRO:%s\n",nome);return;}
+
+	while ((read = getline(&line, &len, fp)) != -1) {
+	   char * ficheiro;
+	   ficheiro=strdup(line);
+	   
+	   if(ficheiro[strlen(ficheiro)-1]=='\n')
+		ficheiro[strlen(ficheiro)-1]='\0';//Sacar o \n do fim
+			
+	   List_Push(Historico,ficheiro);
+	   printf("line=%s\n",ficheiro);
+	}
+
+	if (line)
+	   free(line);
+	
+}
+
+void print_Historico(){
+	ListElem aux = Historico->elems;
+	printf("Historico:\n");
+    while (aux != NULL) {
+        printf("%s\n",(char*)aux->data);
+        aux = aux->next;
+    }
+}
+
+
+
+
+
+

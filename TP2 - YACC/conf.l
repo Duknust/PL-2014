@@ -1,5 +1,7 @@
 %{
+#include "linked_list.h"
 #include "conf.tab.h"	
+
 %}
 
 %option prefix ="conf"

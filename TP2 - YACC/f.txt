@@ -1,3 +1,0 @@
-load conf "config.txt"
-load db "config.db"
-load result "result.txt"

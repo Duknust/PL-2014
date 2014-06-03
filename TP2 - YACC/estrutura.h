@@ -62,6 +62,10 @@ List lista_Resultados; //Lista da Lista de Resultados por prova -> Identificador
 
 List lista_Ranking; //Lista Ordenada da Pontuacao Final -> Identificador,Pontos
 
+
+List Historico; //Lista com os ficheiros lidos para preservar dados
+
+
 Atleta getAtletabyId(List lista, char* id);
 char * getNomeAtletabyId(List lista, char* id);
 char * calcPontosAtleta(Atleta a, int maxP);
@@ -95,7 +99,14 @@ void print_RankingHTML(List ,FILE *);
 
 
 void initHTML (FILE * , char * );
+void fimHTML(FILE * );
 List split(char* mensagem, char* sep); //Parte uma string por um determinado token
 void print_lAtletas();
+
+void print_Historico();
+
+void load_c_result(char * );
+void save_db(char * nome);
+void load_db(char * nome);
 
 //#endif
