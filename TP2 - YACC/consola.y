@@ -15,6 +15,7 @@ extern List csvparse();
 #define _RESULT 1002
 
 int comando_flag = -1;
+char* buffer=(char*)malloc(2);
 
 
 
@@ -90,17 +91,31 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 									}
 								   }
 								   
-	 | SAVE ficheiro {$$=$2; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
+	 | SAVE ficheiro {$$=$2; saveActualizado=1; printf("SAVE! Ficheiro gravado com o nome: %s\n",$2);}
 	 | RANKING ficheiro {print_Ranking(lista_ResTotal);$$=$2;}
-	 | EXIT {printf("---Até à proxima!---\n"); return 0;/*exit(0);*/}
+	 | EXIT {if(saveActualizado==1){
+	 			printf("---Até à proxima!---\n"); 
+	 			return 0;
+	 			}
+	 		 else{
+	 		 	printf("As informações não se encontram gravadas\n");
+	 		    printf("Pretende sair com as informações por gravar? [y/N]\n");
+	 		    read(0,buffer,1);
+	 		    if(strcmp(buffer,"y")==0) {
+	 		    	printf("---Até à proxima!---\n"); 
+	 				return 0;
+	 				}
+	 			else printf("O programa vai continuar\n");
+	 		    }
+	 		}
 	 | LISTING Comando_list
 	 | INFO
 	 | '$' {return 0;}
 	 ;
 
-Comando_load : CONF {comando_flag = _CONF;}
-			 | DB {comando_flag = _DB;}
-			 | RESULT {comando_flag = _RESULT;}
+Comando_load : CONF {saveActualizado=0; comando_flag = _CONF;}
+			 | DB {saveActualizado=0; comando_flag = _DB;}
+			 | RESULT {saveActualizado=0; comando_flag = _RESULT;}
 			 ;
 
 Comando_list : PROVAS {print_ListaProvas();}
