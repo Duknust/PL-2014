@@ -71,10 +71,9 @@ typedef union YYSTYPE
 #line 12 "conf.y"
 {
 	char* texto;
-      List lista;
 }
 /* Line 1529 of yacc.c.  */
-#line 78 "conf.tab.h"
+#line 77 "conf.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

@@ -50,7 +50,7 @@
      DB = 266,
      RESULT = 267,
      PROVAS = 268,
-     PARTICIPANTES = 269,
+     ATLETAS = 269,
      PROVA = 270,
      TORNEIO = 271,
      ficheiro = 272,
@@ -69,7 +69,7 @@
 #define DB 266
 #define RESULT 267
 #define PROVAS 268
-#define PARTICIPANTES 269
+#define ATLETAS 269
 #define PROVA 270
 #define TORNEIO 271
 #define ficheiro 272
@@ -80,7 +80,7 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 49 "consola.y"
+#line 52 "consola.y"
 {
 	char* tipoficheiro;
 	int tiponProva;

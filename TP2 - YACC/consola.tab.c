@@ -85,7 +85,7 @@
      DB = 266,
      RESULT = 267,
      PROVAS = 268,
-     PARTICIPANTES = 269,
+     ATLETAS = 269,
      PROVA = 270,
      TORNEIO = 271,
      ficheiro = 272,
@@ -104,7 +104,7 @@
 #define DB 266
 #define RESULT 267
 #define PROVAS 268
-#define PARTICIPANTES 269
+#define ATLETAS 269
 #define PROVA 270
 #define TORNEIO 271
 #define ficheiro 272
@@ -125,9 +125,12 @@
 #include <unistd.h>
 
 extern FILE * csvin;
+extern FILE * confin;
 int yylex(void);
 int yyerror(char* s);
+
 extern List csvparse();
+extern int confparse();
 
 
 #define _CONF 1000
@@ -179,13 +182,13 @@ char save[20]="";
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 49 "consola.y"
+#line 52 "consola.y"
 {
 	char* tipoficheiro;
 	int tiponProva;
 }
 /* Line 193 of yacc.c.  */
-#line 189 "consola.tab.c"
+#line 192 "consola.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -198,7 +201,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 202 "consola.tab.c"
+#line 205 "consola.tab.c"
 
 #ifdef short
 # undef short
@@ -413,7 +416,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  22
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   23
+#define YYLAST   22
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  20
@@ -422,7 +425,7 @@ union yyalloc
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  18
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  29
+#define YYNSTATES  28
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -470,7 +473,7 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     6,    10,    12,    16,    19,    22,    24,
-      27,    29,    31,    33,    35,    37,    39,    42,    45
+      27,    29,    31,    33,    35,    37,    39,    41,    44
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -480,14 +483,14 @@ static const yytype_int8 yyrhs[] =
       23,    -1,     4,    24,    17,    -1,     5,    17,    -1,     6,
       17,    -1,     7,    -1,     8,    25,    -1,     9,    -1,    19,
       -1,    10,    -1,    11,    -1,    12,    -1,    13,    -1,    14,
-      18,    -1,    15,    18,    -1,    16,    -1
+      -1,    15,    18,    -1,    16,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    63,    63,    65,    66,    69,   121,   122,   123,   150,
-     151,   152,   155,   156,   157,   160,   161,   162,   163
+       0,    66,    66,    68,    69,    72,   126,   127,   145,   173,
+     174,   175,   178,   179,   180,   183,   184,   185,   186
 };
 #endif
 
@@ -497,10 +500,9 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "SEPN", "LOAD", "SAVE", "RANKING",
-  "EXIT", "LISTING", "INFO", "CONF", "DB", "RESULT", "PROVAS",
-  "PARTICIPANTES", "PROVA", "TORNEIO", "ficheiro", "prova", "'$'",
-  "$accept", "Consola", "ListaInstrucoes", "Inst", "Comando_load",
-  "Comando_list", 0
+  "EXIT", "LISTING", "INFO", "CONF", "DB", "RESULT", "PROVAS", "ATLETAS",
+  "PROVA", "TORNEIO", "ficheiro", "prova", "'$'", "$accept", "Consola",
+  "ListaInstrucoes", "Inst", "Comando_load", "Comando_list", 0
 };
 #endif
 
@@ -525,7 +527,7 @@ static const yytype_uint8 yyr1[] =
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     2,     3,     1,     3,     2,     2,     1,     2,
-       1,     1,     1,     1,     1,     1,     2,     2,     1
+       1,     1,     1,     1,     1,     1,     1,     2,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -534,8 +536,8 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     0,     8,     0,    10,    11,     0,     0,
-       4,    12,    13,    14,     0,     6,     7,    15,     0,     0,
-      18,     9,     1,     0,     2,     5,    16,    17,     3
+       4,    12,    13,    14,     0,     6,     7,    15,    16,     0,
+      18,     9,     1,     0,     2,     5,    17,     3
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -550,8 +552,8 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_int8 yypact[] =
 {
       -2,     2,   -16,     1,   -17,    -5,   -17,   -17,    15,    -3,
-     -17,   -17,   -17,   -17,     3,   -17,   -17,   -17,     4,     5,
-     -17,   -17,   -17,    -2,   -17,   -17,   -17,   -17,   -17
+     -17,   -17,   -17,   -17,     3,   -17,   -17,   -17,   -17,     4,
+     -17,   -17,   -17,    -2,   -17,   -17,   -17,   -17
 };
 
 /* YYPGOTO[NTERM-NUM].  */
@@ -568,15 +570,15 @@ static const yytype_int8 yypgoto[] =
 static const yytype_uint8 yytable[] =
 {
       23,    15,     1,     2,     3,     4,     5,     6,    17,    18,
-      19,    20,    11,    12,    13,    22,    24,     7,    16,    28,
-      25,     0,    26,    27
+      19,    20,    11,    12,    13,    22,    24,     7,    16,    27,
+      25,     0,    26
 };
 
 static const yytype_int8 yycheck[] =
 {
        3,    17,     4,     5,     6,     7,     8,     9,    13,    14,
       15,    16,    10,    11,    12,     0,    19,    19,    17,    23,
-      17,    -1,    18,    18
+      17,    -1,    18
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -585,7 +587,7 @@ static const yytype_uint8 yystos[] =
 {
        0,     4,     5,     6,     7,     8,     9,    19,    21,    22,
       23,    10,    11,    12,    24,    17,    17,    13,    14,    15,
-      16,    25,     0,     3,    19,    17,    18,    18,    23
+      16,    25,     0,     3,    19,    17,    18,    23
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1400,7 +1402,7 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 69 "consola.y"
+#line 72 "consola.y"
     {(yyvsp[(3) - (3)].tipoficheiro)++; ; 
 								   (yyvsp[(3) - (3)].tipoficheiro)[strlen((yyvsp[(3) - (3)].tipoficheiro))-1]='\0';
 								   printf("LOAD! Ficheiro lido com o nome: %s\n",(yyvsp[(3) - (3)].tipoficheiro));
@@ -1430,7 +1432,6 @@ yyreduce:
 														update_Ranking();
 														
 														//HTML
-														vazio();
 														int nprova = listaProvas->totalCount;
 														char *c=(char*)malloc(sizeof(3));
 														sprintf(c,"%d",nprova);
@@ -1449,24 +1450,44 @@ yyreduce:
 
 														csvList = NULL;
 														break;
-										case _CONF :printf("CONF\n");break;
+										case _CONF :printf("CONF com nome --%s--\n",(yyvsp[(3) - (3)].tipoficheiro));//HTML
+														confin=fopen((yyvsp[(3) - (3)].tipoficheiro), "r");
+														(void)confparse();
+														break;
 										case _DB : printf("DB\n");break;
 									}
 								   }
     break;
 
   case 6:
-#line 121 "consola.y"
+#line 126 "consola.y"
     {(yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro); saveActualizado=1; printf("SAVE! Ficheiro gravado com o nome: %s\n",(yyvsp[(2) - (2)].tipoficheiro));}
     break;
 
   case 7:
-#line 122 "consola.y"
-    {print_Ranking(lista_Ranking);(yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro);}
+#line 127 "consola.y"
+    {print_Ranking(lista_Ranking);
+						 //HTML
+						 if(lista_Ranking->totalCount!=0){//Se há ranking
+								   
+							char* nome = (char*)malloc(strlen((yyvsp[(2) - (2)].tipoficheiro)));
+							strcpy(nome,(yyvsp[(2) - (2)].tipoficheiro));
+							nome++; ; 
+						    nome[strlen(nome)-1]='\0';
+							
+							FILE * html_file = fopen(nome, "w+");
+							if(html_file < 0)
+								printf("ERRO AO CRIAR O FICHEIRO: %s\n",nome);
+							else
+								{initHTML(html_file,titulo);
+								 print_RankingHTML(lista_Ranking,html_file);
+								 fclose(html_file);}
+						 }//Se não o erro foi dado no print_Ranking
+						 (yyval.tipoficheiro)=(yyvsp[(2) - (2)].tipoficheiro);}
     break;
 
   case 8:
-#line 123 "consola.y"
+#line 145 "consola.y"
     {if(saveActualizado==1){
 	 			printf("---Até à proxima!---\n"); 
 	 			return 0;
@@ -1475,6 +1496,7 @@ yyreduce:
 	 		 	printf("As informações não se encontram gravadas\n");
 	 		    printf("Pretende gravar antes de sair? [Y/n]\n");
 	 		    read(0,buffer,1);
+
 	 		    if((strcmp(buffer,"y")==0) || (strcmp(buffer,"Y")==0)) {
 	 		   		printf("Indique o nome do ficheiro onde pretende gravar\n");
 	 		   		printf("> ");
@@ -1497,48 +1519,48 @@ yyreduce:
     break;
 
   case 10:
-#line 151 "consola.y"
+#line 174 "consola.y"
     {print_info();}
     break;
 
   case 11:
-#line 152 "consola.y"
+#line 175 "consola.y"
     {return 0;}
     break;
 
   case 12:
-#line 155 "consola.y"
+#line 178 "consola.y"
     {saveActualizado=0; comando_flag = _CONF;}
     break;
 
   case 13:
-#line 156 "consola.y"
+#line 179 "consola.y"
     {saveActualizado=0; comando_flag = _DB;}
     break;
 
   case 14:
-#line 157 "consola.y"
+#line 180 "consola.y"
     {saveActualizado=0; comando_flag = _RESULT;}
     break;
 
   case 15:
-#line 160 "consola.y"
+#line 183 "consola.y"
     {print_ListaProvas();}
     break;
 
   case 16:
-#line 161 "consola.y"
-    {printf("PARTICIPANTES DA PROVA: %d\n",(yyvsp[(2) - (2)].tiponProva));}
+#line 184 "consola.y"
+    {printf("\nATLETAS\n\n");print_lAtletas();}
     break;
 
   case 17:
-#line 162 "consola.y"
+#line 185 "consola.y"
     {print_Prova(getNProva(lista_Resultados,(yyvsp[(2) - (2)].tiponProva)));}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1542 "consola.tab.c"
+#line 1564 "consola.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1752,7 +1774,7 @@ yyreturn:
 }
 
 
-#line 166 "consola.y"
+#line 189 "consola.y"
 
 
 int yyerror(char *s){

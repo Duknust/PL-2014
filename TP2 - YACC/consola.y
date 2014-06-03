@@ -8,9 +8,12 @@
 #include <unistd.h>
 
 extern FILE * csvin;
+extern FILE * confin;
 int yylex(void);
 int yyerror(char* s);
+
 extern List csvparse();
+extern int confparse();
 
 
 #define _CONF 1000
@@ -29,6 +32,15 @@ char save[20]="";
 
 
 
+
+//----------------------------------------------
+
+
+
+
+
+
+//-----------------------------------------------
 
 
 %}
@@ -104,7 +116,10 @@ Inst : LOAD Comando_load ficheiro {$3++; ;
 
 														csvList = NULL;
 														break;
-										case _CONF :printf("CONF\n");break;
+										case _CONF :printf("CONF com nome --%s--\n",$3);//HTML
+														confin=fopen($3, "r");
+														(void)confparse();
+														break;
 										case _DB : printf("DB\n");break;
 									}
 								   }

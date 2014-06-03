@@ -2,7 +2,6 @@
 #include "conf.tab.h"	
 %}
 
-
 %option prefix ="conf"
 %option noyywrap
 
@@ -17,11 +16,11 @@
 
 "=prova= "					return PROVAS;
 
-"=defNome= "				return DEFNOME;
+"=defNOME= "				return DEFNOME;
 
-"=defId= "					return DEFID;
+"=defID= "					return DEFID;
 
-[a-zA-Z0-9\_\-\ ]+			{ conflval.texto=strdup(yytext);
+[a-zA-Z0-9\_\-\ \,]+		{ conflval.texto=strdup(yytext);
 				 			  return c_string;
 				 			}
 

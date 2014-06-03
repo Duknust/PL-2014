@@ -11,17 +11,15 @@ int yyerror(char* s);
 
 %union{
 	char* texto;
-      List lista;
 }
 
 %type <texto> c_string
-%type <lista> ListaLinhas
 
 %start Conf
 
 %%
 
-Conf : ListaLinhas '$' 
+Conf : ListaLinhas '$' {return 0;}
      ; 
 
 ListaLinhas : ListaLinhas SEPL Linha
@@ -35,7 +33,6 @@ Linha : TITULO c_string {titulo = strdup($2);}
       | PROVAS c_string {provasTemp = strdup($2);}
       | DEFNOME c_string {defNomeTemp = strdup($2);}
       | DEFID c_string {defIdTemp = strdup($2);}
-      |
       ;
 
 %%
