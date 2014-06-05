@@ -1,5 +1,7 @@
 %{
+#include "linked_list.h"
 #include "conf.tab.h"	
+
 %}
 
 %option prefix ="conf"
@@ -19,6 +21,8 @@
 "=defNOME= "				return DEFNOME;
 
 "=defID= "					return DEFID;
+
+"=defTempo="				return DEFTEMPO;
 
 [a-zA-Z0-9\_\-\ \,]+		{ conflval.texto=strdup(yytext);
 				 			  return c_string;

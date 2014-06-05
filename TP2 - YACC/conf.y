@@ -7,7 +7,7 @@ int yylex(void);
 int yyerror(char* s);
 %}
 
-%token SEPL SEPC TITULO NPROVAS NUM CAMPO PROVAS DEFNOME DEFID c_string
+%token SEPL SEPC TITULO NPROVAS NUM CAMPO PROVAS DEFNOME DEFID DEFTEMPO c_string
 
 %union{
 	char* texto;
@@ -27,12 +27,13 @@ ListaLinhas : ListaLinhas SEPL Linha
             ;
 
 Linha : TITULO c_string {titulo = strdup($2);}
-      | NPROVAS c_string {numeroProvas = atoi($2);}
-      | NUM c_string {numeroMelhorProvas = atoi($2);}
+      | NPROVAS c_string {numeroMelhorProvas = atoi($2);}
+      | NUM c_string {numeroProvas = atoi($2);}
       | CAMPO c_string {camposTemp = strdup($2);}
       | PROVAS c_string {provasTemp = strdup($2);}
       | DEFNOME c_string {defNomeTemp = strdup($2);}
-      | DEFID c_string {defIdTemp = strdup($2);}
+      | DEFID c_string {idIdentificador = atoi($2);}
+      | DEFTEMPO c_string {idTempo = atoi($2);}
       ;
 
 %%

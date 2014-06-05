@@ -10,45 +10,45 @@ lex.conf.c : conf.l
 	flex conf.l
 
 lex.conf.o : lex.conf.c conf.tab.h
-	gcc -c lex.conf.c
+	gcc -c -g lex.conf.c
 
 conf.tab.c conf.tab.h : linked_list.o estrutura.o conf.y
 	yacc -d -b "conf" -p "conf" conf.y
 
 conf.tab.o : conf.tab.c conf.tab.h
-	gcc -c conf.tab.c
+	gcc -c -g conf.tab.c
 
 lex.csv.c : csv.ger.h csv.l
 	flex csv.l
 
 csv.ger.o : csv.ger.c csv.ger.h
-	gcc -c csv.ger.c
+	gcc -c -g csv.ger.c
 
 csv.tab.c csv.tab.h : csv.y
 	yacc -d -b "csv" -p "csv" csv.y
 
 csv.tab.o : csv.tab.c csv.tab.h
-	gcc -c csv.tab.c
+	gcc -c -g csv.tab.c
 
 consola.tab.o : consola.tab.c consola.tab.h
-	gcc -c consola.tab.c
+	gcc -c -g consola.tab.c
 
 
 consola.tab.c consola.tab.h : estrutura.o consola.y
 	yacc -d -b "consola" -p "consola" consola.y
 
 lex.consola.o : lex.consola.c consola.tab.h
-	gcc -c lex.consola.c
+	gcc -c -g lex.consola.c
 
 lex.csv.o : lex.csv.c csv.tab.h
-	gcc -c lex.csv.c
+	gcc -c -g lex.csv.c
 
 
 estrutura.o : linked_list.h estrutura.c estrutura.h
-	gcc -c estrutura.c
+	gcc -c -g estrutura.c
 
 linked_list.o : linked_list.c linked_list.h
-	gcc -c linked_list.c
+	gcc -c -g linked_list.c
 
 
 

@@ -3,11 +3,11 @@
 #include "linked_list.h"
 
 
-List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *, void *)) {
+List List_Create() {
     List newList = (List) malloc(sizeof (struct list));
     newList->elems = NULL;
-    newList->compareFunction = compareFunction;
-    newList->getKey = getKey;
+    newList->compareFunction = NULL;
+    newList->getKey = NULL;
     newList->totalCount = 0;
 
     return newList;
@@ -16,7 +16,7 @@ List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *,
 int List_Push(List list, void *newData) {
 	
 	if(list==NULL)
-		list = List_Create(NULL,NULL);
+		list = List_Create();
 		
     ListElem newElem = malloc(sizeof(struct list_elem));
 		struct list_elem *ptrlist;
@@ -81,10 +81,7 @@ int List_InsertOrd(List list, void *newData,int (*compareFunction)(void *, void 
     
     if (*aux !=NULL)
     {
-		if (compareFunction((*aux)->data, newData)==0)	
-			{return 0;}
-		else
-			{
+		
 			ListElem newElem;
 			if (!(newElem = (ListElem) malloc(sizeof (struct list_elem))))
 				return 2;
@@ -96,8 +93,7 @@ int List_InsertOrd(List list, void *newData,int (*compareFunction)(void *, void 
 			
 			
 			return 0;
-			}
-		return -1;
+			
 	}
 	else{
    

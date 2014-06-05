@@ -12,7 +12,7 @@ int total = 0;
 %option noyywrap
 
 %%
-[a-zA-Z0-9\_\-\ \:]+			{ 	csvlval.tipoString=strdup(yytext);
+[a-zA-Z0-9\_\-\ \:\-\[\]\.\(\)\ç]+			{ 	csvlval.tipoString=strdup(yytext);
 									//printf("cena ");
 									return c_string;
 								}
