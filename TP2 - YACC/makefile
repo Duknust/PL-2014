@@ -55,4 +55,4 @@ linked_list.o : linked_list.c linked_list.h
 
 
 clean:
-	rm -f *.o consola.tab.* lex.consola.* csv.tab* lex.csv* Origanizer conf.tab.*
+	rm -f *.o consola.tab.* lex.consola.* csv.tab* lex.csv* Origanizer conf.tab.* lex.conf.*

@@ -103,9 +103,6 @@ void set_NomesExtras(ListaLinhas ll){
         aux = aux->next;
     }
 		
-	if(NULL==NULL)
-		;
-	
 }
 
 void print_ListaLinhas(ListaLinhas l){
@@ -314,19 +311,6 @@ void printaNome(void * n1,void * n2){
 	printf("nome=%s\n",(char*)n1);
 }
 
-int compara2nomes(void* d1,void * d2){
-     
-    char* c1 = (char* )d1;
-    char* c2 = (char* )d2;
-     
-    int compare = strcmp(c1,c2);
-     
-    if (compare == 0)
-        return 1;
-    else
-        return 0;
-     
-}
 
 
 int compara2Int(void* d1,void * d2){
@@ -356,18 +340,7 @@ int procura_atleta(List lAtletas,char*atleta){
 }
 
 
-	
-void printl(){
-	
-	ListElem aux = lista_Atletas->elems;
 
-    while (aux != NULL) {
-        printf("%s\n",(char*)aux->data);
-        aux = aux->next;
-    }
-	
-}
-	
 	
 void print_listaListaLinhas(){
 	
@@ -682,19 +655,6 @@ int pontuacao (int tempo_melhor, int tempo_atleta){
 	return (int)f;
 	
 }
-/*
-char * getNcampo (List l,int n){
-	int count = 1;
-	ListElem aux = l->elems;
-
-    while (aux != NULL) {
-        if(count == n)
-			return (char*)aux->data;
-        count++;
-        aux = aux->next;
-    }
-	return NULL;
-}*/
 
 int compara2scoresResultados(void* d1,void * d2){
      
@@ -1069,8 +1029,14 @@ void save_db(char * nome){
 	if (fp == NULL)
 	   {printf("ERRO AO CRIAR O FICHEIRO:%s\n",nome);return;}
 	
+	char*tmp=(char*)malloc(strlen(confActual+5));
+	int i;
+	for(i=0;i<strlen(confActual);i++)
+		if(confActual[i]!='\0')
+			tmp[i]=confActual[i]+1;
 	
-	fprintf(fp,"%s\n",confActual);//Gravar o nome do Conf
+		
+	fprintf(fp,"%s\n",tmp);//Gravar o nome do Conf
 	
 	char * nomef;
 	ListElem aux = Historico->elems;
@@ -1078,7 +1044,16 @@ void save_db(char * nome){
 
     while (aux != NULL) {//Gravar o resto das Provas
         nomef = (char*)aux->data;
-        fprintf(fp,"%s\n",nomef);
+        
+        free(tmp);
+        tmp=(char*)malloc(strlen(nomef)+5);
+		
+		for(i=0;i<strlen(nomef);i++)
+			if(nomef[i]!='\0')
+				tmp[i]=nomef[i]+1;
+		
+        
+        fprintf(fp,"%s\n",tmp);
         aux = aux->next;
     }
 	fclose(fp);
@@ -1096,7 +1071,7 @@ void load_db(char * nome){
 	char * line = NULL;
 	size_t len = 0;
 	ssize_t read;
-
+	char * tmp=NULL;
 	fp = fopen(nome, "r");
 	if (fp == NULL)
 	   {printf("ERRO AO LER O FICHEIRO:%s\n",nome);return;}
@@ -1105,19 +1080,38 @@ void load_db(char * nome){
 	List_Delete(Historico);Historico = List_Create();
 	
 	
-	int linha = 1;
+	int linha = 1,i;
 	while ((read = getline(&line, &len, fp)) != -1) {
 	   char * ficheiro;
 	   ficheiro=strdup(line);
 	   
-	   if(ficheiro[strlen(ficheiro)-1]=='\n')
-		ficheiro[strlen(ficheiro)-1]='\0';//Sacar o \n do fim
+	   
+	   
+        tmp=(char*)malloc(strlen(ficheiro)+5);
+		
+		if(ficheiro[strlen(ficheiro)-1]=='\n')
+			ficheiro[strlen(ficheiro)-1]='\0';//Sacar o \n do fim
+			
+		if(ficheiro[strlen(ficheiro)-1]=='\377')
+			ficheiro[strlen(ficheiro)-1]='\0';//Sacar o cenas do fim
+			
+		
+		
+		for(i=0;i<strlen(ficheiro);i++)
+			tmp[i]=ficheiro[i]-1;
+	   
+//	   tmp[i+1]=ficheiro[i+1]='\0';
+	   
+	   printf("temp=%s\n",tmp);
+	   
+	   
+	   
 	   if(linha==1)//Primeira linha entao CONF
-			confActual=ficheiro;
+			confActual=tmp;
 	   else
-			List_Push(Historico,ficheiro);
+			List_Push(Historico,tmp);
 
-	   printf("%d-line=%s\n",linha,ficheiro);
+	   printf("%d-line=%s\n",linha,tmp);
 	   linha ++;
 	}
 

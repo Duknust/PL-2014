@@ -10,7 +10,7 @@ extern int compara2scores(void*,void*);
 %%
 "load"				return LOAD;
 
-"save"			return SAVE;
+"save"				return SAVE;
 
 "ranking"			return RANKING;
 
@@ -28,7 +28,7 @@ extern int compara2scores(void*,void*);
 
 "provas"			return PROVAS;
 
-"atletas"		return ATLETAS;
+"atletas"			return ATLETAS;
 
 "prova"				return PROVA;
 
