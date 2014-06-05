@@ -965,7 +965,7 @@ void load_c_result(char *ficheiro){
 
 	FILE * fich = fopen(ficheiro, "r");
 	
-	if(fich<0){
+	if(fich<=0){
 		printf("ERRO : FICHEIRO INEXISTENTE\n");
 		return;}
 	
@@ -1023,109 +1023,74 @@ void load_c_result(char *ficheiro){
 void save_db(char * nome){
 	
 	
-	FILE * fp;
+FILE * fp;
 
-	fp = fopen(nome, "w+");
-	if (fp == NULL)
-	   {printf("ERRO AO CRIAR O FICHEIRO:%s\n",nome);return;}
-	
-	char*tmp=(char*)malloc(strlen(confActual+5));
-	int i;
-	for(i=0;i<strlen(confActual);i++)
-		if(confActual[i]!='\0')
-			tmp[i]=confActual[i]+1;
-	
-		
-	fprintf(fp,"%s\n",tmp);//Gravar o nome do Conf
-	
-	char * nomef;
-	ListElem aux = Historico->elems;
+fp = fopen(nome, "w+");
+if (fp == NULL)
+{printf("ERRO AO CRIAR O FICHEIRO:%s\n",nome);return;}
+
+
+fprintf(fp,"%s\n",confActual);//Gravar o nome do Conf
+
+char * nomef;
+ListElem aux = Historico->elems;
 
 
     while (aux != NULL) {//Gravar o resto das Provas
         nomef = (char*)aux->data;
-        
-        free(tmp);
-        tmp=(char*)malloc(strlen(nomef)+5);
-		
-		for(i=0;i<strlen(nomef);i++)
-			if(nomef[i]!='\0')
-				tmp[i]=nomef[i]+1;
-		
-        
-        fprintf(fp,"%s\n",tmp);
+        fprintf(fp,"%s\n",nomef);
         aux = aux->next;
     }
-	fclose(fp);
-	
-	saveActualizado=1;
-	printf("SAVE! Ficheiro gravado com o nome: %s\n",nome);
+fclose(fp);
 
+saveActualizado=1;
+printf("SAVE! Ficheiro gravado com o nome: %s\n",nome);
 
 }
 
 
 void load_db(char * nome){
 	
-	FILE * fp;
-	char * line = NULL;
-	size_t len = 0;
-	ssize_t read;
-	char * tmp=NULL;
-	fp = fopen(nome, "r");
-	if (fp == NULL)
-	   {printf("ERRO AO LER O FICHEIRO:%s\n",nome);return;}
-	
-	
-	List_Delete(Historico);Historico = List_Create();
-	
-	saveActualizado=1;
-	int linha = 1,i;
-	while ((read = getline(&line, &len, fp)) != -1) {
-	   char * ficheiro;
-	   ficheiro=strdup(line);
-	   
-	   
-	   
-        tmp=(char*)malloc(strlen(ficheiro)+5);
-		
-		if(ficheiro[strlen(ficheiro)-1]=='\n')
-			ficheiro[strlen(ficheiro)-1]='\0';//Sacar o \n do fim
-			
-		if(ficheiro[strlen(ficheiro)-1]=='\377')
-			ficheiro[strlen(ficheiro)-1]='\0';//Sacar o cenas do fim
-			
-		
-		
-		for(i=0;i<strlen(ficheiro);i++)
-			tmp[i]=ficheiro[i]-1;
-	   
-//	   tmp[i+1]=ficheiro[i+1]='\0';
-	   
-	   printf("temp=%s\n",tmp);
-	   
-	   
-	   
-	   if(linha==1)//Primeira linha entao CONF
-			confActual=tmp;
-	   else
-			List_Push(Historico,tmp);
+FILE * fp;
+char * line = NULL;
+size_t len = 0;
+ssize_t read;
 
-	   printf("%d-line=%s\n",linha,tmp);
-	   linha ++;
-	}
+fp = fopen(nome, "r");
+if (fp == NULL)
+{printf("ERRO AO LER O FICHEIRO:%s\n",nome);return;}
 
-	if (line)
-	   free(line);
-	   
-	   
-	   //Actualizar o CONF
-	confin=fopen(confActual, "r");
-	(void)confparse();
 
-	   //Recalcular tudo
-	reload_total();	
-	
+List_Delete(Historico);Historico = List_Create();
+
+
+int linha = 1;
+while ((read = getline(&line, &len, fp)) != -1) {
+char * ficheiro;
+ficheiro=strdup(line);
+
+if(ficheiro[strlen(ficheiro)-1]=='\n')
+ficheiro[strlen(ficheiro)-1]='\0';//Sacar o \n do fim
+if(linha==1)//Primeira linha entao CONF
+confActual=ficheiro;
+else
+List_Push(Historico,ficheiro);
+
+//printf("%d-line=%s\n",linha,ficheiro);
+linha ++;
+}
+
+if (line)
+free(line);
+
+
+//Actualizar o CONF
+confin=fopen(confActual, "r");
+(void)confparse();
+
+//Recalcular tudo
+reload_total();	
+
 }
 
 void print_Historico(){
