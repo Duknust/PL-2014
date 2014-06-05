@@ -94,7 +94,7 @@ Inst : LOAD Comando_load ficheiro {
 	 		   		printf("> ");
 	 		   		scanf("%s",save);
 	 		   			 		    
-	 		   			 		    	//GRAVAR!!
+	 		   		save_db(save);
 
 	 		    	printf(KGRN "O estado foi gravado em ");
 	 		    	printf(KGRN "%s\n",save);

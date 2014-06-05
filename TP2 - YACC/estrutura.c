@@ -1079,7 +1079,7 @@ void load_db(char * nome){
 	
 	List_Delete(Historico);Historico = List_Create();
 	
-	
+	saveActualizado=1;
 	int linha = 1,i;
 	while ((read = getline(&line, &len, fp)) != -1) {
 	   char * ficheiro;
