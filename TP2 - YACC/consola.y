@@ -62,7 +62,6 @@ ListaInstrucoes : ListaInstrucoes SEPN Inst
 				;
 
 Inst : LOAD Comando_load ficheiro {
-									
 								   $3++;
 								   $3[strlen($3)-1]='\0';
 								   switch(comando_flag){
