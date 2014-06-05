@@ -34,7 +34,7 @@ extern int compara2scores(void*,void*);
 
 "torneio"			return TORNEIO;
 
-\"[a-zA-Z0-9\ \.]*\"		{ consolalval.tipoficheiro=strdup(yytext);
+\"[a-zA-Z0-9\ \.\_]*\"		{ consolalval.tipoficheiro=strdup(yytext);
 					  //printf("estou aqui tex!\n");
 				 	  return ficheiro;}
 
@@ -55,14 +55,22 @@ extern int compara2scores(void*,void*);
 
 int main(int argc, char *argv[])
 {
-	listaProvas = List_Create(NULL,NULL);
-	lista_Atletas = List_Create(NULL,NULL);
-	lista_Resultados = List_Create(NULL,*compara2scores);
-	lista_Ranking = List_Create(NULL,NULL);
-	Historico = List_Create(NULL,NULL);
+	listaListaLinhas = List_Create();
+	lista_Atletas = List_Create();
+	lista_Resultados = List_Create();
+	lista_Ranking = List_Create();
+	lista_nomesProvas= List_Create();
+	lista_IdnomesAtletas= List_Create();
+	lista_IdExtras= List_Create();
+	lista_NomeExtras= List_Create();
+	Historico = List_Create();
+	confActual=NULL;
+	estado = INICIADO;
 	
 	
-	idTotal = 13;//vai sair daqui e vai ser quando for lido o CONF
+	
+	/*
+	idTotal = 13;
 	idTempo = 12;
 	idIdentificador = 3;
 	idNome = 5;
@@ -70,9 +78,8 @@ int main(int argc, char *argv[])
 	nPontos=2;
 	numeroProvas=3;
 	numeroMelhorProvas=2;
-
-	estado = INICIADO;
 	titulo = strdup("Campeonato da Festa");
+*/
 
     consolaparse();
     yylex();

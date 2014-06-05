@@ -27,7 +27,7 @@ typedef struct list {
  * @param compareFunction Funcao de comparacao para insercao ordenada
  * @return Lista criada
  */
-List List_Create(long long int (*getKey)(void *), int (*compareFunction)(void *, void *));
+List List_Create();
 
 /**
  * @fn List_Push

@@ -1,5 +1,6 @@
 #include "estrutura.h"
 extern FILE * csvin;
+extern FILE * confin;
 
 char * getNomeAtletabyId(List lista, char* id){//Retorna o Nome do Atleta de uma Lista de Atletas com o id
 	
@@ -56,6 +57,57 @@ char * calcPontosAtleta(Atleta a, int maxP){
 	return pontosc;
 }
 
+
+
+void set_idTotal(ListaLinhas ll){
+	//Fazer uma iteracao para contar o numero de campos
+	ListaLinhas lis = ll;
+	Linha linha;
+	
+	idTotal=1;
+	linha = lis->u.d1.s2;
+		
+	while(linha->flag!=PScons_csv_Linha_Fim){
+			linha = linha->u.d1.s1;	
+			idTotal++;}
+	
+}
+
+
+
+void set_NomesExtras(ListaLinhas ll){
+	//Fazer uma iteracao para contar o numero de campos
+	Linha linha,linha2;
+	
+	int id,id2;
+	linha = ll->u.d2.s1;
+		
+	ListElem aux = lista_IdExtras->elems;
+	List_Delete(lista_NomeExtras);
+	lista_NomeExtras=List_Create();
+    while (aux != NULL) {
+        
+        id = atoi((char*)aux->data);
+        linha2=linha;
+        id2 = idTotal;
+        while(linha2->flag!=PScons_csv_Linha_Fim){
+			if(linha2->u.d1.s2!=NULL)
+			if(strcmp("\322\a",(char*)linha2->u.d1.s2)!=0){
+			
+				if(id==id2)
+					List_Push(lista_NomeExtras,strdup((char*)linha2->u.d1.s2));
+				id2--;
+			}
+			linha2 = linha2->u.d1.s1;	
+			}
+        aux = aux->next;
+    }
+		
+	if(NULL==NULL)
+		;
+	
+}
+
 void print_ListaLinhas(ListaLinhas l){
 	ListaLinhas lis = l;
 	Linha linha;
@@ -104,98 +156,151 @@ void insere_atletas (List lAtletas, ListaLinhas prova){//Vai inserir atletas nov
 	Linha linha;
 	char * x ;
 	char * texto;
-	char * cIden,*cNome;
-	int nLinha=0,nColuna=0;
+	char * cIden;
+	
+	
+	int nomesTodos;
+	char* matrizNomes[4]={NULL};//200 atletas até 4 blocos de nomes
+	int matrizIdNomes[4]={-1};//Contem os Indices dos Nomes
+	ListElem aux = lista_IdnomesAtletas->elems;
+	int totn = 0;
+    while (aux != NULL) {
+        matrizIdNomes[totn]=atoi((char*)aux->data);
+        totn++;
+        aux = aux->next;
+    }
+	
+	
+	int extrasTodos;
+	char* matrizExtras[4]={NULL};//200 atletas até 4 blocos de nomes
+	int matrizIdExtras[4]={-1};//Contem os Indices dos Extras
+	aux = lista_IdExtras->elems;
+	int tote = 0;
+    while (aux != NULL) {
+        matrizIdExtras[tote]=atoi((char*)aux->data);
+        tote++;
+        aux = aux->next;
+    }
+	
+	
+	int nLinha=0,nColuna=0,in;
 	//linha = lis->u.d2.s1;
 		while(lis->flag!=PScons_csv_ListaLinhas_Fim){
 			linha = lis->u.d1.s2;
-			cIden = NULL;cNome=NULL;
+			cIden = NULL;
+			nomesTodos=0;
+			extrasTodos=0;
 				while(linha->flag!=PScons_csv_Linha_Fim){
 					
 					x = (char*)linha->u.d1.s2;
 					texto=strdup(x);
 					
-					if(idTotal-nColuna==idIdentificador){//Se for um ID
+					
+					
+						//Se for um Nome
+					if(idTotal-nColuna== matrizIdNomes[0])
+						{matrizNomes[0] = strdup(texto);nomesTodos++;}
+					else if(idTotal-nColuna== matrizIdNomes[1])
+						{matrizNomes[1] = strdup(texto);nomesTodos++;}
+					else if(idTotal-nColuna== matrizIdNomes[2])
+						{matrizNomes[2] = strdup(texto);nomesTodos++;}
+					else if(idTotal-nColuna== matrizIdNomes[3])
+						{matrizNomes[3] = strdup(texto);nomesTodos++;}
+						
+						
+						//Se for um Extra
+					else if(idTotal-nColuna== matrizIdExtras[0])
+						{matrizExtras[0] = strdup(texto);extrasTodos++;}
+					else if(idTotal-nColuna== matrizIdExtras[1])
+						{matrizExtras[1] = strdup(texto);extrasTodos++;}
+					else if(idTotal-nColuna== matrizIdExtras[2])
+						{matrizExtras[2] = strdup(texto);extrasTodos++;}
+					else if(idTotal-nColuna== matrizIdExtras[3])
+						{matrizExtras[3] = strdup(texto);extrasTodos++;}
+						
+						
+					
+					
+					else if(idTotal-nColuna==idIdentificador)//Se for um ID
 						cIden = strdup(texto);
-						if(cNome!=NULL)//Se ja lemos um Nome entao vamos tentar inserir
-							{
-							 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
-								 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
-								 at->Identificador=strdup(texto);
-								 at->Nome=strdup(cNome);
-								 at->lista=List_Create(NULL,NULL);
-								 List_Push(lAtletas,at);
-								 free(cNome);
-								 free(cIden);}
-								}
 							
-					}
+								
 							
-					if(idTotal-nColuna==idNome){//Se for um Nome
-							cNome = strdup(texto);
-						if(cIden!=NULL)//Se ja lemos um Id entao vamos tentar inserir
-							{
-							 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
-								 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
-								 at->Identificador=strdup(cIden);
-								 at->Nome=strdup(texto);
-								 at->lista=List_Create(NULL,NULL);
-								 List_Push(lAtletas,at);
-								 free(cNome);
-								 free(cIden);}
-								}
-					}
+						
+					
 					
 					
 					linha = linha->u.d1.s1;	
 					nColuna++;				
 					}
 					
-			x = (char*)linha->u.d2.s1;
-			texto=strdup(x);
+				x = (char*)linha->u.d2.s1;
+				texto=strdup(x);
 			
-			if(idTotal-nColuna==idIdentificador){//Se for um ID
-					if(cNome!=NULL)//Se ja lemos um Nome entao vamos tentar inserir
-						{
-						 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
-							 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
-							 at->Identificador=strdup(texto);
-							 at->Nome=strdup(cNome);
-							 at->lista=List_Create(NULL,NULL);
-							 List_Push(lAtletas,at);
-							 free(cNome);
-							 free(cIden);}
-							}
-					else//Se ainda nao lemos o Nome entao fica guardado o ID
-					cIden = strdup(texto);
-			}
+				//Se for um Nome
+				if(idTotal-nColuna== matrizIdNomes[0])
+					{matrizNomes[0] = strdup(texto);nomesTodos++;}
+				else if(idTotal-nColuna== matrizIdNomes[1])
+					{matrizNomes[1] = strdup(texto);nomesTodos++;}
+				else if(idTotal-nColuna== matrizIdNomes[2])
+					{matrizNomes[2] = strdup(texto);nomesTodos++;}
+				else if(idTotal-nColuna== matrizIdNomes[3])
+					{matrizNomes[3] = strdup(texto);nomesTodos++;}
 					
-			if(idTotal-nColuna==idNome){//Se for um Nome
-				if(cIden!=NULL)//Se ja lemos um Id entao vamos tentar inserir
-					{
-					 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
-						 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
-						 at->Identificador=strdup(cIden);
-						 at->Nome=strdup(texto);
-						 at->lista=List_Create(NULL,NULL);
-						 List_Push(lAtletas,at);
-						 free(cNome);
-						 free(cIden);}
-						}
-				else//Se ainda nao inseriu entao fica guardado o Nome
-					cNome = strdup(texto);
-			}
-			
-			
-			
-			
-			
-			
-			nColuna=0;
+				//Se for um Extra
+				else if(idTotal-nColuna== matrizIdExtras[0])
+					{matrizExtras[0] = strdup(texto);extrasTodos++;}
+				else if(idTotal-nColuna== matrizIdExtras[1])
+					{matrizExtras[1] = strdup(texto);extrasTodos++;}
+				else if(idTotal-nColuna== matrizIdExtras[2])
+					{matrizExtras[2] = strdup(texto);extrasTodos++;}
+				else if(idTotal-nColuna== matrizIdExtras[3])
+					{matrizExtras[3] = strdup(texto);extrasTodos++;}
 				
-			lis = lis->u.d1.s1;	
-			nLinha++;
-			}
+				else if(idTotal-nColuna==idIdentificador)//Se for um ID
+							cIden = strdup(texto);
+							
+						
+							
+								
+							if(cIden!=NULL && nomesTodos==totn && extrasTodos==tote)//Se ja lemos um Id e os nomes todos e os Extras entao vamos tentar inserir
+								{
+								 if(procura_atleta(lAtletas,cIden)==0){//Se não existe entao inserimos
+									 Atleta at = (Atleta)malloc(sizeof(NodoAtleta));
+									 at->Identificador=strdup(cIden);
+									 //Juntar os Nomes
+									 char* nomecompleto = (char*)malloc(200);
+								 
+									 for(in=0;in<totn;in++)
+										{strcat(nomecompleto,matrizNomes[in]);strcat(nomecompleto," ");
+										 free(matrizNomes[in]);matrizNomes[in]=NULL;}
+									 
+									 at->Nome=nomecompleto;
+									 at->lista=List_Create();
+									 at->listaExtra=List_Create();
+									 
+									 
+									 for(in=0;in<tote;in++)
+										{List_Push(at->listaExtra,strdup(matrizExtras[in]));
+										 free(matrizExtras[in]);matrizExtras[in]=NULL;}
+									 
+									 
+									 List_Push(lAtletas,at);
+									 free(cIden);}
+									}
+						
+				
+				
+				
+				
+				
+				
+				nColuna=0;
+					
+				lis = lis->u.d1.s1;	
+				nLinha++;
+				
+				}
 			
 			
 			
@@ -264,9 +369,9 @@ void printl(){
 }
 	
 	
-void print_ListaProvas(){
+void print_listaListaLinhas(){
 	
-	ListElem aux = listaProvas->elems;
+	ListElem aux = listaListaLinhas->elems;
 
     while (aux != NULL) {
         print_ListaLinhas((ListaLinhas)aux->data);
@@ -282,7 +387,7 @@ void update_Ranking(){ // Actualiza o Ranking
 	
 	
 	lista_Ranking = List_Create(NULL,*compara2scoresAtleta);
-	List lista_Temp = List_Create(NULL,NULL);
+	List lista_Temp = List_Create();
 	
 	
 	List resLista [lista_Atletas->totalCount];//matriz da lista dos tempos dos atletas com a ordem que veem da lista_Atletas
@@ -359,7 +464,7 @@ void update_Ranking(){ // Actualiza o Ranking
 		Atleta novo = (Atleta)malloc(sizeof(NodoAtleta));
 		novo->Nome = lisAt->Nome;
 		novo->Identificador=lisAt->Identificador;
-		novo->lista= List_Create(NULL,NULL);
+		novo->lista= List_Create();
 		List_Push(novo->lista,pontos);
 		
         List_InsertOrd(lista_Ranking,novo,*compara2scoresAtleta);
@@ -387,9 +492,12 @@ void print_Ranking(List lr){
 	
 		char * pontos = (char*) le1->data;
 		char c='\0';
+		char d='\0';
+		if(lista_Ranking->totalCount>1&& posicao<10)
+		d=' ';
 		if(strlen(pontos)==2)
 			c=' ';
-		printf("%d - %c%s pontos | %s (%s)\n",posicao,c,pontos,a->Nome,a->Identificador);
+		printf("%c%d - %c%s pontos | %s (%s)\n",d,posicao,c,pontos,a->Nome,a->Identificador);
 		
 		
         posicao++;
@@ -404,9 +512,11 @@ void print_RankingHTML(List lr,FILE * ficheiro){
 	
 	if (lr==NULL)
 		{printf("ERRO no Ranking\n");return;}
-		
-	fprintf(ficheiro,"<table border=\"1\" style=\"width:300px\">\n<tbody>\n");
-	fprintf(ficheiro,"<tr><td>Posicao</td><td>Identificador</td><td>Nome</td><td>Pontos</td></tr>\n");
+	
+	
+	fprintf(ficheiro,"<p><b>Ranking : %s</b></p>\n\n",titulo);
+	fprintf(ficheiro,"<table border=\"1\" style=\"width:600px\">\n<tbody>\n");
+	fprintf(ficheiro,"<tr><th>Posicao</th><th>Identificador</th><th>Nome</th><th>Pontos</th></tr>\n");
 	
 	ListElem aux = lr->elems;
 	
@@ -448,6 +558,7 @@ void print_RankingHTML(List lr,FILE * ficheiro){
 		printf("Atleta Melhor Classificado: %s\n",melhor);
 		
 		printf("\n\n");
+		print_Historico();
 		}
 	
 	
@@ -459,16 +570,20 @@ void print_Prova(Prova p){
 		
 		List l = p->listaResultados;
 		ListElem le1 = l->elems;	
-		
+		printf("------------------------\n Resultado da Prova : %s\n\n",p->nome);
+	
 		while (le1 != NULL) {
 			Resultado c1 = (Resultado) le1->data;
 			char c='\0';
+			char d='\0';
+			if(lista_Ranking->totalCount>1&& posicao<10)
+				d=' ';
 			if(strlen(c1->pontos)==2)
 				c=' ';
-			printf("%d - %c%s pontos | %s (%s)\n",posicao,c,c1->pontos,c1->atleta->Nome,c1->atleta->Identificador);
+			printf("%c%d - %c%s pontos | %s (%s)\n",d,posicao,c,c1->pontos,c1->atleta->Nome,c1->atleta->Identificador);
 			le1=le1->next;
 			posicao++;}
-	
+	printf("\n--------------\n");
 }	
 
 void print_ProvaHTML(Prova p,FILE * ficheiro){
@@ -476,10 +591,31 @@ void print_ProvaHTML(Prova p,FILE * ficheiro){
 	if (p==NULL)
 		{printf("ERRO na Prova\n");return;}
 		
-	fprintf(ficheiro,"<table border=\"1\" style=\"width:300px\">\n<tbody>\n");
-	fprintf(ficheiro,"<tr><td>Posicao</td><td>Identificador</td><td>Nome</td><td>Pontos</td></tr>\n");
+	fprintf(ficheiro,"<p><b>Resultado da Prova : %s</b></p>\n\n",p->nome);
+	fprintf(ficheiro,"<table border=\"1\" style=\"width:600px\">\n<tbody>\n");
+	fprintf(ficheiro,"<tr><th>Posicao</th><th>Identificador</th><th>Nome</th><th>Pontos</th>");
 	
-	int posicao=1;	
+	
+	/*
+	while (le1 != NULL) {
+		Resultado c1 = (Resultado) le1->data;
+		char c='\0';
+		if(strlen(c1->pontos)==2)
+			c=' ';
+		fprintf(ficheiro,"<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",posicao,c1->atleta->Identificador,c1->atleta->Nome,c1->pontos);
+		le1=le1->next;
+		posicao++;}*/
+	
+	ListElem lei0 = lista_NomeExtras->elems;	
+	Atleta at ;
+	
+		
+	while (lei0 != NULL) {
+		fprintf(ficheiro,"<th>%s</th>",(char*)lei0->data);
+		lei0= lei0->next;}
+	fprintf(ficheiro,"</tr>\n");
+	
+	int posicao=1;
 	
 		List l = p->listaResultados;
 		ListElem le1 = l->elems;	
@@ -489,7 +625,15 @@ void print_ProvaHTML(Prova p,FILE * ficheiro){
 			char c='\0';
 			if(strlen(c1->pontos)==2)
 				c=' ';
-			fprintf(ficheiro,"<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>\n",posicao,c1->atleta->Identificador,c1->atleta->Nome,c1->pontos);
+			fprintf(ficheiro,"<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td>",posicao,c1->atleta->Identificador,c1->atleta->Nome,c1->pontos);
+			at = getAtletabyId(lista_Atletas,c1->atleta->Identificador);
+			ListElem lei1 = at->listaExtra->elems;	
+			while (lei1 != NULL) {
+				fprintf(ficheiro,"<th>%s</th>",(char*)lei1->data);
+				lei1= lei1->next;}
+				
+			fprintf(ficheiro,"</tr>\n");
+			
 			le1=le1->next;
 			posicao++;}
 			
@@ -527,13 +671,18 @@ int tempo2segundos(char * tempo){
 }
 
 int pontuacao (int tempo_melhor, int tempo_atleta){
+	if(tempo_atleta==0)
+		return 0;
 	
-	float f = (float)tempo_melhor / tempo_atleta * 100;
-	//printf("%d-%d-%2f\n",tempo_melhor,tempo_atleta,f);
+	float tm = tempo_melhor*1.0;
+	float ta = tempo_atleta*1.0;
+	
+	float f = (tm / ta * 100);
+	//printf("%3f-%3f-%3f\n",tm,ta,f);
 	return (int)f;
 	
 }
-
+/*
 char * getNcampo (List l,int n){
 	int count = 1;
 	ListElem aux = l->elems;
@@ -545,7 +694,7 @@ char * getNcampo (List l,int n){
         aux = aux->next;
     }
 	return NULL;
-}
+}*/
 
 int compara2scoresResultados(void* d1,void * d2){
      
@@ -564,7 +713,7 @@ int compara2scoresResultados(void* d1,void * d2){
      
 }
 
-
+/*
 int compara2scores(void* d1,void * d2){
      
     List l1 = (List)d1;
@@ -581,7 +730,7 @@ int compara2scores(void* d1,void * d2){
         return 0;
      
 }
-
+*/
 
 int compara2IdsAtleta(void* d1,void * d2){// d1 é um Atleta (da Lista) e d2 é o char* (Identificador)
     
@@ -638,7 +787,7 @@ int getTempoMelhor(ListaLinhas prova){
 	Linha linha;
 	char * x ;
 	char * texto;
-	int melhor=-1;
+	int melhor=-1,seg;
 	int nLinha=0,nColuna=0;
 	//linha = lis->u.d2.s1;
 		while(lis->flag!=PScons_csv_ListaLinhas_Fim){
@@ -649,7 +798,10 @@ int getTempoMelhor(ListaLinhas prova){
 					texto=strdup(x);
 					
 					if(idTotal-nColuna==idTempo)
-						{int seg = tempo2segundos(texto);
+						{if(strcmp(texto,"DNF")==0)
+							seg = 99999999;
+						 else
+							seg = tempo2segundos(texto);
 						 if(melhor==-1 || melhor>seg)
 							melhor=seg;
 						 }
@@ -661,7 +813,10 @@ int getTempoMelhor(ListaLinhas prova){
 				texto=strdup(x);
 				
 				if(idTotal-nColuna==idTempo)
-					{int seg = tempo2segundos(texto);
+					{if(strcmp(texto,"DNF")==0)
+							seg = 99999999;
+					 else
+						seg = tempo2segundos(texto);
 					 if(melhor==-1 || melhor>seg)
 						melhor=seg;
 					 }
@@ -675,7 +830,6 @@ int getTempoMelhor(ListaLinhas prova){
 	
 }
 
-
 void insere_Resultados(ListaLinhas prova, List provas){
 	
 	ListaLinhas lis = prova;
@@ -686,16 +840,21 @@ void insere_Resultados(ListaLinhas prova, List provas){
 	
 	int nLinha=0,nColuna=0;
 	int tempomelhor=getTempoMelhor(lis);
-	printf("melhor=%d\nlt=%d\n",tempomelhor,provas->totalCount);
+	//printf("melhor=%d\nlt=%d\n",tempomelhor,provas->totalCount);
 	
 	
 	Prova prov = (Prova)malloc(sizeof(NodoProva));
-	prov->nome=strdup("NOME DA PROVA");
-	prov->listaResultados=List_Create(NULL,NULL);
+	char * nomeProva = getNnomeProva(lista_nomesProvas,listaListaLinhas->totalCount);
+	if(nomeProva==NULL)
+		prov->nome=strdup("NOME DA PROVA");
+	else
+		prov->nome=nomeProva;
+	prov->listaResultados=List_Create();
 				
 	
-	
 
+
+		//Agora percorrer tudo
 		while(lis->flag!=PScons_csv_ListaLinhas_Fim){
 			linha = lis->u.d1.s2;
 			
@@ -703,14 +862,18 @@ void insere_Resultados(ListaLinhas prova, List provas){
 					
 					x = (char*)linha->u.d1.s2;
 					texto=strdup(x);
-
 					if(idTotal-nColuna==idIdentificador)
 						 iden=strdup(texto);
 					else if(idTotal-nColuna==idTempo)
-						{seg = tempo2segundos(texto);
-					     tempo = strdup(texto);
-						 pontos = (char*)malloc(sizeof(char)*4);
-						 sprintf(pontos,"%d",pontuacao(tempomelhor,seg));
+						{if(strcmp(texto,"DNF")==0 || strcmp(texto,"")==0)
+							{tempo = strdup("DNF");
+							 pontos = (char*)malloc(sizeof(char)*1);
+							 sprintf(pontos,"%d",0);}
+						else{
+							 seg = tempo2segundos(texto);
+							 tempo = strdup(texto);
+							 pontos = (char*)malloc(sizeof(char)*4);
+							 sprintf(pontos,"%d",pontuacao(tempomelhor,seg));}
 						 }
 
 					linha = linha->u.d1.s1;	
@@ -733,7 +896,7 @@ void insere_Resultados(ListaLinhas prova, List provas){
 				lis = lis->u.d1.s1;	
 				nLinha++;
 				
-				 printf("id=%s,pontos=%s,seg=%d\n",iden,pontos,seg);
+				 //printf("id=%s,pontos=%s,seg=%d\n",iden,pontos,seg);
 
 				Atleta at = getAtletabyId(lista_Atletas,iden);//O Atleta que tem o ID daquele Resultado
 				
@@ -771,8 +934,27 @@ Prova getNProva (List lista,int n){
 	return NULL;
 }
 
+
+char * getNnomeProva (List lista,int n){
+	if(n<=0 || n>numeroProvas)
+		{return NULL;}
+	else if(n>lista->totalCount && n<=numeroProvas)
+			{return NULL;}
+
+	int count = 1;
+	ListElem aux = lista->elems;
+
+    while (aux != NULL) {
+        if(count == n)
+			return (char*)aux->data;
+        count++;
+        aux = aux->next;
+    }
+	return NULL;
+}
+
 List split(char* mensagem, char* sep){
-    List res = List_Create(NULL,NULL);
+    List res = List_Create();
     
     char *p = strtok(mensagem, sep);
     while(p != NULL) {
@@ -790,11 +972,11 @@ void initHTML (FILE * html_file, char * nome_prova){
     fprintf(html_file,"<head>");
     fprintf(html_file,"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>");
     fprintf(html_file,"<title>%s</title>",nome_prova);
-	fprintf(html_file,"</head><body>");
+	fprintf(html_file,"\n</head>\n<body>\n\n");
 }
 
 void fimHTML(FILE * html_file){
-	fprintf(html_file, "</div></body></html>");
+	fprintf(html_file, "\n\n</body></html>");
 }
 
 
@@ -815,30 +997,46 @@ void print_lAtletas(){
 
 
 void load_c_result(char *ficheiro){
-	csvin = fopen(ficheiro, "r");
+	
+	if(lista_Resultados->totalCount>=numeroProvas){
+		printf("O Campeonato já terminou : Já foram inseridas todas as Provas\n");
+		return;}
+
+
+	FILE * fich = fopen(ficheiro, "r");
+	
+	if(fich<0){
+		printf("ERRO : FICHEIRO INEXISTENTE\n");
+		return;}
+	
+	csvin = fich;
 	//printf("RESULT\n");
 	(void)csvparse();
 	//printf("Push na Lista\n");
 	ListaLinhas ll = csvList;
 	if(ll!=NULL)
-		List_Push(listaProvas,ll);
+		List_Push(listaListaLinhas,ll);
 	else
 		return;//discutir isto
 		
-	printf("\ncount da listaProvas=%d\n",listaProvas->totalCount);
+	//printf("\ncount da listaListaLinhas=%d\n",listaListaLinhas->totalCount);
 	
-	
+	set_idTotal(csvList);//Calcular sempre porque assim ate pode ter menos campos no fim desde que nao apanhe os importantes
+	set_NomesExtras(csvList);
 	insere_atletas(lista_Atletas,csvList);
 	
 	insere_Resultados(csvList,lista_Resultados);
 
 	//print_ListaLinhas(csvList);
-	print_ListaProvas();
-	print_ListaResultados();
+	//print_listaListaLinhas();
+	//print_ListaResultados();
+	
+	print_Prova(getNProva(lista_Resultados,lista_Resultados->totalCount));
+	
 	update_Ranking();
 
 	//HTML
-	int nprova = listaProvas->totalCount;
+	int nprova = listaListaLinhas->totalCount;
 	char *c=(char*)malloc(sizeof(3));
 	sprintf(c,"%d",nprova);
 	char* nome = (char*)malloc(strlen(titulo)+35);
@@ -856,13 +1054,36 @@ void load_c_result(char *ficheiro){
 		 print_ProvaHTML(getNProva(lista_Resultados,nprova),html_file);
 		 fclose(html_file);}
 
+
+	//Adicionar ao Historico
+	List_Push(Historico,ficheiro);
 	csvList = NULL;}
 	
 	
 void save_db(char * nome){
+	
+	
+	FILE * fp;
+
+	fp = fopen(nome, "w+");
+	if (fp == NULL)
+	   {printf("ERRO AO CRIAR O FICHEIRO:%s\n",nome);return;}
+	
+	
+	fprintf(fp,"%s\n",confActual);//Gravar o nome do Conf
+	
+	char * nomef;
+	ListElem aux = Historico->elems;
+
+
+    while (aux != NULL) {//Gravar o resto das Provas
+        nomef = (char*)aux->data;
+        fprintf(fp,"%s\n",nomef);
+        aux = aux->next;
+    }
+	fclose(fp);
+	
 	saveActualizado=1;
-	
-	
 	printf("SAVE! Ficheiro gravado com o nome: %s\n",nome);
 
 
@@ -879,29 +1100,48 @@ void load_db(char * nome){
 	fp = fopen(nome, "r");
 	if (fp == NULL)
 	   {printf("ERRO AO LER O FICHEIRO:%s\n",nome);return;}
-
+	
+	
+	List_Delete(Historico);Historico = List_Create();
+	
+	
+	int linha = 1;
 	while ((read = getline(&line, &len, fp)) != -1) {
 	   char * ficheiro;
 	   ficheiro=strdup(line);
 	   
 	   if(ficheiro[strlen(ficheiro)-1]=='\n')
 		ficheiro[strlen(ficheiro)-1]='\0';//Sacar o \n do fim
-			
-	   List_Push(Historico,ficheiro);
-	   printf("line=%s\n",ficheiro);
+	   if(linha==1)//Primeira linha entao CONF
+			confActual=ficheiro;
+	   else
+			List_Push(Historico,ficheiro);
+
+	   printf("%d-line=%s\n",linha,ficheiro);
+	   linha ++;
 	}
 
 	if (line)
 	   free(line);
+	   
+	   
+	   //Actualizar o CONF
+	confin=fopen(confActual, "r");
+	(void)confparse();
+
+	   //Recalcular tudo
+	reload_total();	
 	
 }
 
 void print_Historico(){
 	ListElem aux = Historico->elems;
 	printf("Historico:\n");
+	int pos = 1;
     while (aux != NULL) {
-        printf("%s\n",(char*)aux->data);
+        printf("Prova %d -> %s\n",pos,(char*)aux->data);
         aux = aux->next;
+        pos++;
     }
 }
 
@@ -911,13 +1151,16 @@ void print_Historico(){
 
 
 void ranking (char * ficheiro){
+	
+	update_Ranking();
+	
 	print_Ranking(lista_Ranking);// No ecra
 	//HTML
 	if(lista_Ranking->totalCount!=0){//Se há ranking
 		   
 		char* nome = (char*)malloc(strlen(ficheiro));
 		strcpy(nome,ficheiro);
-		nome++; ; 
+		nome++;
 		nome[strlen(nome)-1]='\0';
 
 		FILE * html_file = fopen(nome, "w+");
@@ -934,6 +1177,54 @@ void ranking (char * ficheiro){
 	
 }
 
+
+void reload_total(){
+	
+	//Aqui ja tenho o CONF pronto
+	
+	
+	List_Delete(listaListaLinhas);listaListaLinhas = List_Create();
+	List_Delete(lista_Atletas);lista_Atletas = List_Create();
+	List_Delete(lista_Resultados);lista_Resultados = List_Create();
+	List_Delete(lista_Ranking);lista_Ranking = List_Create();
+//	List_Delete(Historico);Historico = List_Create();
+	List_Delete(lista_nomesProvas);lista_nomesProvas= List_Create();
+	List_Delete(lista_IdnomesAtletas);lista_IdnomesAtletas= List_Create();
+	List_Delete(lista_IdExtras);lista_IdExtras= List_Create();
+	List_Delete(lista_NomeExtras);lista_NomeExtras= List_Create();
+	
+	
+	//Tratar o resto dos campos caso tenham sido preenchidos
+	if(camposTemp!=NULL)//"6"
+		{lista_IdExtras = split(camposTemp,",");
+			}
+			
+	if(provasTemp!=NULL)//"Santa Isabel, Santa Isabel, Centro Historico, ..."
+		lista_nomesProvas = split(provasTemp,",");
+			
+				
+	if(defNomeTemp!=NULL)//"6, 5"
+		lista_IdnomesAtletas = split(defNomeTemp,",");
+			
+  
+	popUpdateHistorico();
+	
+}
+
+void popUpdateHistorico(){
+	//Percorrer o Historico e fazer inserts
+	char * prova;
+	ListElem aux = Historico->elems;
+	int fim = Historico->totalCount;
+	while (aux != NULL && fim>0) {
+		prova = (char*)aux->data;
+		load_c_result(prova);
+		List_Pop(Historico);
+		aux = aux->next;
+		fim--;
+	}
+	
+}
 
 
 

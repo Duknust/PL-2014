@@ -33,14 +33,6 @@ char save[20]="";
 
 
 
-//----------------------------------------------
-
-
-
-
-
-
-//-----------------------------------------------
 
 
 %}
@@ -71,24 +63,22 @@ ListaInstrucoes : ListaInstrucoes SEPN Inst
 
 Inst : LOAD Comando_load ficheiro {
 									
-									$3++; ; 
+								   $3++;
 								   $3[strlen($3)-1]='\0';
-								   printf("LOAD! Ficheiro lido com o nome: %s\n",$3);
-								   
-
-
-									switch(comando_flag){
+								   switch(comando_flag){
 										case _RESULT : load_c_result($3);
 														break;
 
-										case _CONF :printf("CONF com nome --%s--\n",$3);//HTML
-														confin=fopen($3, "r");
+										case _CONF :	confin=fopen($3, "r");
 														(void)confparse();
+														free(confActual);
+														confActual=strdup($3);
+														reload_total();
 														break;
-										case _DB : printf("DB\n");break;
+										case _DB : load_db($3);break;
 									}
 								   }
-	 | SAVE ficheiro {$$=$2; print_Historico();save_db($2);}
+	 | SAVE ficheiro { $2++;$2[strlen($2)-1]='\0';save_db($2); $$=$2;}
 	 | RANKING ficheiro {ranking($2);
 						 $$=$2;} 
 	 | EXIT {if(saveActualizado==1){
@@ -129,7 +119,7 @@ Comando_load : CONF {saveActualizado=0; comando_flag = _CONF;}
 			 | RESULT {saveActualizado=0; comando_flag = _RESULT;}
 			 ;
 
-Comando_list : PROVAS {print_ListaProvas();}
+Comando_list : PROVAS {print_listaListaLinhas();}
 			 | ATLETAS {printf("\nATLETAS\n\n");print_lAtletas();}
 			 | PROVA prova {print_Prova(getNProva(lista_Resultados,$2));}
 			 | TORNEIO
