@@ -1,0 +1,62 @@
+x\fimdecapa\			fim de capa
+x\titulo\			titulo do documento
+x\autores\			autores separados por virgulas
+x\data\				data de hoje
+x\sec[1-6]\			secção em que o INT é o nivel de 1 a 6
+—-\lo\				lista ordenada
+--\li\				lista de items
+--\item\				item da lista
+\hlink\				hiperligação
+\figura\			modo de imagem
+\imagem>NOME\		inserir uma imagem
+\legenda\			legenda da imagem
+\size\				tamanho da imagem (em escala)
+\tabela>[lcr]\		criar tabela em que o L alinha à esquerda, o C ao centro e o R à direita
+x\nl\				quebra linha
+x\LaTeX\				simbolo do latex em LaTeX (so funciona em latex)
+x\%\					comentario
+x\nis\				combinação de n(negrito), i(italico) e s(sublinhado) que pode ter todas ou apenas uma
+x\nf\				texto normal
+x\tab\				põe um tab nessa frase;
+\indice\			criar indice
+\indiceimg\			criar indice de imagens
+
+\(vermelho|verde|azul|amarelo|rosa)\ muda a cor do texto
+\footnote\			notas de rodape
+
+de forma a terminar alguns comandos existe o \fim\
+NOVAS COISAS:
+\citacao\			\begin{quote}
+lista numerada			\begin{enumerate}
+lista com marcaçao		\begin{itemize}
+novo item			\item texto
+NOVA PAGINA			\pagebreak
+data de hoje			\today
+
+\textcolor{green}{texto em verde}.
+red
+blue
+pink
+
+\begin{itemize}\item Os itens sa~o precedidos por $\bullet$;\item Os itens sa~o separados por um espac ̧o adicional. 
+\end{itemize}
+
+
+\begin{enumerate}\item Os itens sa~o numerados com algarismos ara ́bicos, no primeiro nı ́vel,\begin{enumerate}\item s~ao numerados com letras no segundo nı ́vel e\begin{enumerate}\item sa~o numerados com algarismos romanos no terceiro n ́ıvel. \end{enumerate}    \end{enumerate}\end{enumerate}
+
+MATRIZ
+
+OBRIGATORIO A CENA DE POR SO EM LATEX E A CENA DE POR SO EM HTML
+
+
+entradas de um dicionário
+
+inclusão de imagens (permitir associar à imagem uma legenda e alguns atributos:centrada, largura máxima, ...);
+
+inclusão e formatação de tabelas (permitir associar à tabela alguns atributos: cen-trada, largura máxima, etc;
+
+todos os outros que achar necessário ou a sua imaginação vislumbrar (pode, por exemplo,recorrer a bibliotecas CSS para embelezar o resultado: twitter bootstrap ou zurb founda- tion ).
+
+
+
+

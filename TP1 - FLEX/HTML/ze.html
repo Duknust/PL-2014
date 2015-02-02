@@ -1,0 +1,128 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><title>Luthor</title><link type="text/css" rel="stylesheet" href="css/ink.css"></head><body><div class="ink-grid"><h1>Relatório de PL TP1</h1>
+<script type="text/javascript">document.title = "Relatório de PL TP1"</script>
+<h4>Duarte Duarte 61001, Fábio Gomes 61065</h4>
+
+<!--colocar a imagem da Uminho e do curso-->
+<h2>Resumo</h2>
+
+lalal
+</q>
+<h2> Introdução</h2>
+Dos temas apresentados, escolhemos o Pré-Processador para LaTeX e HTML pois pareceu-nos um bom desafio para aplicar os conhecimentos adquiridos nas aulas de Processamento de Linguagens. Foi assim que nasceu o flexLuthor, o programa capaz de apartir de texto pré formatado convertê-lo para LaTex e/ou HTML.Para tal é necessário criar tags simples e independentes de forma a serem interpretadas e convertidas para vários tipos de documentos finais. Tendo como base um ficheiro com tags conhecidas, o Luthor analisa e converte para o tipo de ficheiro final indicado pelo utilizador. Tudo isto usando a ferramenta FLex para analisar o ficheiro fonte detetando padrões.<h2> flexLuthor</h2>
+<h3> O porquê do nome escolhido</h3>
+<h3> Inicio da aplicação</h3>
+<h4> Invocação inicial</h4>
+Só é possível definir o tipo de ficheiro de output através dos argumentos com que se inicia o programa. Existem:<br>-l -o nome-do-ficheiro - Imprime para o ficheiro indicado em formato LaTeX<br>-h -o nome-do-ficheiro - Imprime para o ficheiro indicado em formato HTML<br>-lh -o nome-do-ficheiro - Imprime para 2 ficheiros separados em LaTeX e HTML<br>-hl -o nome-do-ficheiro - Imprime para 2 ficheiros separados em LaTeX e HTML<br>--v ou --version - Mostra a versão do programa<br><h4> Output criado</h4>
+<h2> Estrutura dos modulos</h2>
+<h2> Modulo do latex</h2>
+<h2> Modulo do html</h2>
+<h2> Comandos em flexLuthor</h2>
+<h3> Sintaxe dos comandos</h3>
+<table class="ink-table bordered alternating hover">
+<tbody>
+<tr><td>/titulo/ texto </td><td> Titulo do documento/fim/</td></tr>
+<tr><td>/autores/ texto </td><td> Autores do documento/fim/</td></tr>
+<tr><td>/sec[1-3]/ texto </td><td> Insere secções no documento, os números da secção vão de 1 a 3 e quando maior o número menos global é a secção./fim/</td></tr>
+<tr><td>/data/ </td><td> Coloca a data do dia./fim/</td></tr>
+<tr><td>/fimdecapa/ </td><td> Usa-se para indicar o fim de capa./fim/</td></tr>
+<tr><td>/indice/ </td><td> Índice de conteúdos do documento [Só /LaTeX/]/fim/</td></tr>
+<tr><td>/indiceimg/ </td><td> Índice de imagens do documento [Só /LaTeX/]/fim/</td></tr>
+<tr><td>/n/ texto /fim/ </td><td> Coloca o texto a negrito/fim/</td></tr>
+<tr><td>/s/ texto /fim/ </td><td> Coloca o texto sublinhado/fim/</td></tr>
+<tr><td>/i/ texto /fim/ </td><td> Coloca o texto em itálico/fim/</td></tr>
+<tr><td>/nis/ texto /fim/ </td><td> Combinação de negrito, sublinhado e itálico/fim/</td></tr>
+<tr><td>/%/ texto /fim/ </td><td> Insere um comentário, no caso do latex depois de processado este não aparece (PDF), no caso do HTML aparece no código fonte/fim/</td></tr>
+<tr><td>/legenda/ texto /fim/ </td><td> Insere uma legenda/fim/</td></tr>
+<tr><td>/citar/ texto /fim/ </td><td> Coloca uma citação/fim/</td></tr>
+<tr><td>/li/ ... /fim/ </td><td> Indica o início de uma lista não ordenada/fim/</td></tr>
+<tr><td>/lo/ ... /fim/ </td><td> Indica o inicio de uma lista ordenada/fim/</td></tr>
+<tr><td>/dic/ ... /fim/ </td><td> Indica o inicio de uma lista tipo dicionário/fim/</td></tr>
+<tr><td>/item/ texto /fim/ </td><td> Usa-se para colocar cada item das listas ordenadas e não ordenadas e ainda das entradas tipo dicionário./fim/</td></tr>
+<tr><td>/imagem [,t:tamanho] [,l:legenda] [,c:caminho]/ </td><td> Insere uma imagem, com tamanho em percentagem, a legenda que se pretende, ambos opcionais e é necessário indicar o caminho (path) para a imagem/fim/</td></tr>
+<tr><td>/sl/ texto /fim/ </td><td> O texto escrito neste comando só aparecerá no documento de latex/fim/</td></tr>
+<tr><td>/sh/ texto /fim/ </td><td> O texto escrito neste comando só aparecerá no documento de html/fim/</td></tr>
+<tr><td>/tabela [numero de colunas](l|c|r) [,t:tamanho] [,l:legenda]/ ... /fim/ </td><td> Insere uma tabela, com alinhamento l(esquerda), c(centro) ou r(direita) e com tamanho em percentagem, a legenda que se pretende, estes últimos dois opcionais./fim/</td></tr>
+<tr><td>/linha/ texto /fim/ </td><td> Inserção de cada linha da tabela, cada campo é separado por uma barra vertical |/fim/</td></tr>
+<tr><td>!nf! texto !fim! </td><td> Texto não formatado, aparecerá tal e qual como foi escrito/fim/</td></tr>
+<tr><td>/COR/ texto /fim/ </td><td> Altera a cor do texto para a cor indicada, COR pode ser vermelho, verde, azul, amarelo, rosa, laranja, violeta, cinzento ou castanho/fim/</td></tr>
+<tr><td>/footnote/ texto /fim/ </td><td> Insere uma nota de rodapé com o texto indicado/fim/</td></tr>
+<tr><td>/nl/ </td><td> Insere uma quebra de linha/fim/</td></tr>
+<tr><td>/LaTeX/ </td><td> Insere o símbolo do Latex/fim/</td></tr>
+<tr><td>/tab/ </td><td> Insere um tab/fim/</td></tr>
+<tr><td>/hlink/ texto | site /fim/ </td><td> Insere um link em que aparece o texto no documento mas com hiperligação para o que for colocado no local que diz site/fim/</td></tr>
+<tr><td>/reticencias/ </td><td> Coloca reticencias/fim/</td></tr>
+<tr><td>/resumo/ texto /fim/ </td><td> Insere o resumo/fim/</td></tr>
+<tr><td>/reticencias/ </td><td> Insere reticencias/fim/</td></tr>
+<tr><td>/np/ </td><td> Efectua uma quebra de página/fim/</td></tr>
+</tbody></table>
+<h3> Exemplo de utilização</h3>
+<pre>/data/ </pre><script language="JavaScript">Date.prototype.toDDMMYYYYString = function () {return isNaN (this) ? 'NaN' : [this.getDate() > 9 ? this.getDate() : '0' + this.getDate(),  this.getMonth() > 8 ? this.getMonth() + 1 : '0' +  (this.getMonth() + 1), this.getFullYear()].join('/')}
+document.write(new Date().toDDMMYYYYString())</script> <br><pre>/n/ texto /fim/</pre><b> texto </b> <br><pre>/s/ texto </pre><u> texto </u> <br><pre>/s/ texto </pre><i> texto </i> <br><pre>/nis/ texto </pre><b><u><i> texto </b></u></i> <br><pre>/citar/ "Sempre que o Homem sonha o mundo pula e avança" /fim/</pre><q> "Sempre que o Homem sonha o mundo pula e avança" </q>
+<pre>/li/
+/item/ Este é um topico/fim/
+/item/ Este é outro/fim/
+/item/ E apareceu mais um/fim/
+/fim/</pre><ul>
+<li> Este é um topico</li>
+<li> Este é outro</li>
+<li> E apareceu mais um</li>
+</ul><pre>/lo/
+/item/ Este é o ponto 1/fim/
+/item/ Este é o ponto 2/fim/
+/item/ Este é o ponto 3/fim/
+/fim/</pre><ol>
+<li> Este é o ponto 1</li>
+<li> Este é o ponto 2</li>
+<li> Este é o ponto 3</li>
+</ol><pre>/lo/
+/item/ Este é o ponto 1/fim/
+/item/ Este é o ponto 2/fim/
+/lo/
+/item/ Este é um ponto mais dentro/fim/
+/li/
+/item/ E nao ordenado ainda mais dentro/fim/
+/item/ E este é outro/fim/
+/fim/
+/fim/
+/fim/</pre><ol>
+<li> Este é o ponto 1</li>
+<li> Este é o ponto 2</li>
+<ol>
+<li> Este é um ponto mais dentro</li>
+<ul>
+<li> E nao ordenado ainda mais dentro</li>
+<li> E este é outro</li>
+</ul></ol></ol><pre>/dic/
+/item/ Cabeçadas | só nada parede /fim/
+/item/ Patadas | só na bola /fim/
+/fim/
+</pre><b> Cabeçadas </b> <i> só na parede </i>
+ <br></li>
+<b> Patadas </b> <i> só na bola </i>
+ <br></li>
+<b> Pinheiros </b> <i> só no monte </i>
+ <br></li>
+
+<pre> /imagem,t:0.4,l:Universidade do Minho,c:uminho.jpg/ </pre><figure><img src="uminho.jpg"  alt="Imagem" >
+<figcaption>Universidade do Minho</figcaption>
+</figure>
+<pre> /sl/ este aparece só no LaTeX, por isso no HTML não o vão ler /fim/ </pre><pre> /sh/ este aparece só no HTML, por isso no LaTeX não o vão ler /fim/ </pre> este aparece só no HTML, por isso no LaTeX não o vão ler <pre>/tabela2l,t:1,l:A tabela/
+/linha/A primeira linha, primeira coluna & A primeira linha, segunda coluna/fim/
+/linha/A segunda linha, primeira coluna & A segunda linha, segunda coluna/fim/
+/fim/</pre><table class="ink-table bordered alternating hover">
+<tbody>
+<tr><td>A primeira linha, primeira coluna </td><td> A primeira linha, segunda coluna</td></tr>
+<tr><td>A segunda linha, primeira coluna </td><td> A segunda linha, segunda coluna</td></tr>
+</tbody></table>
+<pre> /vermelho/ Equipa que veste de vermelho /fim/ </pre> Equipa que veste de vermelho </font><pre>/verde/ A relva do campo é verde /fim/</pre>A relva do campo é verde </font><pre>/azul/ O céu hoje é azul /fim/</pre>O céu hoje é azul </font><pre>/amarelo/ O sol brilha sem parar /fim/</pre> O sol brilha sem parar </font><pre>/rosa/ E as petalas da flor são rosa /fim/</pre>petalas da flor são rosa </font><pre>/laranja/ e outras são laranja /fim/</pre>e outras são laranja </font><pre>/violeta/ A violeta é a mais bonita /fim/</pre>ioleta é a mais bonita </font><pre>/cinzento/ De repente o céu ficou cinzento /fim/</pre>nto/ De repente o céu ficou cinzento </font><pre>/castanho/ Um troco todo castanho /fim/</pre>o/ Um troco todo castanho </font><pre> /LaTeX/ </pre>LaTeX<pre> /hlink/ Google | www.google.com /fim/ </pre><a href=" www.google.com "> Google </a><pre> este texto pode ser/reticencias/ </pre>este texto pode ser ...<br><h2> Previsões do trabalho futuro</h2>
+Futuramente poderíamos incluir mais formatos de output como o XML ou RTF e mais tags de formatação de forma bastante simples pois é apenas necessário um ficheiro para cada e acrescentar as respetivas funções de conversão.As tags por nós criadas foram pensadas a serem legíveis para que o utilizador detete logo a sua função, pretendemos depois que estas sejam mais curtas para diminuir a sua presença no texto fonte.<h2> Conclusão</h2>
+Finalizado o projeto, podemos concluir que ficámos bastante satisfeitos com o resultado final, conseguindo fazer tudo o que foi proposto. Os resultados obtidos através dos testes feitos por nós demonstraram-se dentro do que estaríamos à espera.Este projeto é bastante útil quando é preciso redigir um texto com formatação em mais do que um formato diminuindo o tempo perdido a fazer o mesmo trabalho em cada ficheiro.Este tipo de abordagem permitiu-nos um ponto de vista diferente sobre como abordar padrões em textos, sendo isto bastante enriquecedor para nós. A priori se nos fosse apresentado este enunciado provavelmente faríamos com iterações sucessivas a todas as linhas ficando o código ilegível e o erro era constante. O Flex veio dar uma ajuda impressionante no processamento de linguagens no qual nunca tivémos contato.<h2> Autores</h2>
+
+<!--colocar imagem dos autores do flexLuthor e respetivos nomes-->
+<figure><img src="12.png"  alt="Imagem" >
+<figcaption>Duarte Duarte 61001</figcaption>
+</figure>
+<figure><img src="112.jpg"  alt="Imagem" >
+<figcaption>Fábio Gomes 61065</figcaption>
+</figure>
+</div></body></html>

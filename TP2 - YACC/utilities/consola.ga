@@ -1,0 +1,22 @@
+ListaInstrucoes -> cons_consola_ListaInstrucoes(ListaInstrucoes Inst)
+				| cons_consola_ListaInstrucoesInstrucoes_Fim(Inst)
+				;
+
+Inst -> LOAD Comando_load ficheiro 
+	 | SAVE ficheiro
+	 | RANKING ficheiro
+	 | EXIT
+	 | LISTING Comando_list
+	 | INFO
+	 ;
+
+Comando_load -> CONF
+			 | DB
+			 | RESULT
+			 ;
+
+Comando_list -> PROVAS
+			 | PARTICIPANTES prova
+			 | PROVA
+			 | TORNEIO
+			 ;
